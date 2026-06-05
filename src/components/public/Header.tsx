@@ -164,7 +164,7 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-1 shadow-lg transform group-hover:scale-105 transition-all">
+              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center overflow-hidden p-0 shadow-lg transform group-hover:scale-105 transition-all">
                 <img
                   alt="HOBA LPG Logo"
                   className="w-full h-full object-contain"
@@ -269,7 +269,7 @@ export default function Header() {
           <div className="relative w-80 max-w-sm bg-primary text-white h-full flex flex-col p-6 shadow-2xl z-10 transition-transform">
             <div className="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-white rounded flex items-center justify-center p-1">
+                <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden p-0 shadow-sm">
                   <img
                     alt="Logo"
                     className="w-full h-full object-contain"

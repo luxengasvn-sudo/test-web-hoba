@@ -153,6 +153,8 @@ export default function ChaptersPage() {
 
   return (
     <div className="bg-[#fcf9f5] min-h-screen text-[#1c1c1a] font-sans pb-16">
+      <title>Chi hội Địa phương | HOBA LPG</title>
+      <meta name="description" content="Danh sách các chi hội địa phương trực thuộc Hiệp hội HOBA LPG trên các miền Bắc, Trung, Nam toàn quốc." />
       
       {/* 1. Hero banner */}
       <section className="relative h-[25vh] md:h-[35vh] flex items-center justify-center overflow-hidden bg-primary pt-20">

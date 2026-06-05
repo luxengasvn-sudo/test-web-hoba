@@ -149,7 +149,7 @@ export default function Sidebar() {
       {/* Brand Header */}
       <div className="px-6 mb-8">
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 bg-white rounded flex items-center justify-center p-1">
+          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden p-0 shadow-sm">
             <img
               alt="Logo"
               className="w-full h-full object-contain animate-fade-in"
