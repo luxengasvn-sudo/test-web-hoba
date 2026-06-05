@@ -284,7 +284,7 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
           Tài khoản của bạn có quyền hạn <strong>Biên tập viên (Editor)</strong>. Chuyên mục này chỉ dành riêng cho tài khoản <strong>Quản trị tối cao (Super Admin)</strong>. 
         </p>
         <button
-          onClick={() => window.location.href = '/admin/index.html'}
+          onClick={() => window.location.href = '/admin/'}
           className="mt-4 px-6 py-2.5 bg-primary hover:bg-[#00346f] text-white font-bold rounded-lg transition-all active:scale-95 cursor-pointer shadow-md"
         >
           Quay lại Dashboard

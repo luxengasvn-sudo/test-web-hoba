@@ -100,32 +100,32 @@ export default function Sidebar() {
   }, []);
 
   const primaryNav = [
-    { label: 'Dashboard', path: '/admin/index.html', icon: 'dashboard' },
-    { label: 'Hội viên (Danh sách)', path: '/admin/hoi-vien/index.html', icon: 'group' },
-    { label: 'Văn bản pháp lý', path: '/admin/van-ban/index.html', icon: 'description' },
-    { label: 'Tin tức & Bài viết', path: '/admin/tin-tuc/index.html', icon: 'newspaper' },
-    { label: 'Trang độc lập', path: '/admin/trang-tuy-chinh/index.html', icon: 'pages' },
+    { label: 'Dashboard', path: '/admin/', icon: 'dashboard' },
+    { label: 'Hội viên (Danh sách)', path: '/admin/hoi-vien/', icon: 'group' },
+    { label: 'Văn bản pháp lý', path: '/admin/van-ban/', icon: 'description' },
+    { label: 'Tin tức & Bài viết', path: '/admin/tin-tuc/', icon: 'newspaper' },
+    { label: 'Trang độc lập', path: '/admin/trang-tuy-chinh/', icon: 'pages' },
     ...(userRole === 'super_admin' ? [
-      { label: 'Quản lý Tài khoản', path: '/admin/tai-khoan/index.html', icon: 'manage_accounts' },
-      { label: 'Cấu hình Website', path: '/admin/cau-hinh/index.html', icon: 'settings' }
+      { label: 'Quản lý Tài khoản', path: '/admin/tai-khoan/', icon: 'manage_accounts' },
+      { label: 'Cấu hình Website', path: '/admin/cau-hinh/', icon: 'settings' }
     ] : [])
   ];
 
   const contentNav = [
-    { label: 'Quản lý Trang chủ', path: '/admin/trang-chu/index.html', icon: 'view_carousel' },
-    { label: 'Quản lý Giới thiệu', path: '/admin/trang-gioi-thieu/index.html', icon: 'info' },
-    { label: 'Hội viên tiêu biểu', path: '/admin/hoi-vien-tieu-bieu/index.html', icon: 'star' },
-    { label: 'Ban lãnh đạo Hiệp hội', path: '/admin/ban-lanh-dao/index.html', icon: 'diversity_3' },
+    { label: 'Quản lý Trang chủ', path: '/admin/trang-chu/', icon: 'view_carousel' },
+    { label: 'Quản lý Giới thiệu', path: '/admin/trang-gioi-thieu/', icon: 'info' },
+    { label: 'Hội viên tiêu biểu', path: '/admin/hoi-vien-tieu-bieu/', icon: 'star' },
+    { label: 'Ban lãnh đạo Hiệp hội', path: '/admin/ban-lanh-dao/', icon: 'diversity_3' },
     ...(userRole === 'super_admin' ? [
-      { label: 'Thiết kế Trang Hội viên', path: '/admin/trang-hoi-vien/index.html', icon: 'person_search' },
-      { label: 'Quản lý Đăng ký', path: '/admin/trang-dang-ky/index.html', icon: 'app_registration' }
+      { label: 'Thiết kế Trang Hội viên', path: '/admin/trang-hoi-vien/', icon: 'person_search' },
+      { label: 'Quản lý Đăng ký', path: '/admin/trang-dang-ky/', icon: 'app_registration' }
     ] : []),
-    { label: 'Quản lý Sự kiện', path: '/admin/su-kien/index.html', icon: 'event' },
-    { label: 'Quản lý Thư viện', path: '/admin/thu-vien/index.html', icon: 'photo_library' },
+    { label: 'Quản lý Sự kiện', path: '/admin/su-kien/', icon: 'event' },
+    { label: 'Quản lý Thư viện', path: '/admin/thu-vien/', icon: 'photo_library' },
     ...(userRole === 'super_admin' ? [
-      { label: 'Quản lý Footer', path: '/admin/footer/index.html', icon: 'bottom_navigation' }
+      { label: 'Quản lý Footer', path: '/admin/footer/', icon: 'bottom_navigation' }
     ] : []),
-    { label: 'Quản lý Liên hệ', path: '/admin/lien-he/index.html', icon: 'contact_mail' },
+    { label: 'Quản lý Liên hệ', path: '/admin/lien-he/', icon: 'contact_mail' },
   ];
 
   const handleLogout = () => {

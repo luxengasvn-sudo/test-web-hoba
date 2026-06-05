@@ -23,6 +23,22 @@ export default function RootLayout({
   return (
     <html lang="vi" className={`${beVietnamPro.variable} h-full antialiased`}>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var path = window.location.pathname;
+                if (path.endsWith('/index.html')) {
+                  var cleanPath = path.substring(0, path.length - 10);
+                  window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+                } else if (path.endsWith('/index.html/')) {
+                  var cleanPath = path.substring(0, path.length - 11);
+                  window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+                }
+              })();
+            `,
+          }}
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"
