@@ -726,7 +726,7 @@ function NewsListPage() {
                         </span>
                         <Link href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
                           <h4 className="text-sm font-bold text-primary group-hover:text-secondary transition-colors line-clamp-2 leading-snug cursor-pointer">
-                            {article.title}
+                             {article.title}
                           </h4>
                         </Link>
                         <p className="text-xs text-on-surface-variant line-clamp-2 leading-relaxed">{article.desc}</p>
@@ -735,11 +735,11 @@ function NewsListPage() {
                         </Link>
                       </article>
                     ))
-                  ) : (
+                  ) : filteredNews.length === 0 ? (
                     <div className="md:col-span-2 text-center py-12 text-on-surface-variant text-sm font-medium">
                       Không có tin tức nào trong chuyên mục này.
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </div>
 
