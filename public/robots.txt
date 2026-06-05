@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /404/
+
+Sitemap: https://hobalpg.vn/sitemap.xml
