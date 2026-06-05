@@ -108,10 +108,13 @@ export function NewsDetailPage({ id, slug }: { id?: string; slug?: string }) {
   const [article, setArticle] = useState<NewsItem | null>(null);
   const [recentNews, setRecentNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
 
   useEffect(() => {
     async function loadArticle() {
       setLoading(true);
+      setError(null);
       const queryField = id ? 'id' : 'slug';
       const queryValue = id || slug;
 
@@ -130,13 +133,80 @@ export function NewsDetailPage({ id, slug }: { id?: string; slug?: string }) {
       }
 
       try {
-        const { data, error } = await supabase
+        const { data, error: fetchErr } = await supabase
           .from('news')
           .select('*')
           .eq(queryField, queryValue)
           .single();
 
-        if (error) throw error;
+        if (fetchErr) {
+          if (fetchErr.code === 'PGRST116') {
+            // Target row not found, let's fallback to search by title slug from all published news
+            const { data: allNews, error: allErr } = await supabase
+              .from('news')
+              .select('*')
+              .eq('status', 'Published');
+
+            if (allErr) throw allErr;
+
+            if (allNews && allNews.length > 0) {
+              const found = allNews.find(n => 
+                n.id === queryValue || 
+                (n.slug && n.slug === queryValue) || 
+                toSlug(n.title) === queryValue
+              );
+
+              if (found) {
+                let formattedDate = found.publish_date;
+                try {
+                  const dt = new Date(found.publish_date);
+                  formattedDate = `${dt.getDate()} Tháng ${dt.getMonth() + 1}, ${dt.getFullYear()}`;
+                } catch (_) {}
+
+                setArticle({
+                  id: found.id,
+                  title: found.title,
+                  slug: found.slug,
+                  desc: found.description || '',
+                  content: found.content || '',
+                  category: found.category as any,
+                  date: formattedDate,
+                  img: found.thumbnail_url || 'https://images.unsplash.com/photo-1542282088-fe8426682b8f'
+                });
+
+                // Load recent news excluding current found article
+                const recent = allNews
+                  .filter(n => n.id !== found.id)
+                  .slice(0, 3)
+                  .map((r: any) => {
+                    let fd = r.publish_date;
+                    try {
+                      const dt = new Date(r.publish_date);
+                      fd = `${dt.getDate()} Tháng ${dt.getMonth() + 1}, ${dt.getFullYear()}`;
+                    } catch (_) {}
+                    return {
+                      id: r.id,
+                      title: r.title,
+                      slug: r.slug,
+                      desc: r.description || '',
+                      category: r.category as any,
+                      date: fd,
+                      img: r.thumbnail_url || 'https://images.unsplash.com/photo-1542282088-fe8426682b8f'
+                    };
+                  });
+                setRecentNews(recent);
+                setLoading(false);
+                return;
+              }
+            }
+            // Truly not found in database
+            setArticle(null);
+            setLoading(false);
+            return;
+          } else {
+            throw fetchErr;
+          }
+        }
 
         let currentId = id;
         if (data) {
@@ -187,71 +257,8 @@ export function NewsDetailPage({ id, slug }: { id?: string; slug?: string }) {
           setRecentNews(formattedRecent);
         }
       } catch (err) {
-        console.warn('Lỗi tải bài viết đơn lẻ từ Supabase, chuyển sang truy vấn fallback toàn bộ bài viết:', err);
-        try {
-          const { data: allNews } = await supabase
-            .from('news')
-            .select('*')
-            .eq('status', 'Published');
-          
-          if (allNews && allNews.length > 0) {
-            const found = allNews.find(n => 
-              n.id === queryValue || 
-              (n.slug && n.slug === queryValue) || 
-              toSlug(n.title) === queryValue
-            );
-
-            if (found) {
-              let formattedDate = found.publish_date;
-              try {
-                const dt = new Date(found.publish_date);
-                formattedDate = `${dt.getDate()} Tháng ${dt.getMonth() + 1}, ${dt.getFullYear()}`;
-              } catch (_) {}
-
-              setArticle({
-                id: found.id,
-                title: found.title,
-                slug: found.slug,
-                desc: found.description || '',
-                content: found.content || '',
-                category: found.category as any,
-                date: formattedDate,
-                img: found.thumbnail_url || 'https://images.unsplash.com/photo-1542282088-fe8426682b8f'
-              });
-
-              // Load recent news excluding current found article
-              const recent = allNews
-                .filter(n => n.id !== found.id)
-                .slice(0, 3)
-                .map((r: any) => {
-                  let fd = r.publish_date;
-                  try {
-                    const dt = new Date(r.publish_date);
-                    fd = `${dt.getDate()} Tháng ${dt.getMonth() + 1}, ${dt.getFullYear()}`;
-                  } catch (_) {}
-                  return {
-                    id: r.id,
-                    title: r.title,
-                    slug: r.slug,
-                    desc: r.description || '',
-                    category: r.category as any,
-                    date: fd,
-                    img: r.thumbnail_url || 'https://images.unsplash.com/photo-1542282088-fe8426682b8f'
-                  };
-                });
-              setRecentNews(recent);
-              setLoading(false);
-              return;
-            }
-          }
-        } catch (fallbackErr) {
-          console.error('Lỗi khi truy vấn fallback toàn bộ tin tức:', fallbackErr);
-        }
-
-        // If even fallback fails, load mock news
-        const found = defaultNews.find(n => id ? n.id === id : (n.slug === slug || toSlug(n.title) === slug));
-        setArticle(found || null);
-        setRecentNews(defaultNews.filter(n => id ? n.id !== id : (n.slug !== slug && toSlug(n.title) !== slug)));
+        console.error('Lỗi tải bài viết từ Supabase:', err);
+        setError('connection_error');
       } finally {
         setLoading(false);
       }
@@ -266,6 +273,35 @@ export function NewsDetailPage({ id, slug }: { id?: string; slug?: string }) {
         <div className="text-center space-y-3">
           <div className="animate-spin inline-block w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
           <p className="text-xs text-on-surface-variant font-medium">Đang tải nội dung bài viết...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error === 'connection_error') {
+    return (
+      <div className="flex-grow pt-32 pb-16 bg-surface flex items-center justify-center min-h-[60vh]">
+        <div className="text-center space-y-6 max-w-sm px-margin-mobile">
+          <span className="material-symbols-outlined text-6xl text-orange-400">wifi_off</span>
+          <h2 className="text-xl font-black text-primary">Lỗi kết nối</h2>
+          <p className="text-xs text-on-surface-variant leading-relaxed">
+            Không thể tải bài viết do lỗi kết nối tới máy chủ. Vui lòng kiểm tra mạng và thử lại.
+          </p>
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={() => { setError(null); setLoading(true); setTimeout(() => window.location.reload(), 100); }}
+              className="w-full py-3 bg-primary text-white font-bold text-xs rounded-lg hover:bg-secondary transition-all flex items-center justify-center gap-2"
+            >
+              <span className="material-symbols-outlined text-base">refresh</span>
+              Thử lại
+            </button>
+            <button
+              onClick={() => router.push('/tin-tuc')}
+              className="w-full py-3 border-2 border-primary text-primary font-bold text-xs rounded-lg hover:bg-primary/5 transition-all"
+            >
+              Quay lại trang Tin tức
+            </button>
+          </div>
         </div>
       </div>
     );
