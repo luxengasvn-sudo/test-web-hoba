@@ -40,5 +40,12 @@ interface PageProps {
 
 export default async function EventSlugPage({ params }: PageProps) {
   const { slug } = await params;
+  
+  // Neu slug rong, la index, hoac chinh la route prefix thi hien thi trang danh sach su kien
+  // de khac phuc loi client-side routing Next.js static export load 404 __next._tree.txt
+  if (!slug || slug === 'su-kien' || slug === 'index') {
+    return <EventsPage />;
+  }
+  
   return <EventsPage preSelectedSlug={slug} />;
 }

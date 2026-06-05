@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import { NewsDetailPage } from '../page';
+import NewsPage, { NewsDetailPage } from '../page';
 import { toSlug } from '@/lib/slug';
 
 export async function generateStaticParams() {
@@ -62,5 +62,12 @@ interface PageProps {
 
 export default async function NewsSlugPage({ params }: PageProps) {
   const { slug } = await params;
+  
+  // Neu slug rong, la index, hoac chinh la route prefix thi hien thi trang danh sach tin tuc
+  // de khac phuc loi client-side routing Next.js static export load 404 __next._tree.txt
+  if (!slug || slug === 'tin-tuc' || slug === 'index') {
+    return <NewsPage />;
+  }
+  
   return <NewsDetailPage slug={slug} />;
 }
