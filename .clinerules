@@ -1,0 +1,26 @@
+# HOBA LPG Codebase Guidelines & Agent Rules
+
+Whenever an AI coding assistant (like Antigravity, Cursor, Cline, etc.) works on this repository, they MUST adhere to the following rules:
+
+## 1. Scope & Execution Boundaries
+*   **File-Scope Edits:** Always perform narrow, targeted edits. Edit only the lines necessary using strict start/end lines. Do not touch or rewrite surrounding code or comments unless explicitly requested.
+*   **Approval Gates:** Stop and ask for confirmation before:
+    *   Modifying database schemas or SQL seeds.
+    *   Adding new npm dependencies.
+    *   Deleting files.
+
+## 2. Fallback & Offline Safety (Mock Mode)
+*   **Local Storage Sync:** All admin panels and layout editors must contain a fallback mechanism. If `supabase` is not connected or environment variables are placeholder text, seamlessly save/load configuration data to/from the browser's `localStorage`.
+*   **No Build Breaks:** Never let missing Supabase credentials break the production compilation. Catch connection failures gracefully, print a warning, and default to the local mock data.
+
+## 3. Tech Stack & Styling Guidelines
+*   **Framework:** Next.js (App Router), TypeScript, and Tailwind CSS.
+*   **Color System:** Keep styling aligned with the system's HSL variables defined in `globals.css`. Do not hardcode raw, generic color codes.
+*   **Typography:** Maintain the typography rules defined in the design guidelines.
+
+## 4. Verification Standards
+*   **Pre-submission Build:** Before declaring a task finished, always run `npm run build` to ensure the project compiles with 0 TypeScript or turbopack errors.
+*   **Visual Validation:** Ensure responsive design elements scale appropriately for both desktop and mobile viewports.
+
+## 5. Session Hygiene & Memory
+*   **Carry Forward Context:** Do not expect the AI to remember prior configurations between sessions. Use a structured reference block for active configuration keys (`'homepage'`, `'aboutpage'`, `'memberspage'`, `'general'`, `'events'`, `'library'`).
