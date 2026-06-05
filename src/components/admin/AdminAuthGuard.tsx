@@ -266,9 +266,14 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
   const restrictedEditorPaths = [
     '/admin/cau-hinh',
     '/admin/tai-khoan',
-    '/admin/trang-hoi-vien',
     '/admin/footer',
-    '/admin/trang-dang-ky'
+    '/admin/trang-dang-ky',
+    '/admin/trang-chu',
+    '/admin/trang-gioi-thieu',
+    '/admin/trang-tuy-chinh',
+    '/admin/hoi-vien-tieu-bieu',
+    '/admin/ban-lanh-dao',
+    '/admin/thu-vien'
   ];
 
   const isRestricted = restrictedEditorPaths.some(path => pathname.startsWith(path));

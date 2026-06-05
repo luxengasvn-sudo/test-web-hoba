@@ -70,6 +70,7 @@ const MOCK_LEADERS: LeaderAdmin[] = [
 
 export default function AdminTrangHoiVien() {
   const [activeTab, setActiveTab] = useState<'general' | 'chapters'>('general');
+  const [userRole, setUserRole] = useState<'super_admin' | 'editor'>('super_admin');
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('Cập nhật cấu hình thành công!');
   const [loading, setLoading] = useState(false);
@@ -325,6 +326,19 @@ export default function AdminTrangHoiVien() {
   };
 
   useEffect(() => {
+    // Read session to set user role
+    const sessionStr = localStorage.getItem('hoba_admin_session');
+    if (sessionStr) {
+      try {
+        const session = JSON.parse(sessionStr);
+        if (session && typeof session === 'object' && session.role) {
+          setUserRole(session.role);
+          if (session.role === 'editor') {
+            setActiveTab('chapters');
+          }
+        }
+      } catch (e) {}
+    }
     loadData();
   }, []);
 
@@ -726,8 +740,14 @@ export default function AdminTrangHoiVien() {
       {/* Header Toolbar */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-outline-variant/30 pb-4">
         <div>
-          <h1 className="text-lg md:text-xl font-black text-[#00346f]">Quản lý Trang Hội viên & Chi hội</h1>
-          <p className="text-on-surface-variant mt-1 text-[11px]">Thiết lập các cấu hình hiển thị, chi hội và chức vụ liên kết.</p>
+          <h1 className="text-lg md:text-xl font-black text-[#00346f]">
+            {userRole === 'super_admin' ? 'Quản lý Trang Hội viên & Chi hội' : 'Quản lý danh sách Chi hội'}
+          </h1>
+          <p className="text-on-surface-variant mt-1 text-[11px]">
+            {userRole === 'super_admin' 
+              ? 'Thiết lập các cấu hình hiển thị, chi hội và chức vụ liên kết.' 
+              : 'Thêm, sửa, xóa các chi hội và ban lãnh đạo chi hội trực thuộc.'}
+          </p>
         </div>
         <div className="flex gap-2.5">
           <Link
@@ -738,7 +758,7 @@ export default function AdminTrangHoiVien() {
             <span className="material-symbols-outlined text-sm">visibility</span>
             Xem Website
           </Link>
-          {activeTab === 'general' && (
+          {activeTab === 'general' && userRole === 'super_admin' && (
             <button
               onClick={handleSaveGeneral}
               disabled={loading}
@@ -751,20 +771,22 @@ export default function AdminTrangHoiVien() {
       </div>
 
       {/* Tabs Menu */}
-      <div className="flex border-b border-outline-variant/60">
-        <button
-          onClick={() => setActiveTab('general')}
-          className={`pb-3 px-4 font-bold transition-all border-b-2 ${activeTab === 'general' ? 'text-[#00346f] border-[#00346f]' : 'text-on-surface-variant/80 border-transparent hover:text-[#00346f]'}`}
-        >
-          Cấu hình chung
-        </button>
-        <button
-          onClick={() => setActiveTab('chapters')}
-          className={`pb-3 px-4 font-bold transition-all border-b-2 ${activeTab === 'chapters' ? 'text-[#00346f] border-[#00346f]' : 'text-on-surface-variant/80 border-transparent hover:text-[#00346f]'}`}
-        >
-          Quản lý Chi hội ({chapters.length})
-        </button>
-      </div>
+      {userRole === 'super_admin' && (
+        <div className="flex border-b border-outline-variant/60">
+          <button
+            onClick={() => setActiveTab('general')}
+            className={`pb-3 px-4 font-bold transition-all border-b-2 ${activeTab === 'general' ? 'text-[#00346f] border-[#00346f]' : 'text-on-surface-variant/80 border-transparent hover:text-[#00346f]'}`}
+          >
+            Cấu hình chung
+          </button>
+          <button
+            onClick={() => setActiveTab('chapters')}
+            className={`pb-3 px-4 font-bold transition-all border-b-2 ${activeTab === 'chapters' ? 'text-[#00346f] border-[#00346f]' : 'text-on-surface-variant/80 border-transparent hover:text-[#00346f]'}`}
+          >
+            Quản lý Chi hội ({chapters.length})
+          </button>
+        </div>
+      )}
 
       {/* General Configuration Content */}
       {activeTab === 'general' && (

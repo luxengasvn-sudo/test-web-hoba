@@ -104,25 +104,27 @@ export default function Sidebar() {
     { label: 'Hội viên (Danh sách)', path: '/admin/hoi-vien/', icon: 'group' },
     { label: 'Văn bản pháp lý', path: '/admin/van-ban/', icon: 'description' },
     { label: 'Tin tức & Bài viết', path: '/admin/tin-tuc/', icon: 'newspaper' },
-    { label: 'Trang độc lập', path: '/admin/trang-tuy-chinh/', icon: 'pages' },
     ...(userRole === 'super_admin' ? [
+      { label: 'Trang độc lập', path: '/admin/trang-tuy-chinh/', icon: 'pages' },
       { label: 'Quản lý Tài khoản', path: '/admin/tai-khoan/', icon: 'manage_accounts' },
       { label: 'Cấu hình Website', path: '/admin/cau-hinh/', icon: 'settings' }
     ] : [])
   ];
 
   const contentNav = [
-    { label: 'Quản lý Trang chủ', path: '/admin/trang-chu/', icon: 'view_carousel' },
-    { label: 'Quản lý Giới thiệu', path: '/admin/trang-gioi-thieu/', icon: 'info' },
-    { label: 'Hội viên tiêu biểu', path: '/admin/hoi-vien-tieu-bieu/', icon: 'star' },
-    { label: 'Ban lãnh đạo Hiệp hội', path: '/admin/ban-lanh-dao/', icon: 'diversity_3' },
     ...(userRole === 'super_admin' ? [
+      { label: 'Quản lý Trang chủ', path: '/admin/trang-chu/', icon: 'view_carousel' },
+      { label: 'Quản lý Giới thiệu', path: '/admin/trang-gioi-thieu/', icon: 'info' },
+      { label: 'Hội viên tiêu biểu', path: '/admin/hoi-vien-tieu-bieu/', icon: 'star' },
+      { label: 'Ban lãnh đạo Hiệp hội', path: '/admin/ban-lanh-dao/', icon: 'diversity_3' },
       { label: 'Thiết kế Trang Hội viên', path: '/admin/trang-hoi-vien/', icon: 'person_search' },
       { label: 'Quản lý Đăng ký', path: '/admin/trang-dang-ky/', icon: 'app_registration' }
-    ] : []),
+    ] : [
+      { label: 'Quản lý Chi hội', path: '/admin/trang-hoi-vien/', icon: 'hub' }
+    ]),
     { label: 'Quản lý Sự kiện', path: '/admin/su-kien/', icon: 'event' },
-    { label: 'Quản lý Thư viện', path: '/admin/thu-vien/', icon: 'photo_library' },
     ...(userRole === 'super_admin' ? [
+      { label: 'Quản lý Thư viện', path: '/admin/thu-vien/', icon: 'photo_library' },
       { label: 'Quản lý Footer', path: '/admin/footer/', icon: 'bottom_navigation' }
     ] : []),
     { label: 'Quản lý Liên hệ', path: '/admin/lien-he/', icon: 'contact_mail' },
