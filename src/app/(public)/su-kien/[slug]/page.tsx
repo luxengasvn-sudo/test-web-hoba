@@ -33,11 +33,12 @@ export async function generateStaticParams() {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-export default function EventSlugPage({ params }: PageProps) {
-  return <EventsPage preSelectedSlug={params.slug} />;
+export default async function EventSlugPage({ params }: PageProps) {
+  const { slug } = await params;
+  return <EventsPage preSelectedSlug={slug} />;
 }

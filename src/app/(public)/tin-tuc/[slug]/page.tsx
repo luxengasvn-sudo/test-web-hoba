@@ -55,11 +55,12 @@ export async function generateStaticParams() {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-export default function NewsSlugPage({ params }: PageProps) {
-  return <NewsDetailPage slug={params.slug} />;
+export default async function NewsSlugPage({ params }: PageProps) {
+  const { slug } = await params;
+  return <NewsDetailPage slug={slug} />;
 }
