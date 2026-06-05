@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import { toSlug } from '@/lib/slug';
 
 interface EventItem {
   id: string;
@@ -15,9 +16,10 @@ interface EventItem {
   description?: string;
   content?: string;
   image_url?: string;
+  slug?: string;
 }
 
-export default function EventsPage() {
+export default function EventsPage({ preSelectedSlug }: { preSelectedSlug?: string }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTab, setSelectedTab] = useState<'all' | 'upcoming' | 'past'>('all');
   const [events, setEvents] = useState<EventItem[]>([]);
@@ -130,12 +132,13 @@ export default function EventsPage() {
       setEvents(loadedEvents);
       setLoading(false);
 
-      // Deep link to open event modal if id query parameter exists
+      // Deep link to open event modal if id/slug query parameter or prop exists
       try {
         const params = new URLSearchParams(window.location.search);
         const eventId = params.get('id');
-        if (eventId) {
-          const match = loadedEvents.find(e => e.id === eventId);
+        const eventSlug = preSelectedSlug || params.get('slug');
+        if (eventId || eventSlug) {
+          const match = loadedEvents.find(e => eventId ? e.id === eventId : (e.slug === eventSlug || toSlug(e.title) === eventSlug));
           if (match) {
             setSelectedEvent(match);
             setIsRegisterActive(params.get('register') === 'true');
@@ -143,11 +146,11 @@ export default function EventsPage() {
           }
         }
       } catch (e) {
-        console.error('Error handling event query parameter link:', e);
+        console.error('Error handling event link:', e);
       }
     }
     loadEvents();
-  }, []);
+  }, [preSelectedSlug]);
 
   const filteredEvents = useMemo(() => {
     return events.filter((evt) => {
@@ -173,6 +176,22 @@ export default function EventsPage() {
     setCompanyName('');
     setEmail('');
     setPhone('');
+
+    // Update browser URL to match clean URL
+    try {
+      if (event.slug) {
+        window.history.pushState({}, '', `/su-kien/${event.slug}`);
+      } else {
+        window.history.pushState({}, '', `/su-kien?id=${event.id}`);
+      }
+    } catch (_) {}
+  };
+
+  const handleCloseModal = () => {
+    setIsDetailModalOpen(false);
+    try {
+      window.history.pushState({}, '', '/su-kien');
+    } catch (_) {}
   };
 
   const handleRegisterSubmit = async (e: React.FormEvent) => {
@@ -367,7 +386,7 @@ export default function EventsPage() {
           {/* Overlay */}
           <div
             className="fixed inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={() => setIsDetailModalOpen(false)}
+            onClick={handleCloseModal}
           />
           
           {/* Modal Box */}
@@ -381,7 +400,7 @@ export default function EventsPage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
               <button
-                onClick={() => setIsDetailModalOpen(false)}
+                onClick={handleCloseModal}
                 className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black transition-colors border border-white/20"
               >
                 <span className="material-symbols-outlined text-lg">close</span>
@@ -490,7 +509,7 @@ export default function EventsPage() {
                         Cảm ơn bạn đã đăng ký tham gia sự kiện. Ban thư ký HOBA sẽ gửi email thông báo kèm tài liệu hội thảo và mã số check-in sớm nhất có thể.
                       </p>
                       <button
-                        onClick={() => setIsDetailModalOpen(false)}
+                        onClick={handleCloseModal}
                         className="px-6 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-secondary transition-all"
                       >
                         Hoàn tất

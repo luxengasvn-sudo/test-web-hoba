@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { toSlug } from '@/lib/slug';
 
 interface NewsItem {
   id: string;
@@ -14,6 +15,7 @@ interface NewsItem {
   date: string;
   img: string;
   isFeatured?: boolean;
+  slug?: string;
 }
 
 interface SidebarDoc {
@@ -101,7 +103,7 @@ const defaultNews: NewsItem[] = [
   }
 ];
 
-function NewsDetailPage({ id }: { id: string }) {
+export function NewsDetailPage({ id, slug }: { id?: string; slug?: string }) {
   const router = useRouter();
   const [article, setArticle] = useState<NewsItem | null>(null);
   const [recentNews, setRecentNews] = useState<NewsItem[]>([]);
@@ -110,10 +112,19 @@ function NewsDetailPage({ id }: { id: string }) {
   useEffect(() => {
     async function loadArticle() {
       setLoading(true);
+      const queryField = id ? 'id' : 'slug';
+      const queryValue = id || slug;
+
+      if (!queryValue) {
+        setArticle(null);
+        setLoading(false);
+        return;
+      }
+
       if (!supabase) {
-        const found = defaultNews.find(n => n.id === id);
+        const found = defaultNews.find(n => id ? n.id === id : (n.slug === slug || toSlug(n.title) === slug));
         setArticle(found || null);
-        setRecentNews(defaultNews.filter(n => n.id !== id));
+        setRecentNews(defaultNews.filter(n => id ? n.id !== id : (n.slug !== slug && toSlug(n.title) !== slug)));
         setLoading(false);
         return;
       }
@@ -122,12 +133,14 @@ function NewsDetailPage({ id }: { id: string }) {
         const { data, error } = await supabase
           .from('news')
           .select('*')
-          .eq('id', id)
+          .eq(queryField, queryValue)
           .single();
 
         if (error) throw error;
 
+        let currentId = id;
         if (data) {
+          currentId = data.id;
           let formattedDate = data.publish_date;
           try {
             const dt = new Date(data.publish_date);
@@ -137,6 +150,7 @@ function NewsDetailPage({ id }: { id: string }) {
           setArticle({
             id: data.id,
             title: data.title,
+            slug: data.slug,
             desc: data.description || '',
             content: data.content || '',
             category: data.category as any,
@@ -147,9 +161,9 @@ function NewsDetailPage({ id }: { id: string }) {
 
         const { data: recent, error: recentErr } = await supabase
           .from('news')
-          .select('id, title, description, category, publish_date, thumbnail_url')
+          .select('id, title, slug, description, category, publish_date, thumbnail_url')
           .eq('status', 'Published')
-          .neq('id', id)
+          .neq('id', currentId || '')
           .order('publish_date', { ascending: false })
           .limit(3);
 
@@ -163,6 +177,7 @@ function NewsDetailPage({ id }: { id: string }) {
             return {
               id: r.id,
               title: r.title,
+              slug: r.slug,
               desc: r.description || '',
               category: r.category as any,
               date: formattedDate,
@@ -173,18 +188,16 @@ function NewsDetailPage({ id }: { id: string }) {
         }
       } catch (err) {
         console.error('Lỗi khi tải bài viết từ Supabase, chuyển sang fallback:', err);
-        const found = defaultNews.find(n => n.id === id);
+        const found = defaultNews.find(n => id ? n.id === id : (n.slug === slug || toSlug(n.title) === slug));
         setArticle(found || null);
-        setRecentNews(defaultNews.filter(n => n.id !== id));
+        setRecentNews(defaultNews.filter(n => id ? n.id !== id : (n.slug !== slug && toSlug(n.title) !== slug)));
       } finally {
         setLoading(false);
       }
     }
 
-    if (id) {
-      loadArticle();
-    }
-  }, [id]);
+    loadArticle();
+  }, [id, slug]);
 
   if (loading) {
     return (
@@ -295,7 +308,7 @@ function NewsDetailPage({ id }: { id: string }) {
                     {recentNews.map((item) => (
                       <Link
                         key={item.id}
-                        href={`/tin-tuc?id=${item.id}`}
+                        href={item.slug ? `/tin-tuc/${item.slug}` : `/tin-tuc?id=${item.id}`}
                         className="group flex gap-3 cursor-pointer"
                       >
                         <div className="w-20 h-16 rounded overflow-hidden flex-shrink-0 bg-surface-container-low shadow-sm">
@@ -382,6 +395,7 @@ function NewsListPage() {
             return {
               id: d.id,
               title: d.title,
+              slug: d.slug,
               desc: d.description || '',
               category: d.category as any,
               date: formattedDate,
@@ -501,7 +515,7 @@ function NewsListPage() {
                       <span className="inline-block px-2 py-0.5 bg-primary/10 text-primary text-[9px] font-bold rounded uppercase">
                         {featuredArticle.category}
                       </span>
-                      <Link href={`/tin-tuc?id=${featuredArticle.id}`}>
+                      <Link href={featuredArticle.slug ? `/tin-tuc/${featuredArticle.slug}` : `/tin-tuc?id=${featuredArticle.id}`}>
                         <h3 className="text-lg font-bold text-primary group-hover:text-secondary transition-colors line-clamp-3 cursor-pointer">
                           {featuredArticle.title}
                         </h3>
@@ -509,7 +523,7 @@ function NewsListPage() {
                       <p className="text-xs text-on-surface-variant line-clamp-3 leading-relaxed">
                         {featuredArticle.desc}
                       </p>
-                      <Link href={`/tin-tuc?id=${featuredArticle.id}`} className="text-primary font-bold text-xs inline-flex items-center gap-1.5 group-hover:gap-3 transition-all cursor-pointer">
+                      <Link href={featuredArticle.slug ? `/tin-tuc/${featuredArticle.slug}` : `/tin-tuc?id=${featuredArticle.id}`} className="text-primary font-bold text-xs inline-flex items-center gap-1.5 group-hover:gap-3 transition-all cursor-pointer">
                         Đọc tiếp <span className="material-symbols-outlined text-base">trending_flat</span>
                       </Link>
                     </div>
@@ -520,7 +534,7 @@ function NewsListPage() {
                   {regularArticles.length > 0 ? (
                     regularArticles.map((article, idx) => (
                       <article key={idx} className="group space-y-3 bg-white p-4 rounded-2xl border border-outline-variant/30 hover:shadow-md transition-shadow">
-                        <Link href={`/tin-tuc?id=${article.id}`}>
+                        <Link href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
                           <div className="rounded-xl overflow-hidden aspect-video shadow-sm cursor-pointer">
                             <img
                               alt={article.title}
@@ -535,13 +549,13 @@ function NewsListPage() {
                         <span className="inline-block px-2 py-0.5 bg-primary/10 text-primary text-[8px] font-bold rounded uppercase">
                           {article.category}
                         </span>
-                        <Link href={`/tin-tuc?id=${article.id}`}>
+                        <Link href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
                           <h4 className="text-sm font-bold text-primary group-hover:text-secondary transition-colors line-clamp-2 leading-snug cursor-pointer">
                             {article.title}
                           </h4>
                         </Link>
                         <p className="text-xs text-on-surface-variant line-clamp-2 leading-relaxed">{article.desc}</p>
-                        <Link href={`/tin-tuc?id=${article.id}`} className="text-primary font-bold text-xs flex items-center gap-1.5 hover:gap-2.5 transition-all cursor-pointer">
+                        <Link href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`} className="text-primary font-bold text-xs flex items-center gap-1.5 hover:gap-2.5 transition-all cursor-pointer">
                           Xem tin <span className="material-symbols-outlined text-base">arrow_right_alt</span>
                         </Link>
                       </article>
@@ -598,9 +612,13 @@ function NewsListPage() {
 function NewsPageSwitch() {
   const searchParams = useSearchParams();
   const articleId = searchParams.get('id');
+  const articleSlug = searchParams.get('slug');
 
   if (articleId) {
     return <NewsDetailPage id={articleId} />;
+  }
+  if (articleSlug) {
+    return <NewsDetailPage slug={articleSlug} />;
   }
 
   return <NewsListPage />;

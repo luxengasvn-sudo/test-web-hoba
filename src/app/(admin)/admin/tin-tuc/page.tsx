@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import RichEditor from '@/components/admin/RichEditor';
+import { toSlug, getUniqueNewsSlug } from '@/lib/slug';
 
 interface NewsAdmin {
   id: string;
@@ -14,6 +15,7 @@ interface NewsAdmin {
   content?: string;
   thumbnail_url?: string;
   is_featured?: boolean;
+  slug?: string;
 }
 
 export default function AdminNews() {
@@ -33,6 +35,8 @@ export default function AdminNews() {
   const [formContent, setFormContent] = useState('');
   const [formThumbnail, setFormThumbnail] = useState('https://lh3.googleusercontent.com/aida-public/AB6AXuBkw8wvVWBfbwPAeTKo8PMx2ultvC2Z07ci7u1EwmQRYIQdG3HLOkRvCkxHVZOCjaMCsm0lBKJLhIvMnScV5kwaPGcvpaRn8DHx8DnKPT3bUjoaRUfnOBf1zjyc1KSikF9jdjDb0Cm4ygtWq0lQDyOHPhX0g_XTxUg6i1Gzup--EfAS-Bpffvf-nmOq1kdYy65xI3RVbwcmX-Qu2RynlZO6GizLjYQNwZWcs4vyR-ZcfhJQh_08c1-vttg7HGLtmD77bj7i32XzqE4');
   const [formFeatured, setFormFeatured] = useState(false);
+  const [formSlug, setFormSlug] = useState('');
+  const [isSlugAuto, setIsSlugAuto] = useState(true);
 
   const defaultNews: NewsAdmin[] = [
     {
@@ -103,7 +107,8 @@ export default function AdminNews() {
           description: d.description,
           content: d.content,
           thumbnail_url: d.thumbnail_url,
-          is_featured: d.is_featured
+          is_featured: d.is_featured,
+          slug: d.slug
         }));
         setNews(formatted);
       } else {
@@ -209,6 +214,8 @@ export default function AdminNews() {
   const handleEdit = (item: NewsAdmin) => {
     setEditingNewsId(item.id);
     setFormTitle(item.title);
+    setFormSlug(item.slug || '');
+    setIsSlugAuto(!item.slug);
     setFormCategory(item.category);
     setFormStatus(item.status);
     setFormDesc(item.description || '');
@@ -228,45 +235,50 @@ export default function AdminNews() {
     setSubmitting(true);
     const publishDate = new Date().toISOString().split('T')[0];
 
-    if (!supabase) {
-      // Mock insert or update
-      if (editingNewsId) {
-        setNews(prev => prev.map(n => n.id === editingNewsId ? {
-          ...n,
-          title: formTitle,
-          category: formCategory,
-          status: formStatus,
-          description: formDesc,
-          content: formContent,
-          thumbnail_url: formThumbnail,
-          is_featured: formFeatured
-        } : n));
-      } else {
-        const newArt: NewsAdmin = {
-          id: String(Date.now()),
-          title: formTitle,
-          category: formCategory,
-          status: formStatus,
-          date: publishDate,
-          description: formDesc,
-          content: formContent,
-          thumbnail_url: formThumbnail,
-          is_featured: formFeatured
-        };
-        setNews(prev => [newArt, ...prev]);
-      }
-      resetForm();
-      setIsModalOpen(false);
-      setSubmitting(false);
-      return;
-    }
-
     try {
+      const uniqueSlug = await getUniqueNewsSlug(formTitle, formSlug, editingNewsId);
+
+      if (!supabase) {
+        // Mock insert or update
+        if (editingNewsId) {
+          setNews(prev => prev.map(n => n.id === editingNewsId ? {
+            ...n,
+            title: formTitle,
+            slug: uniqueSlug,
+            category: formCategory,
+            status: formStatus,
+            description: formDesc,
+            content: formContent,
+            thumbnail_url: formThumbnail,
+            is_featured: formFeatured
+          } : n));
+        } else {
+          const newArt: NewsAdmin = {
+            id: String(Date.now()),
+            title: formTitle,
+            slug: uniqueSlug,
+            category: formCategory,
+            status: formStatus,
+            date: publishDate,
+            description: formDesc,
+            content: formContent,
+            thumbnail_url: formThumbnail,
+            is_featured: formFeatured
+          };
+          setNews(prev => [newArt, ...prev]);
+        }
+        resetForm();
+        setIsModalOpen(false);
+        setSubmitting(false);
+        return;
+      }
+
       if (editingNewsId) {
         const { error } = await supabase
           .from('news')
           .update({
             title: formTitle,
+            slug: uniqueSlug,
             description: formDesc,
             content: formContent,
             category: formCategory,
@@ -281,6 +293,7 @@ export default function AdminNews() {
         const { error } = await supabase.from('news').insert([
           {
             title: formTitle,
+            slug: uniqueSlug,
             description: formDesc,
             content: formContent,
             category: formCategory,
@@ -297,7 +310,7 @@ export default function AdminNews() {
       resetForm();
       setIsModalOpen(false);
     } catch (err) {
-      alert('Lỗi khi lưu bài viết lên Supabase: ' + (err as Error).message);
+      alert('Lỗi khi lưu bài viết: ' + (err as Error).message);
     } finally {
       setSubmitting(false);
     }
@@ -306,6 +319,8 @@ export default function AdminNews() {
   const resetForm = () => {
     setEditingNewsId(null);
     setFormTitle('');
+    setFormSlug('');
+    setIsSlugAuto(true);
     setFormCategory('Hoạt động hiệp hội');
     setFormStatus('Draft');
     setFormDesc('');
@@ -459,9 +474,42 @@ export default function AdminNews() {
                 <label className="font-bold text-on-surface-variant">Tiêu đề bài viết *</label>
                 <input
                   value={formTitle}
-                  onChange={(e) => setFormTitle(e.target.value)}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setFormTitle(val);
+                    if (isSlugAuto) {
+                      setFormSlug(toSlug(val));
+                    }
+                  }}
                   className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                   placeholder="Nhập tiêu đề tin tức..."
+                  required
+                  type="text"
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="font-bold text-on-surface-variant flex items-center justify-between">
+                  <span>Đường dẫn thân thiện (Slug) *</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormSlug(toSlug(formTitle));
+                      setIsSlugAuto(true);
+                    }}
+                    className="text-[10px] text-primary hover:underline"
+                  >
+                    Tự động tạo từ tiêu đề
+                  </button>
+                </label>
+                <input
+                  value={formSlug}
+                  onChange={(e) => {
+                    setFormSlug(e.target.value);
+                    setIsSlugAuto(false);
+                  }}
+                  className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                  placeholder="vi-du: duong-dan-than-thien"
                   required
                   type="text"
                 />

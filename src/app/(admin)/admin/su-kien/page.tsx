@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import RichEditor from '@/components/admin/RichEditor';
+import { toSlug, getUniqueEventSlug } from '@/lib/slug';
 
 interface EventAdmin {
   id: string;
@@ -16,6 +17,7 @@ interface EventAdmin {
   description?: string;
   content?: string;
   image_url?: string;
+  slug?: string;
 }
 
 export default function AdminEvents() {
@@ -37,6 +39,8 @@ export default function AdminEvents() {
   const [formContent, setFormContent] = useState('');
   const [formImageUrl, setFormImageUrl] = useState('https://images.unsplash.com/photo-1540575467063-178a50c2df87');
   const [imageUploading, setImageUploading] = useState(false);
+  const [formSlug, setFormSlug] = useState('');
+  const [isSlugAuto, setIsSlugAuto] = useState(true);
 
   const defaultEvents: EventAdmin[] = [
     { id: '1', day: '20', month: 'Tháng 6', title: 'An toàn trong kinh doanh LPG', time: '08:00', location: 'Online Zoom', isUpcoming: true, description: 'Tập huấn kỹ thuật an toàn phòng chống cháy nổ tại các trạm chiết nạp gas.', image_url: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87' },
@@ -112,6 +116,8 @@ export default function AdminEvents() {
   const handleOpenAddModal = () => {
     setEditingEventId(null);
     setFormTitle('');
+    setFormSlug('');
+    setIsSlugAuto(true);
     setFormDay('20');
     setFormMonth('Tháng 6');
     setFormTime('08:00 - 12:00');
@@ -126,6 +132,8 @@ export default function AdminEvents() {
   const handleOpenEditModal = (e: EventAdmin) => {
     setEditingEventId(e.id);
     setFormTitle(e.title);
+    setFormSlug(e.slug || '');
+    setIsSlugAuto(!e.slug);
     setFormDay(e.day);
     setFormMonth(e.month);
     setFormTime(e.time);
@@ -193,6 +201,7 @@ export default function AdminEvents() {
       return;
     }
 
+    const uniqueSlug = getUniqueEventSlug(formTitle, formSlug, events, editingEventId);
     const updated = [...events];
     if (editingEventId) {
       const idx = updated.findIndex(item => item.id === editingEventId);
@@ -200,6 +209,7 @@ export default function AdminEvents() {
         updated[idx] = {
           id: editingEventId,
           title: formTitle,
+          slug: uniqueSlug,
           day: formDay,
           month: formMonth,
           time: formTime,
@@ -214,6 +224,7 @@ export default function AdminEvents() {
       updated.push({
         id: String(Date.now()),
         title: formTitle,
+        slug: uniqueSlug,
         day: formDay,
         month: formMonth,
         time: formTime,
@@ -345,7 +356,41 @@ export default function AdminEvents() {
                     placeholder="VD: Tập huấn Kỹ thuật an toàn chiết nạp gas 2026..."
                     type="text"
                     value={formTitle}
-                    onChange={(e) => setFormTitle(e.target.value)}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setFormTitle(val);
+                      if (isSlugAuto) {
+                        setFormSlug(toSlug(val));
+                      }
+                    }}
+                  />
+                </div>
+
+                {/* Slug */}
+                <div className="space-y-1 md:col-span-2">
+                  <label className="font-bold text-on-surface-variant flex items-center justify-between">
+                    <span>Đường dẫn thân thiện (Slug) *</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFormSlug(toSlug(formTitle));
+                        setIsSlugAuto(true);
+                      }}
+                      className="text-[10px] text-primary hover:underline font-bold"
+                    >
+                      Tự động tạo từ tiêu đề
+                    </button>
+                  </label>
+                  <input
+                    required
+                    className="w-full h-10 px-3 rounded border border-outline-variant/50 focus:border-primary outline-none"
+                    placeholder="VD: tap-huan-ky-thuat-an-toan-2026"
+                    type="text"
+                    value={formSlug}
+                    onChange={(e) => {
+                      setFormSlug(e.target.value);
+                      setIsSlugAuto(false);
+                    }}
                   />
                 </div>
 
