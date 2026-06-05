@@ -198,17 +198,47 @@ export default function Header() {
                     </button>
                     {/* Dropdown panel */}
                     <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-52 bg-[#00244f] border border-white/10 rounded-lg shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                      {item.children?.map((subItem) => (
-                        <Link
-                          key={subItem.path}
-                          href={subItem.path}
-                          className="block px-4 py-2.5 text-xs font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-colors"
-                        >
-                          {subItem.label}
-                        </Link>
-                      ))}
+                      {item.children?.map((subItem) => {
+                        const isBypass = subItem.path.startsWith('/tin-tuc') || subItem.path.startsWith('/su-kien');
+                        if (isBypass) {
+                          return (
+                            <a
+                              key={subItem.path}
+                              href={subItem.path}
+                              className="block px-4 py-2.5 text-xs font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                            >
+                              {subItem.label}
+                            </a>
+                          );
+                        }
+                        return (
+                          <Link
+                            key={subItem.path}
+                            href={subItem.path}
+                            className="block px-4 py-2.5 text-xs font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                          >
+                            {subItem.label}
+                          </Link>
+                        );
+                      })}
                     </div>
                   </div>
+                );
+              }
+              const isBypass = item.path.startsWith('/tin-tuc') || item.path.startsWith('/su-kien');
+              if (isBypass) {
+                return (
+                  <a
+                    key={item.path}
+                    href={item.path}
+                    className={`transition-colors font-semibold text-xs uppercase tracking-wide py-1 border-b-2 hover:text-secondary-fixed-dim ${
+                      isActive(item.path)
+                        ? 'border-secondary-container text-white'
+                        : 'border-transparent text-white/80'
+                    }`}
+                  >
+                    {item.label}
+                  </a>
                 );
               }
               return (
@@ -312,23 +342,60 @@ export default function Header() {
                       </button>
                       {isExpanded && (
                         <div className="pl-4 flex flex-col gap-2.5 mt-1.5 border-l border-white/10 ml-3.5">
-                          {item.children?.map((subItem) => (
-                            <Link
-                              key={subItem.path}
-                              href={subItem.path}
-                              onClick={() => setIsMobileMenuOpen(false)}
-                              className={`text-sm font-medium py-2 px-3 rounded-md transition-colors ${
-                                isActive(subItem.path)
-                                  ? 'bg-secondary text-white font-bold'
-                                  : 'hover:bg-white/5 text-white/70'
-                              }`}
-                            >
-                              {subItem.label}
-                            </Link>
-                          ))}
+                          {item.children?.map((subItem) => {
+                            const isBypass = subItem.path.startsWith('/tin-tuc') || subItem.path.startsWith('/su-kien');
+                            if (isBypass) {
+                              return (
+                                <a
+                                  key={subItem.path}
+                                  href={subItem.path}
+                                  onClick={() => setIsMobileMenuOpen(false)}
+                                  className={`text-sm font-medium py-2 px-3 rounded-md transition-colors ${
+                                    isActive(subItem.path)
+                                      ? 'bg-secondary text-white font-bold'
+                                      : 'hover:bg-white/5 text-white/70'
+                                  }`}
+                                >
+                                  {subItem.label}
+                                </a>
+                              );
+                            }
+                            return (
+                              <Link
+                                key={subItem.path}
+                                href={subItem.path}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className={`text-sm font-medium py-2 px-3 rounded-md transition-colors ${
+                                  isActive(subItem.path)
+                                    ? 'bg-secondary text-white font-bold'
+                                    : 'hover:bg-white/5 text-white/70'
+                                }`}
+                              >
+                                {subItem.label}
+                              </Link>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
+                  );
+                }
+
+                const isBypass = item.path.startsWith('/tin-tuc') || item.path.startsWith('/su-kien');
+                if (isBypass) {
+                  return (
+                    <a
+                      key={item.path}
+                      href={item.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`text-base font-medium py-2.5 px-3 rounded-lg transition-colors ${
+                        isActive(item.path)
+                          ? 'bg-secondary text-white font-bold'
+                          : 'hover:bg-white/10 text-white/80'
+                      }`}
+                    >
+                      {item.label}
+                    </a>
                   );
                 }
 

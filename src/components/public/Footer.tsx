@@ -203,16 +203,28 @@ export default function Footer() {
               Liên kết nhanh
             </h4>
             <ul className="space-y-3">
-              {quickLinks.map((link, idx) => (
-                <li key={idx}>
-                  <Link
-                    href={link.path}
-                    className="text-xs opacity-75 hover:opacity-100 hover:text-secondary-fixed-dim transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              {quickLinks.map((link, idx) => {
+                const isBypass = link.path.startsWith('/tin-tuc') || link.path.startsWith('/su-kien');
+                return (
+                  <li key={idx}>
+                    {isBypass ? (
+                      <a
+                        href={link.path}
+                        className="text-xs opacity-75 hover:opacity-100 hover:text-secondary-fixed-dim transition-colors"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.path}
+                        className="text-xs opacity-75 hover:opacity-100 hover:text-secondary-fixed-dim transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -222,16 +234,28 @@ export default function Footer() {
               Chuyên mục
             </h4>
             <ul className="space-y-3">
-              {categories.map((cat, idx) => (
-                <li key={idx}>
-                  <Link
-                    href={cat.path}
-                    className="text-xs opacity-75 hover:opacity-100 hover:text-secondary-fixed-dim transition-colors"
-                  >
-                    {cat.label}
-                  </Link>
-                </li>
-              ))}
+              {categories.map((cat, idx) => {
+                const isBypass = cat.path.startsWith('/tin-tuc') || cat.path.startsWith('/su-kien');
+                return (
+                  <li key={idx}>
+                    {isBypass ? (
+                      <a
+                        href={cat.path}
+                        className="text-xs opacity-75 hover:opacity-100 hover:text-secondary-fixed-dim transition-colors"
+                      >
+                        {cat.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={cat.path}
+                        className="text-xs opacity-75 hover:opacity-100 hover:text-secondary-fixed-dim transition-colors"
+                      >
+                        {cat.label}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 

@@ -323,7 +323,7 @@ export function NewsDetailPage({ id, slug }: { id?: string; slug?: string }) {
               Thử lại
             </button>
             <button
-              onClick={() => router.push('/tin-tuc')}
+              onClick={() => window.location.href = '/tin-tuc'}
               className="w-full py-3 border-2 border-primary text-primary font-bold text-xs rounded-lg hover:bg-primary/5 transition-all"
             >
               Quay lại trang Tin tức
@@ -344,7 +344,7 @@ export function NewsDetailPage({ id, slug }: { id?: string; slug?: string }) {
             Tin tức bạn đang tìm kiếm không tồn tại hoặc đã bị gỡ khỏi hệ thống.
           </p>
           <button
-            onClick={() => router.push('/tin-tuc')}
+            onClick={() => window.location.href = '/tin-tuc'}
             className="w-full py-3 bg-primary text-white font-bold text-xs rounded-lg hover:bg-primary-container transition-all"
           >
             Quay lại trang Tin tức
@@ -363,7 +363,7 @@ export function NewsDetailPage({ id, slug }: { id?: string; slug?: string }) {
           <div className="flex items-center gap-2 text-xs mb-6 text-on-surface-variant font-medium">
             <Link href="/" className="hover:text-primary transition-colors">Trang chủ</Link>
             <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-            <Link href="/tin-tuc" className="hover:text-primary transition-colors">Tin tức</Link>
+            <a href="/tin-tuc" className="hover:text-primary transition-colors">Tin tức</a>
             <span className="material-symbols-outlined text-[14px]">chevron_right</span>
             <span className="text-outline line-clamp-1 max-w-[200px] md:max-w-xs">{article.title}</span>
           </div>
@@ -405,7 +405,7 @@ export function NewsDetailPage({ id, slug }: { id?: string; slug?: string }) {
 
               <div className="flex flex-wrap justify-between items-center gap-4 pt-6 border-t border-outline-variant/20">
                 <button
-                  onClick={() => router.push('/tin-tuc')}
+                  onClick={() => window.location.href = '/tin-tuc'}
                   className="px-6 py-2.5 rounded-lg border-2 border-primary text-primary hover:bg-primary/5 font-bold text-xs flex items-center gap-2 transition-all active:scale-95"
                 >
                   <span className="material-symbols-outlined text-base">arrow_back</span>
@@ -430,7 +430,7 @@ export function NewsDetailPage({ id, slug }: { id?: string; slug?: string }) {
                   </h3>
                   <div className="space-y-6">
                     {recentNews.map((item) => (
-                      <Link
+                      <a
                         key={item.id}
                         href={item.slug ? `/tin-tuc/${item.slug}` : `/tin-tuc?id=${item.id}`}
                         className="group flex gap-3 cursor-pointer"
@@ -450,7 +450,7 @@ export function NewsDetailPage({ id, slug }: { id?: string; slug?: string }) {
                             {item.date}
                           </span>
                         </div>
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -690,17 +690,17 @@ function NewsListPage() {
                       <span className="inline-block px-2 py-0.5 bg-primary/10 text-primary text-[9px] font-bold rounded uppercase">
                         {featuredArticle.category}
                       </span>
-                      <Link href={featuredArticle.slug ? `/tin-tuc/${featuredArticle.slug}` : `/tin-tuc?id=${featuredArticle.id}`}>
+                      <a href={featuredArticle.slug ? `/tin-tuc/${featuredArticle.slug}` : `/tin-tuc?id=${featuredArticle.id}`}>
                         <h3 className="text-lg font-bold text-primary group-hover:text-secondary transition-colors line-clamp-3 cursor-pointer">
                           {featuredArticle.title}
                         </h3>
-                      </Link>
+                      </a>
                       <p className="text-xs text-on-surface-variant line-clamp-3 leading-relaxed">
                         {featuredArticle.desc}
                       </p>
-                      <Link href={featuredArticle.slug ? `/tin-tuc/${featuredArticle.slug}` : `/tin-tuc?id=${featuredArticle.id}`} className="text-primary font-bold text-xs inline-flex items-center gap-1.5 group-hover:gap-3 transition-all cursor-pointer">
+                      <a href={featuredArticle.slug ? `/tin-tuc/${featuredArticle.slug}` : `/tin-tuc?id=${featuredArticle.id}`} className="text-primary font-bold text-xs inline-flex items-center gap-1.5 group-hover:gap-3 transition-all cursor-pointer">
                         Đọc tiếp <span className="material-symbols-outlined text-base">trending_flat</span>
-                      </Link>
+                      </a>
                     </div>
                   </article>
                 )}
@@ -709,7 +709,7 @@ function NewsListPage() {
                   {regularArticles.length > 0 ? (
                     regularArticles.map((article, idx) => (
                       <article key={idx} className="group space-y-3 bg-white p-4 rounded-2xl border border-outline-variant/30 hover:shadow-md transition-shadow">
-                        <Link href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
+                        <a href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
                           <div className="rounded-xl overflow-hidden aspect-video shadow-sm cursor-pointer">
                             <img
                               alt={article.title}
@@ -717,22 +717,22 @@ function NewsListPage() {
                               src={article.img}
                             />
                           </div>
-                        </Link>
+                        </a>
                         <div className="flex items-center gap-2 text-on-surface-variant text-[10px] font-bold uppercase">
                           <span className="material-symbols-outlined text-sm">calendar_month</span> {article.date}
                         </div>
                         <span className="inline-block px-2 py-0.5 bg-primary/10 text-primary text-[8px] font-bold rounded uppercase">
                           {article.category}
                         </span>
-                        <Link href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
+                        <a href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
                           <h4 className="text-sm font-bold text-primary group-hover:text-secondary transition-colors line-clamp-2 leading-snug cursor-pointer">
                              {article.title}
                           </h4>
-                        </Link>
+                        </a>
                         <p className="text-xs text-on-surface-variant line-clamp-2 leading-relaxed">{article.desc}</p>
-                        <Link href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`} className="text-primary font-bold text-xs flex items-center gap-1.5 hover:gap-2.5 transition-all cursor-pointer">
+                        <a href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`} className="text-primary font-bold text-xs flex items-center gap-1.5 hover:gap-2.5 transition-all cursor-pointer">
                           Xem tin <span className="material-symbols-outlined text-base">arrow_right_alt</span>
-                        </Link>
+                        </a>
                       </article>
                     ))
                   ) : filteredNews.length === 0 ? (

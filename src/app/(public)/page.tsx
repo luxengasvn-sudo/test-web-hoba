@@ -646,7 +646,7 @@ export default function HomePage() {
             <div className="lg:col-span-8 space-y-8">
               {liveArticles[0] && (
                 <article className="group grid md:grid-cols-2 gap-6 items-center bg-white rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-500">
-                  <Link href={liveArticles[0].slug ? `/tin-tuc/${liveArticles[0].slug}` : `/tin-tuc?id=${liveArticles[0].id}`} className="relative h-full min-h-[220px] md:min-h-[260px] overflow-hidden cursor-pointer">
+                  <a href={liveArticles[0].slug ? `/tin-tuc/${liveArticles[0].slug}` : `/tin-tuc?id=${liveArticles[0].id}`} className="relative h-full min-h-[220px] md:min-h-[260px] overflow-hidden cursor-pointer">
                     <img
                       alt={liveArticles[0].title}
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
@@ -657,30 +657,30 @@ export default function HomePage() {
                         {liveArticles[0].badge}
                       </div>
                     )}
-                  </Link>
+                  </a>
                   <div className="p-4 space-y-4">
                     <span className="text-[10px] font-bold uppercase text-secondary tracking-widest">{liveArticles[0].date}</span>
-                    <Link href={liveArticles[0].slug ? `/tin-tuc/${liveArticles[0].slug}` : `/tin-tuc?id=${liveArticles[0].id}`}>
+                    <a href={liveArticles[0].slug ? `/tin-tuc/${liveArticles[0].slug}` : `/tin-tuc?id=${liveArticles[0].id}`}>
                       <h3 className="text-lg font-black text-primary hover:text-secondary transition-colors leading-tight line-clamp-2 cursor-pointer mt-1">
                         {liveArticles[0].title}
                       </h3>
-                    </Link>
+                    </a>
                     <p className="text-xs text-on-surface-variant leading-relaxed line-clamp-3">
                       {liveArticles[0].desc}
                     </p>
-                    <Link
+                    <a
                       href={liveArticles[0].slug ? `/tin-tuc/${liveArticles[0].slug}` : `/tin-tuc?id=${liveArticles[0].id}`}
                       className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:text-secondary transition-colors"
                     >
                       Đọc tiếp <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                    </Link>
+                    </a>
                   </div>
                 </article>
               )}
               <div className="grid sm:grid-cols-2 gap-6">
                 {liveArticles.slice(1).map((article, idx) => (
                   <article key={idx} className="group space-y-3 bg-white p-4 rounded-2xl border border-outline-variant/10 hover:shadow-md transition-shadow">
-                    <Link href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
+                    <a href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
                       <div className="rounded-xl overflow-hidden aspect-video shadow-sm cursor-pointer">
                         <img
                           alt={article.title}
@@ -688,21 +688,21 @@ export default function HomePage() {
                           src={article.img}
                         />
                       </div>
-                    </Link>
+                    </a>
                     <div className="flex items-center gap-2 text-on-surface-variant text-[10px] font-bold uppercase">
                       <span className="material-symbols-outlined text-sm">calendar_month</span> {article.date}
                     </div>
-                    <Link href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
+                    <a href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
                       <h4 className="text-sm font-bold text-primary group-hover:text-secondary transition-colors line-clamp-2 cursor-pointer">
                         {article.title}
                       </h4>
-                    </Link>
-                    <Link
+                    </a>
+                    <a
                       href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}
                       className="text-primary font-bold text-[11px] flex items-center gap-1.5 hover:gap-2.5 transition-all"
                     >
                       Xem tin <span className="material-symbols-outlined text-base">arrow_right_alt</span>
-                    </Link>
+                    </a>
                   </article>
                 ))}
               </div>
@@ -755,7 +755,7 @@ export default function HomePage() {
               <p className="text-sm md:text-base text-white/70 font-medium">Đăng ký tham gia để không bỏ lỡ các cơ hội hợp tác và kiến thức chuyên môn mới nhất.</p>
               <div className="space-y-3">
                 {liveEvents.map((event, idx) => (
-                  <Link href={event.slug ? `/su-kien/${event.slug}` : `/su-kien?id=${event.id}`} key={idx} className="group flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all cursor-pointer text-left block">
+                  <a href={event.slug ? `/su-kien/${event.slug}` : `/su-kien?id=${event.id}`} key={idx} className="group flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all cursor-pointer text-left block">
                     <div className={`flex-shrink-0 w-16 h-16 rounded-xl flex flex-col items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform ${event.isUpcoming ? 'bg-secondary' : 'bg-white/10 border border-white/20'}`}>
                       <span className="text-xl font-black">{event.day}</span>
                       <span className="text-[8px] font-bold uppercase">{event.month}</span>
@@ -772,12 +772,12 @@ export default function HomePage() {
                       </div>
                     </div>
                     <span className="material-symbols-outlined text-sm opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward_ios</span>
-                  </Link>
+                  </a>
                 ))}
               </div>
-              <Link href="/su-kien" className="text-white font-bold text-xs underline underline-offset-4 hover:text-secondary transition-colors inline-block">
+              <a href="/su-kien" className="text-white font-bold text-xs underline underline-offset-4 hover:text-secondary transition-colors inline-block">
                 Xem lịch sự kiện chi tiết
-              </Link>
+              </a>
             </div>
             <div className="relative">
               <div className="aspect-[4/5] max-h-[500px] rounded-3xl overflow-hidden shadow-xl relative">
