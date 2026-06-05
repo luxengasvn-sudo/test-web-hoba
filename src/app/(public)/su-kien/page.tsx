@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { toSlug } from '@/lib/slug';
+import defaultEvents from '@/lib/defaultEvents.json';
 
 interface EventItem {
   id: string;
@@ -22,8 +23,8 @@ interface EventItem {
 export default function EventsPage({ preSelectedSlug }: { preSelectedSlug?: string }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTab, setSelectedTab] = useState<'all' | 'upcoming' | 'past'>('all');
-  const [events, setEvents] = useState<EventItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState<EventItem[]>(defaultEvents as EventItem[]);
+  const [loading, setLoading] = useState(false);
 
   // Modal Registration & Detail View States
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
@@ -38,7 +39,7 @@ export default function EventsPage({ preSelectedSlug }: { preSelectedSlug?: stri
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const defaultEvents: EventItem[] = [
+  const localFallbackEvents: EventItem[] = [
     {
       id: '1',
       day: '20',
@@ -106,10 +107,10 @@ export default function EventsPage({ preSelectedSlug }: { preSelectedSlug?: stri
           try {
             loadedEvents = JSON.parse(saved);
           } catch (e) {
-            loadedEvents = defaultEvents;
+            loadedEvents = localFallbackEvents;
           }
         } else {
-          loadedEvents = defaultEvents;
+          loadedEvents = localFallbackEvents;
         }
       } else {
         try {
@@ -122,11 +123,11 @@ export default function EventsPage({ preSelectedSlug }: { preSelectedSlug?: stri
           if (!error && data?.value && Array.isArray(data.value)) {
             loadedEvents = data.value;
           } else {
-            loadedEvents = defaultEvents;
+            loadedEvents = localFallbackEvents;
           }
         } catch (err) {
           console.error('Lỗi tải sự kiện từ Supabase, chuyển sang fallback:', err);
-          loadedEvents = defaultEvents;
+          loadedEvents = localFallbackEvents;
         }
       }
       setEvents(loadedEvents);

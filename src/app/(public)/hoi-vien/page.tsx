@@ -3,6 +3,8 @@
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import defaultMembers from '@/lib/defaultMembers.json';
+import defaultChapters from '@/lib/defaultChapters.json';
 
 interface Member {
   id: string;
@@ -276,8 +278,8 @@ export default function MembersPage() {
     { title: 'Tham gia cộng đồng', desc: 'Hưởng đầy đủ quyền lợi và tham gia các sự kiện của Hiệp hội.', icon: 'celebration', step: '04' },
   ]);
 
-  const [memberList, setMemberList] = useState<Member[]>(MOCK_MEMBERS);
-  const [chapterList, setChapterList] = useState<Chapter[]>(MOCK_CHAPTERS);
+  const [memberList, setMemberList] = useState<Member[]>(defaultMembers as Member[]);
+  const [chapterList, setChapterList] = useState<Chapter[]>(defaultChapters as Chapter[]);
 
   // Fetch Live Data from Supabase
   useEffect(() => {

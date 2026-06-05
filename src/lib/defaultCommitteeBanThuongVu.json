@@ -1,0 +1,51 @@
+{
+  "term": "NHIỆM KỲ 2025 - 2029",
+  "title": "Ban Thường vụ Hiệp hội HOBA LPG",
+  "members": [
+    {
+      "name": "Phạm Trung Kiên",
+      "role": "Ủy viên Thường vụ",
+      "company": "Cổ phần khí hóa lỏng Hoàng Anh",
+      "memberId": "mem-bd-3",
+      "avatarUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256"
+    }
+  ],
+  "chairman": {
+    "name": "Đinh Văn Hiểu",
+    "role": "Chủ tịch Hiệp hội",
+    "company": "Công ty TNHH Long Thuận",
+    "memberId": "mem-bd-1",
+    "avatarUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256",
+    "isVerified": true
+  },
+  "subtitle": "Cơ quan thường trực điều hành và triển khai mọi quyết nghị hoạt động của Hiệp hội HOBA LPG.",
+  "showMembers": true,
+  "showChairman": false,
+  "viceChairmen": [
+    {
+      "name": "Trần Đức Nhã",
+      "role": "Ủy viên Thường vụ",
+      "company": "Công ty TNHH Phước Thiên",
+      "memberId": "mem-bd-2",
+      "avatarUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256"
+    },
+    {
+      "name": "Lê Khắc Huy",
+      "role": "Ủy viên Thường vụ",
+      "company": "Công ty TNHH MTV Ga Việt",
+      "memberId": "mem-bd-4",
+      "avatarUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256"
+    },
+    {
+      "name": "Phan Thị Huệ",
+      "role": "Ủy viên Thường vụ",
+      "company": "Công ty cổ phần Hoàng Gia Việt Luxen’s Care",
+      "memberId": "mem-bd-5",
+      "avatarUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256"
+    }
+  ],
+  "showViceChairmen": false,
+  "memberSectionTitle": "Ủy viên Ban Thường vụ",
+  "chairmanSectionTitle": "Chủ tịch Ban Thường vụ",
+  "viceChairmanSectionTitle": "Phó Chủ tịch Ban Thường vụ"
+}

@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import defaultChapters from '@/lib/defaultChapters.json';
 
 interface Chapter {
   id: string;
@@ -21,61 +22,8 @@ interface Member {
   chapter_id?: string;
 }
 
-const MOCK_CHAPTERS: Chapter[] = [
-  {
-    id: 'hn-north',
-    name: 'Chi hội LPG Hà Nội',
-    region: 'Miền Bắc',
-    locations: 'Hà Nội, Vĩnh Phúc, Bắc Ninh',
-    memberCount: 42,
-    image_url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTP1VwRhiXz7IslKk8lyrl_NZjrM0MYtWMLyaBrXhEX2DRZ9wIHjlle-92NsUhnYmQwD4yTguPqimc2ewjOD30dygdkHwHt7s9NXsMPSnzWvTyHO_1lM5j2kM_9BcFoN9m67VEakH0ReGkHCz2mX7R0kfbHFSyqSNrqYFcUsBMK0sm4skbO_7LO2Qs237Mbc_zUrwOxQ0lEHdDE-3w74hK182bzXXoJ9Nz4No0EMfJPJZ14JUTiBDxNw-onJOCwry6C0bNPzf9aJY',
-    slogan: 'An toàn hàng đầu - Phát triển bền vững',
-    description: 'Chi hội đại diện cho các doanh nghiệp LPG tại thủ đô Hà Nội và các tỉnh lân cận phía Bắc.'
-  },
-  {
-    id: 'hp-north',
-    name: 'Chi hội LPG Hải Phòng',
-    region: 'Miền Bắc',
-    locations: 'Hải Phòng, Quảng Ninh',
-    memberCount: 28,
-    image_url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTP1VwRhiXz7IslKk8lyrl_NZjrM0MYtWMLyaBrXhEX2DRZ9wIHjlle-92NsUhnYmQwD4yTguPqimc2ewjOD30dygdkHwHt7s9NXsMPSnzWvTyHO_1lM5j2kM_9BcFoN9m67VEakH0ReGkHCz2mX7R0kfbHFSyqSNrqYFcUsBMK0sm4skbO_7LO2Qs237Mbc_zUrwOxQ0lEHdDE-3w74hK182bzXXoJ9Nz4No0EMfJPJZ14JUTiBDxNw-onJOCwry6C0bNPzf9aJY',
-    slogan: 'Vươn khơi bám biển - Kết nối năng lượng',
-    description: 'Tập hợp các doanh nghiệp dịch vụ cảng biển, kho cảng LPG lớn tại khu vực Hải Phòng, Quảng Ninh.'
-  },
-  {
-    id: 'tb-north',
-    name: 'Chi hội LPG Tây Bắc',
-    region: 'Miền Bắc',
-    locations: 'Phú Thọ, Yên Bái, Lào Cai',
-    memberCount: 15,
-    image_url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTP1VwRhiXz7IslKk8lyrl_NZjrM0MYtWMLyaBrXhEX2DRZ9wIHjlle-92NsUhnYmQwD4yTguPqimc2ewjOD30dygdkHwHt7s9NXsMPSnzWvTyHO_1lM5j2kM_9BcFoN9m67VEakH0ReGkHCz2mX7R0kfbHFSyqSNrqYFcUsBMK0sm4skbO_7LO2Qs237Mbc_zUrwOxQ0lEHdDE-3w74hK182bzXXoJ9Nz4No0EMfJPJZ14JUTiBDxNw-onJOCwry6C0bNPzf9aJY',
-    slogan: 'Năng lượng xanh cho bản làng',
-    description: 'Đảm bảo cung ứng và an toàn sử dụng LPG tại các tỉnh vùng cao Tây Bắc.'
-  },
-  {
-    id: 'hcm-south',
-    name: 'Chi hội LPG TP. Hồ Chí Minh',
-    region: 'Miền Nam',
-    locations: 'TP.HCM, Bình Dương, Long An',
-    memberCount: 85,
-    image_url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTP1VwRhiXz7IslKk8lyrl_NZjrM0MYtWMLyaBrXhEX2DRZ9wIHjlle-92NsUhnYmQwD4yTguPqimc2ewjOD30dygdkHwHt7s9NXsMPSnzWvTyHO_1lM5j2kM_9BcFoN9m67VEakH0ReGkHCz2mX7R0kfbHFSyqSNrqYFcUsBMK0sm4skbO_7LO2Qs237Mbc_zUrwOxQ0lEHdDE-3w74hK182bzXXoJ9Nz4No0EMfJPJZ14JUTiBDxNw-onJOCwry6C0bNPzf9aJY',
-    slogan: 'Gắn kết sức mạnh - Ngành Gas Phương Nam',
-    description: 'Chi hội đại diện cho cộng đồng doanh nghiệp tại đầu tàu kinh tế phía Nam.'
-  },
-  {
-    id: 'tnb-south',
-    name: 'Chi hội LPG Tây Nam Bộ',
-    region: 'Miền Nam',
-    locations: 'Cần Thơ, Hậu Giang, Đồng Tháp',
-    memberCount: 34,
-    image_url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTP1VwRhiXz7IslKk8lyrl_NZjrM0MYtWMLyaBrXhEX2DRZ9wIHjlle-92NsUhnYmQwD4yTguPqimc2ewjOD30dygdkHwHt7s9NXsMPSnzWvTyHO_1lM5j2kM_9BcFoN9m67VEakH0ReGkHCz2mX7R0kfbHFSyqSNrqYFcUsBMK0sm4skbO_7LO2Qs237Mbc_zUrwOxQ0lEHdDE-3w74hK182bzXXoJ9Nz4No0EMfJPJZ14JUTiBDxNw-onJOCwry6C0bNPzf9aJY',
-    slogan: 'Năng lượng sạch sông nước miền Tây',
-    description: 'Kết nối mạng lưới phân phối gas an toàn dọc theo các tỉnh đồng bằng sông Cửu Long.'
-  }
-];
-
 export default function ChaptersPage() {
-  const [chapterList, setChapterList] = useState<Chapter[]>(MOCK_CHAPTERS);
+  const [chapterList, setChapterList] = useState<Chapter[]>(defaultChapters as Chapter[]);
   const [memberList, setMemberList] = useState<Member[]>([]);
   const [chapterSearch, setChapterSearch] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('all');

@@ -1,0 +1,153 @@
+{
+  "stats": [
+    {
+      "icon": "groups",
+      "label": "Hội viên liên kết",
+      "value": "60+"
+    },
+    {
+      "icon": "workspace_premium",
+      "label": "Năm hoạt động",
+      "value": "2+"
+    },
+    {
+      "icon": "school",
+      "label": "Kết nối tạo giá trị",
+      "value": "100+"
+    },
+    {
+      "icon": "handshake",
+      "label": "Đối tác chiến lược",
+      "value": "10+"
+    }
+  ],
+  "subtext": "Hiệp hội HoBa hướng tới tiêu chuẩn an toàn quốc tế.",
+  "features": [
+    {
+      "id": "f1",
+      "desc": "Xây dựng và ban hành các quy chuẩn kỹ thuật về an toàn LPG.",
+      "icon": "verified_user",
+      "title": "Tiêu chuẩn an toàn"
+    },
+    {
+      "id": "f2",
+      "desc": "Tổ chức các khóa huấn luyện nghiệp vụ cho cán bộ trong ngành.",
+      "icon": "school",
+      "title": "Đào tạo nhân lực"
+    },
+    {
+      "id": "1780283310992",
+      "desc": "Kết nối ngoài lĩnh vực",
+      "icon": "verified_user",
+      "title": "Kết Nối"
+    },
+    {
+      "id": "1780283346871",
+      "desc": "Bảo vệ giá trị thương hiệu và Gas lậu trên mọi mặt trận",
+      "icon": "verified_user",
+      "title": "Bảo vệ Cộng Đồng"
+    }
+  ],
+  "headline": "An toàn năng lượng - Phát triển bền vững",
+  "sections": [
+    {
+      "id": "hero",
+      "name": "1. Hero Banner",
+      "visible": true
+    },
+    {
+      "id": "services",
+      "name": "3. Lĩnh vực hoạt động",
+      "visible": true
+    },
+    {
+      "id": "news",
+      "name": "2. News & Events",
+      "visible": true
+    },
+    {
+      "id": "stats",
+      "name": "4. Statistics Counter",
+      "visible": false
+    },
+    {
+      "id": "members",
+      "name": "5. Hội viên tiêu biểu",
+      "visible": true
+    }
+  ],
+  "aboutDesc": "Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM là tổ chức xã hội - nghề nghiệp tự nguyện của các doanh nghiệp, tổ chức và chuyên gia hoạt động trong lĩnh vực sản xuất, chiết nạp, lưu trữ, vận chuyển, kinh doanh và dịch vụ thương mại khí hóa lỏng (LPG) trên địa bàn Thành phố Hồ Chí Minh và các khu vực lân cận",
+  "heroImage": "https://lh3.googleusercontent.com/aida-public/AB6AXuC981IWi1G9KO6TlBAeTvoEdHnU475mZUvpzKUy14ifBcHuc4b2zuDgHQNPQ2pPa1hNnCLFGrjwaaqqGhFcVpcCxdIlQZV1p_Vb6d2wfxy59lin66jklDgq9NGYjR4dSi5aUJ7vP7rQGNc70B9WC-g9cGfWoyIgi8SpKmbuwy2b4E7XrzpBKz9l2Gyr2B2cvva27oEuWW85ETPFGIk24eGr6JkgaTYZVPHxuaRxATS-URlM6yT-Jnu0VnYiPfUXGOeqtIJtDpOw4a0",
+  "aboutImage": "https://lcfeznwqexpmlsoiykxh.supabase.co/storage/v1/object/public/hoba-assets/homepage/53hvswzddtk.JPG",
+  "aboutTitle": "HIỆP HỘI KINH DOANH KHÍ HÓA LỎNG TP.HCM",
+  "coreServices": [
+    {
+      "desc": "Mở rộng mạng lưới hợp tác, chia sẻ nguồn lực và tạo dựng các mối quan hệ kinh doanh chiến lược.",
+      "icon": "handshake",
+      "title": "Kết nối doanh nghiệp",
+      "bgIcon": "diversity_3"
+    },
+    {
+      "desc": "Cung cấp báo cáo phân tích giá gas quốc tế, xu hướng tiêu dùng và biến động chính sách.",
+      "icon": "trending_up",
+      "title": "Phân tích thị trường",
+      "bgIcon": "query_stats"
+    },
+    {
+      "desc": "Tư vấn và phổ biến các thông tư, quy định mới liên quan đến kinh doanh và an toàn khí hóa lỏng.",
+      "icon": "gavel",
+      "title": "Tư vấn pháp lý",
+      "bgIcon": "balance"
+    },
+    {
+      "desc": "Huấn luyện kỹ thuật, an toàn PCCC và quản lý rủi ro cho đội ngũ kỹ thuật viên trạm chiết nạp.",
+      "icon": "engineering",
+      "title": "Đào tạo an toàn",
+      "bgIcon": "school"
+    },
+    {
+      "desc": "Tổ chức các diễn đàn xúc tiến đầu tư và các buổi giao lưu ngành gas toàn quốc định kỳ.",
+      "icon": "groups_2",
+      "title": "Sự kiện & Hội thảo",
+      "bgIcon": "event_seat"
+    },
+    {
+      "desc": "Tư vấn tháo gỡ vướng mắc về giấy phép và các thủ tục hành chính chuyên ngành năng lượng.",
+      "icon": "support_agent",
+      "title": "Hỗ trợ thủ tục",
+      "bgIcon": "health_and_safety"
+    }
+  ],
+  "featuredMembers": [
+    {
+      "id": "sp1",
+      "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuCUSaADTHuO0LeW68laxKr1qy5yC1GTS_ZMkN3B3Bk8_GdXGeqGYbF0o9npgtS7B1SN9Q0rltt5aXIffVkM3BlPgVVzI8pArb-gKVO2tSlefjfbDUAlMaVWSsY4Eljq9-h-vBmck0v3SrFG9Mj-3v4ZjvKBtgZ4PzNjThhlqmt5XcMsoe9i24a1cqq-o4NItX0xwJ7eNBvZxigXmSDVsR6oQw5flyk3MYT4qmWEVd79cVskyyUgh0YrEvLEPsqb26TSmnVlXMPCh3I",
+      "name": "Saigon Petro"
+    },
+    {
+      "id": "cg1",
+      "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuB-4CTXIocyVnnwyyHfAW2HBH3dLylJiYdJfzfRNk0sebpSDvYhL9ShY3uTaeX8Kca509b_k-2_UX7kcsoCDloaKRxN9FqWOSAIJ4zT4SUUrnCjxePkI5wOcmj63TodEipgcPO7KNuCorerGkEBENchfOaTXtDAFSwxE9sGyIGFf0GEK3QxcrGNWKxDi8WLTHLdj6X2NKVKo_i1y5GoL9X8w5iqqpca0J-qgEz159K6P6V7Wlw-gMDIqUJZ2ete1qlJtu3WQIUxMrU",
+      "name": "City Gas"
+    },
+    {
+      "id": "vg1",
+      "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuC7eTnvK5aYgdRpQ7r0JrThIhssN0j12GcjAzcrszxjSAtC1JzdscsKEliCTSujgiOjdIduDejriCsmUzgC_jBK4p0R8HAqKoKN5vfBScoDvHnjlazdSDRe3RS2RBm5E0sZPVn48gGk8Z4RYAi8__gyoBMqDSd2Tg_f88VrVSZn6DO26vy0EwdmJljaS9q11ROrep_qQfOz7Ny6V2XBa8ia5yjLujsw4TSYMRx7OF6mB13nu2XoEx9EiyUBJomlpAF9oX3C2n3a6x4",
+      "name": "VT-GAS"
+    },
+    {
+      "id": "pv1",
+      "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuBwWtf74gYhtlAq1IS1hNQ5pLt7PUyB5KUTbLhgRYv6HnE6oV_u_57wH3tzf7Gu632sw0dDOEGwPcVE9yeyW9nsoSKIYu6zhAnbBNLs_DAMN586bdG_Go0iluqSQSqfzXCkhA6V7FX6c26NfP5RxfXr_v80Y2xIdgeLNu-T-w8aqpnVxVdfLNKXLMrB1VRrMgB_l_1ovROIijGMRTcnJSxHCl2NBnEkiom8SJaaYm29JQdL9cUuZ6FLXiVcFjMeMtcUCUUGAtXcCeg",
+      "name": "PETROVIETNAM GAS"
+    },
+    {
+      "id": "bm1",
+      "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuD1p0v3-44vz10qrmIHA53j7oMkCHzMVTMi5RiGUaylSuVWs9pv-OCq2L2wYHeAumF4kaa_jC97eMHBp9ULCITYP3pv58yMcUnlbyEAb7TpNQekXTlPruB3TmkvQbLogChaztNMoyNxYFHv3c0LRXMwwZDUjCGrLDVqyIJ7kbw9mCF-zL9q7bJNwr67OTVgY8Tgjn_szspCSyNxiRZIm26DU799H-Na5x--fvXe_XpEaj0puYvKfuzKou2VM_UXG1K8cj-7Jx4DTTc",
+      "name": "BINH MINH ENERGY"
+    },
+    {
+      "id": "vc1",
+      "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuBZpcPDOgvB4aa_20YveL9ydc5ZGz3e8LnSvzQG4FXaJIFdU5ZbWueUPLZQTBPsoLbIL4Drm32xlDbKpgHcxWlkpaVoHvMAni-zTPhV095xHNedL5LcAzMW8gF5jYyGhhtklq6tYZjQ_C-IBiADh13sRgUREZQswv22-z0qJdIrnMlFLXJQaoEY5vzwBzSA-S51cM39LVaVPYWR6orgIxst1DF5oFTdJDJi_GPNGACmXyJqPXQt6iktYG9_lWfwOMdSn80nyxUL0_o",
+      "name": "VIPCO"
+    }
+  ]
+}

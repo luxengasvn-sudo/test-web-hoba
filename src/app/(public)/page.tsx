@@ -3,55 +3,12 @@
 import { useState, useEffect, Fragment } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import defaultHomePage from '@/lib/defaultHomePage.json';
 
 export default function HomePage() {
-  const [stats, setStats] = useState([
-    { value: '150+', label: 'Hội viên liên kết', icon: 'groups' },
-    { value: '20+', label: 'Năm hoạt động', icon: 'workspace_premium' },
-    { value: '500+', label: 'Khóa đào tạo an toàn', icon: 'school' },
-    { value: '10+', label: 'Đối tác chiến lược', icon: 'handshake' }
-  ]);
-
-  const [coreServices, setCoreServices] = useState([
-    {
-      title: 'Kết nối doanh nghiệp',
-      desc: 'Mở rộng mạng lưới hợp tác, chia sẻ nguồn lực và tạo dựng các mối quan hệ kinh doanh chiến lược.',
-      icon: 'handshake',
-      bgIcon: 'diversity_3'
-    },
-    {
-      title: 'Phân tích thị trường',
-      desc: 'Cung cấp báo cáo phân tích giá gas quốc tế, xu hướng tiêu dùng và biến động chính sách.',
-      icon: 'trending_up',
-      bgIcon: 'query_stats'
-    },
-    {
-      title: 'Tư vấn pháp lý',
-      desc: 'Tư vấn và phổ biến các thông tư, quy định mới liên quan đến kinh doanh và an toàn khí hóa lỏng.',
-      icon: 'gavel',
-      bgIcon: 'balance'
-    },
-    {
-      title: 'Đào tạo an toàn',
-      desc: 'Huấn luyện kỹ thuật, an toàn PCCC và quản lý rủi ro cho đội ngũ kỹ thuật viên trạm chiết nạp.',
-      icon: 'engineering',
-      bgIcon: 'school'
-    },
-    {
-      title: 'Sự kiện & Hội thảo',
-      desc: 'Tổ chức các diễn đàn xúc tiến đầu tư và các buổi giao lưu ngành gas toàn quốc định kỳ.',
-      icon: 'groups_2',
-      bgIcon: 'event_seat'
-    },
-    {
-      title: 'Hỗ trợ thủ tục',
-      desc: 'Tư vấn tháo gỡ vướng mắc về giấy phép và các thủ tục hành chính chuyên ngành năng lượng.',
-      icon: 'support_agent',
-      bgIcon: 'health_and_safety'
-    }
-  ]);
-
-  const [heroImage, setHeroImage] = useState('https://lh3.googleusercontent.com/aida-public/AB6AXuC981IWi1G9KO6TlBAeTvoEdHnU475mZUvpzKUy14ifBcHuc4b2zuDgHQNPQ2pPa1hNnCLFGrjwaaqqGhFcVpcCxdIlQZV1p_Vb6d2wfxy59lin66jklDgq9NGYjR4dSi5aUJ7vP7rQGNc70B9WC-g9cGfWoyIgi8SpKmbuwy2b4E7XrzpBKz9l2Gyr2B2cvva27oEuWW85ETPFGIk24eGr6JkgaTYZVPHxuaRxATS-URlM6yT-Jnu0VnYiPfUXGOeqtIJtDpOw4a0');
+  const [stats, setStats] = useState(defaultHomePage.stats);
+  const [coreServices, setCoreServices] = useState(defaultHomePage.coreServices);
+  const [heroImage, setHeroImage] = useState(defaultHomePage.heroImage);
 
   const mockActiveMembers = [
     { name: 'Saigon Petro', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCUSaADTHuO0LeW68laxKr1qy5yC1GTS_ZMkN3B3Bk8_GdXGeqGYbF0o9npgtS7B1SN9Q0rltt5aXIffVkM3BlPgVVzI8pArb-gKVO2tSlefjfbDUAlMaVWSsY4Eljq9-h-vBmck0v3SrFG9Mj-3v4ZjvKBtgZ4PzNjThhlqmt5XcMsoe9i24a1cqq-o4NItX0xwJ7eNBvZxigXmSDVsR6oQw5flyk3MYT4qmWEVd79cVskyyUgh0YrEvLEPsqb26TSmnVlXMPCh3I' },
@@ -61,7 +18,7 @@ export default function HomePage() {
     { name: 'BINH MINH ENERGY', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD1p0v3-44vz10qrmIHA53j7oMkCHzMVTMi5RiGUaylSuVWs9pv-OCq2L2wYHeAumF4kaa_jC97eMHBp9ULCITYP3pv58yMcUnlbyEAb7TpNQekXTlPruB3TmkvQbLogChaztNMoyNxYFHv3c0LRXMwwZDUjCGrLDVqyIJ7kbw9mCF-zL9q7bJNwr67OTVgY8Tgjn_szspCSyNxiRZIm26DU799H-Na5x--fvXe_XpEaj0puYvKfuzKou2VM_UXG1K8cj-7Jx4DTTc' },
     { name: 'VIPCO', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBZpcPDOgvB4aa_20YveL9ydc5ZGz3e8LnSvzQG4FXaJIFdU5ZbWueUPLZQTBPsoLbIL4Drm32xlDbKpgHcxWlkpaVoHvMAni-zTPhV095xHNedL5LcAzMW8gF5jYyGhhtklq6tYZjQ_C-IBiADh13sRgUREZQswv22-z0qJdIrnMlFLXJQaoEY5vzwBzSA-S51cM39LVaVPYWR6orgIxst1DF5oFTdJDJi_GPNGACmXyJqPXQt6iktYG9_lWfwOMdSn80nyxUL0_o' }
   ];
-  const [featuredMembers, setFeaturedMembers] = useState<any[]>(mockActiveMembers);
+  const [featuredMembers, setFeaturedMembers] = useState<any[]>(defaultHomePage.featuredMembers);
 
   const initialArticles = [
     {
@@ -97,24 +54,13 @@ export default function HomePage() {
   const [liveArticles, setLiveArticles] = useState<any[]>(initialArticles);
   const [liveDocs, setLiveDocs] = useState(initialDocs);
 
-  const [headline, setHeadline] = useState('KẾT NỐI VỮNG CHẮC \n PHÁT TRIỂN VƯƠN TẦM');
-  const [subtext, setSubtext] = useState('HOBA - Ngôi nhà chung của cộng đồng doanh nghiệp LPG, cam kết đồng hành cùng sự an toàn, chuyên nghiệp và thịnh vượng của ngành năng lượng phía Nam.');
-  const [aboutTitle, setAboutTitle] = useState('HIỆP HỘI KINH DOANH \n KHÍ HÓA LỎNG TP.HCM');
-  const [aboutDesc, setAboutDesc] = useState('HOBA là tổ chức xã hội – nghề nghiệp hội tụ các tinh hoa doanh nghiệp trong lĩnh vực LPG. Chúng tôi không chỉ là người đại diện pháp lý mà còn là nền tảng kết nối chiến lược, định hướng tiêu chuẩn an toàn cao nhất cho thị trường.');
-  const [aboutImage, setAboutImage] = useState('https://lh3.googleusercontent.com/aida-public/AB6AXuBqie_pC3yMckoN2RbI--_RMwqaycD-sE8uNjKGm1FYP4SuDo4Bk_DoW8FUfF5HZBFyE2S74tiVXbJg9vHPDi60KxsMnl9tK_9RvcEVcILr8J8xd5TjTAruNuf3db-Gwy4Kb5FvIKtk35uWDdSOWlVsvITLSEFRwOtiZ4946ZRBlOrGlV9a4b40tsttuO67wPg5hKgKI3TVz1c8T_rONHoB_-tlV2x6YjTCExPwRqjjfG4Qm2IJnhUprj3rNJr25ksTMbc-7ceVtUA');
-  const [features, setFeatures] = useState([
-    { id: 'f1', title: 'Kết nối toàn diện', desc: 'Mạng lưới 150+ đơn vị cung ứng', icon: 'handshake' },
-    { id: 'f2', title: 'Bảo vệ lợi ích', desc: 'Đại diện tiếng nói hội viên', icon: 'policy' },
-    { id: 'f3', title: 'Cập nhật pháp lý', desc: 'Thông tin thị trường mới nhất', icon: 'history_edu' },
-    { id: 'f4', title: 'Đào tạo an toàn', desc: 'Tiêu chuẩn kỹ thuật quốc tế', icon: 'security' }
-  ]);
-  const [sections, setSections] = useState([
-    { id: 'hero', name: '1. Hero Banner', visible: true },
-    { id: 'news', name: '2. News & Events', visible: true },
-    { id: 'services', name: '3. Lĩnh vực hoạt động', visible: true },
-    { id: 'stats', name: '4. Statistics Counter', visible: true },
-    { id: 'members', name: '5. Hội viên tiêu biểu', visible: true }
-  ]);
+  const [headline, setHeadline] = useState(defaultHomePage.headline);
+  const [subtext, setSubtext] = useState(defaultHomePage.subtext);
+  const [aboutTitle, setAboutTitle] = useState(defaultHomePage.aboutTitle);
+  const [aboutDesc, setAboutDesc] = useState(defaultHomePage.aboutDesc);
+  const [aboutImage, setAboutImage] = useState(defaultHomePage.aboutImage);
+  const [features, setFeatures] = useState(defaultHomePage.features);
+  const [sections, setSections] = useState(defaultHomePage.sections);
 
   const [liveEvents, setLiveEvents] = useState<any[]>([
     {

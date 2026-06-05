@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import defaultDocuments from '@/lib/defaultDocuments.json';
 
 interface DocumentItem {
   code: string;
@@ -18,8 +19,8 @@ interface DocumentItem {
 export default function DocumentsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [documents, setDocuments] = useState<DocumentItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [documents, setDocuments] = useState<DocumentItem[]>(defaultDocuments as DocumentItem[]);
+  const [loading, setLoading] = useState(false);
 
   const categories = ['all', 'Quyết định', 'Thông tư', 'Quy chuẩn', 'Hướng dẫn'];
 

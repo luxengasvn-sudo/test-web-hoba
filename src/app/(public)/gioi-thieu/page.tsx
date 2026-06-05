@@ -3,79 +3,18 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import defaultAboutPage from '@/lib/defaultAboutPage.json';
 
 export default function AboutPage() {
-  const [values, setValues] = useState([
-    {
-      title: 'Sứ mệnh',
-      desc: 'Kết nối – Đồng hành – Phát triển ngành LPG an toàn, bền vững và hiệu quả.',
-      icon: 'ads_click'
-    },
-    {
-      title: 'Tầm nhìn',
-      desc: 'Trở thành tổ chức uy tín, đại diện cho cộng đồng doanh nghiệp LPG hàng đầu Việt Nam.',
-      icon: 'visibility'
-    },
-    {
-      title: 'Giá trị cốt lõi',
-      desc: 'Minh bạch – Hợp tác – Chuyên nghiệp – Trách nhiệm cộng đồng.',
-      icon: 'diamond'
-    }
-  ]);
-
-  const [overview, setOverview] = useState(
-    'Hiệp hội Gas đô thị và Công nghiệp TP.HCM (HOBA) là tổ chức xã hội – nghề nghiệp tự nguyện của các doanh nghiệp hoạt động trong lĩnh vực sản xuất, kinh doanh, kinh doanh LPG và các sản phẩm, dịch vụ liên quan trên địa bàn Thành phố Hồ Chí Minh. HOBA là cầu nối giữa cộng đồng doanh nghiệp với cơ quan quản lý và các bên liên quan, góp phần xây dựng môi trường kinh doanh minh bạch, an toàn và bền vững cho ngành LPG.'
-  );
-
-  const [timeline, setTimeline] = useState([
-    {
-      date: '12/4/2025',
-      title: 'Hiệp hội Kinh doanh khí hóa lỏng (gas) tỉnh Bình Dương',
-      desc: 'Mốc thời gian thành lập đầu tiên.',
-      icon: 'flag'
-    },
-    {
-      date: 'Tháng 11',
-      title: 'HIỆP HỘI KHÍ HÓA LỎNG THÀNH PHỐ HỒ CHÍ MINH',
-      desc: 'Mốc thời gian đổi tên chính thức và chuyển đổi mô hình hoạt động.',
-      icon: 'groups'
-    }
-  ]);
-
-  const [orgStructure, setOrgStructure] = useState([
-    {
-      title: 'Ban chấp hành',
-      desc: 'Định hướng chiến lược, điều hành hoạt động của hiệp hội.',
-      icon: 'account_balance'
-    },
-    {
-      title: 'Văn phòng hiệp hội',
-      desc: 'Tham mưu, quản lý, triển khai các hoạt động thường xuyên.',
-      icon: 'corporate_fare'
-    },
-    {
-      title: 'Ban chuyên môn',
-      desc: 'Các tiểu ban: An toàn, Pháp lý, Đào tạo, Truyền thông.',
-      icon: 'settings_suggest'
-    },
-    {
-      title: 'Hội viên doanh nghiệp',
-      desc: 'Các doanh nghiệp sản xuất, kinh doanh LPG trên địa bàn.',
-      icon: 'domain_verification'
-    }
-  ]);
-
-  const [heroImage, setHeroImage] = useState('https://lh3.googleusercontent.com/aida-public/AB6AXuCeZY8qdtczKmDT8VWnqLO1d2HQnkLJzPIAfexewwIjyrQK8F7-4mBaOrm4ZgQC3M-Ds7uNERwunFsK0tdzC_FNnhKGj3MDNQGdMmsGYiu3P88aKaxZ1ef_ZLyAz8WHtV_9OVzgd3cqoYhJAmqCGevUYZzhz9TnTOXDvZN5-Q-Va8Pm7y0BEtl2KMdZbYGKcuqlQ91wD8LWNDUb4p6WIxArZwc7p5TahTv0JMoEPbkCDBfB6xf8pe3cgmU-vGVEAza1fjGbgfB3Y3I');
-  const [heroTitle, setHeroTitle] = useState('Giới thiệu HOBA');
-  const [heroDesc, setHeroDesc] = useState('Hiệp hội Gas đô thị và Công nghiệp TP.HCM (HOBA) — Kết nối doanh nghiệp, đồng hành phát triển vì ngành LPG an toàn và bền vững.');
-  const [overviewImage, setOverviewImage] = useState('https://lh3.googleusercontent.com/aida-public/AB6AXuA81hf5thmvBeYX2uBrxECeHNkAaZYnQEa5EMiRa7lwAzBGz3sI199whSRpFljMrgqBb13QPBj8m2g4cvIOwwp2C1Stt0_xzB4gl1vg4cKslAmhHN-WsTrN8xPZPkENHCkFPXncKXPnko9exmy70Q0joojrdU-7ZfGs_f95dk2mfS5sgzOhe4jST1ZHwBUmt9pUzlRmUl0bdhBlQnUA2yMAuFINhU4E_Wljat6wjQkLcFnrOtFAgI_ncw2i-VOpMpdtKxbP7sgqEhw');
-
-  const [whyJoinReasons, setWhyJoinReasons] = useState([
-    { title: 'Kết nối cộng đồng', desc: 'Mở rộng mạng lưới, kết nối với các đối tác hàng đầu trong ngành.', icon: 'hub' },
-    { title: 'Cập nhật chính sách', desc: 'Nắm bắt kịp thời các quy định pháp luật và thông tin thị trường mới nhất.', icon: 'description' },
-    { title: 'Nâng cao năng lực', desc: 'Tham gia các khóa đào tạo chuyên sâu và hội thảo nâng cao tay nghề.', icon: 'school' },
-    { title: 'Hợp tác bền vững', desc: 'Tăng cường hợp tác, hỗ trợ lẫn nhau trong kinh doanh và xử lý rủi ro.', icon: 'handshake' }
-  ]);
+  const [values, setValues] = useState(defaultAboutPage.values);
+  const [overview, setOverview] = useState(defaultAboutPage.overview);
+  const [timeline, setTimeline] = useState<any[]>(defaultAboutPage.milestones);
+  const [orgStructure, setOrgStructure] = useState(defaultAboutPage.orgStructure);
+  const [heroImage, setHeroImage] = useState(defaultAboutPage.heroImage);
+  const [heroTitle, setHeroTitle] = useState(defaultAboutPage.heroTitle);
+  const [heroDesc, setHeroDesc] = useState(defaultAboutPage.heroDesc || '');
+  const [overviewImage, setOverviewImage] = useState(defaultAboutPage.overviewImage);
+  const [whyJoinReasons, setWhyJoinReasons] = useState(defaultAboutPage.whyJoinReasons);
 
   const mockActiveMembers = [
     { id: 'sp1', company_name: 'SAIGON PETRO', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBtDGTvdJ19cl1DQ6D7LXKmSKBBDM3QA1PXK1G6sPwNWYnjcsOFxgcr_csrc7eO9T2-HDyx4CoYu_8jilw90lGs-Gkv8Z4UxkyUkXMSH4P9cTSblMxAT998NsFL3fPHEYtpPUCvt3LS76HaPjX0tBgShkXRlfxtZ44vp8lXHZeCta-iXZKVlqSQxn6PH1BDE8eVJJwgce8Z4IgJmyJA7P5XBbwQBwuZpeOAuDcWVkUpV5zfI_BA7ckRd_YCZtprpFrW9S5RTsLiY8Y' },
@@ -86,24 +25,9 @@ export default function AboutPage() {
     { id: 'vc1', company_name: 'VIPCO', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBZpcPDOgvB4aa_20YveL9ydc5ZGz3e8LnSvzQG4FXaJIFdU5ZbWueUPLZQTBPsoLbIL4Drm32xlDbKpgHcxWlkpaVoHvMAni-zTPhV095xHNedL5LcAzMW8gF5jYyGhhtklq6tYZjQ_C-IBiADh13sRgUREZQswv22-z0qJdIrnMlFLXJQaoEY5vzwBzSA-S51cM39LVaVPYWR6orgIxst1DF5oFTdJDJi_GPNGACmXyJqPXQt6iktYG9_lWfwOMdSn80nyxUL0_o' }
   ];
 
-  const [featuredMembers, setFeaturedMembers] = useState<any[]>([
-    { name: 'PETROVIETNAM GAS', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBwWtf74gYhtlAq1IS1hNQ5pLt7PUyB5KUTbLhgRYv6HnE6oV_u_57wH3tzf7Gu632sw0dDOEGwPcVE9yeyW9nsoSKIYu6zhAnbBNLs_DAMN586bdG_Go0iluqSQSqfzXCkhA6V7FX6c26NfP5RxfXr_v80Y2xIdgeLNu-T-w8aqpnVxVdfLNKXLMrB1VRrMgB_l_1ovROIijGMRTcnJSxHCl2NBnEkiom8SJaaYm29JQdL9cUuZ6FLXiVcFjMeMtcUCUUGAtXcCeg' },
-    { name: 'SAIGON PETRO', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBtDGTvdJ19cl1DQ6D7LXKmSKBBDM3QA1PXK1G6sPwNWYnjcsOFxgcr_csrc7eO9T2-HDyx4CoYu_8jilw90lGs-Gkv8Z4UxkyUkXMSH4P9cTSblMxAT998NsFL3fPHEYtpPUCvt3LS76HaPjX0tBgShkXRlfxtZ44vp8lXHZeCta-iXZKVlqSQxn6PH1BDE8eVJJwgce8Z4IgJmyJA7P5XBbwQBwuZpeOAuDcWVkUpV5zfI_BA7ckRd_YCZtprpFrW9S5RTsLiY8Y' },
-    { name: 'CITY GAS', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC0CYI2i9y9FBRcVafla8k_uA6-q6YUwCQ1nsIqp9GJraKX1HrdJo8DjcF3_DAH6DFiQjT8p17ol4-fZshaUWWGgddF4FbW__HrifyVlzuSnj2RNTq671M2AffFgAirU-9SR3X6qSQOGvJ2UUASF2JCLzEQ0R8scEuEByatNXkGCfdLzKhExXKRcapKdAvO0UJ8C1dc0C3i5dKKkhuqrNmefu1ateTTzShv8BgPIdFnPyvkppj4EFzWUr3nr7nJLaPQCHZ-VzPKXr8' },
-    { name: 'VIP GAS', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBtD7KPj-wpnAJbjv9HGB6i7HVdkeuLYCkhNuh9gx83bpbn8JCLDzg6A8EGpsG4gEBIGFsgomCgqi8h9HIYhIvEWff9EaMmYAp6OB90lDQCBYJNf-qeb9Ghz-Lu0i6bszNFF2ncQ9P-7M9mXA0Z_eC-36E90W92Y8NTuji9OjMbKuJrCB91aHdgS0v34nquMqpwKHx6fWzQaSeJgm9A2wJ2GUvG6zsJvJ6r5wOJs6YuWKv5E-uqXQisx-vmGenWsUuww5Miy8AVhAw' },
-    { name: 'BINH MINH ENERGY', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD1p0v3-44vz10qrmIHA53j7oMkCHzMVTMi5RiGUaylSuVWs9pv-OCq2L2wYHeAumF4kaa_jC97eMHBp9ULCITYP3pv58yMcUnlbyEAb7TpNQekXTlPruB3TmkvQbLogChaztNMoyNxYFHv3c0LRXMwwZDUjCGrLDVqyIJ7kbw9mCF-zL9q7bJNwr67OTVgY8Tgjn_szspCSyNxiRZIm26DU799H-Na5x--fvXe_XpEaj0puYvKfuzKou2VM_UXG1K8cj-7Jx4DTTc' },
-    { name: 'VIPCO', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBZpcPDOgvB4aa_20YveL9ydc5ZGz3e8LnSvzQG4FXaJIFdU5ZbWueUPLZQTBPsoLbIL4Drm32xlDbKpgHcxWlkpaVoHvMAni-zTPhV095xHNedL5LcAzMW8gF5jYyGhhtklq6tYZjQ_C-IBiADh13sRgUREZQswv22-z0qJdIrnMlFLXJQaoEY5vzwBzSA-S51cM39LVaVPYWR6orgIxst1DF5oFTdJDJi_GPNGACmXyJqPXQt6iktYG9_lWfwOMdSn80nyxUL0_o' }
-  ]);
+  const [featuredMembers, setFeaturedMembers] = useState<any[]>(defaultAboutPage.featuredMembers);
 
-  const [sections, setSections] = useState([
-    { id: 'hero', name: '1. Banner trang Giới thiệu', visible: true },
-    { id: 'overview', name: '2. Tổng quan về HOBA', visible: true },
-    { id: 'values', name: '3. Sứ mệnh - Tầm nhìn - Giá trị', visible: true },
-    { id: 'timeline', name: '4. Lịch sử phát triển / Timeline', visible: true },
-    { id: 'org', name: '5. Cơ cấu tổ chức', visible: true },
-    { id: 'whyjoin', name: '6. Vì sao tham gia HOBA?', visible: true },
-    { id: 'members', name: '7. Hội viên tiêu biểu', visible: true },
-  ]);
+  const [sections, setSections] = useState(defaultAboutPage.sections);
 
   useEffect(() => {
     async function loadAboutData() {

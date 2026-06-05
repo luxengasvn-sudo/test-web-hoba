@@ -1,0 +1,29 @@
+{
+  "term": "NHIỆM KỲ 2025 - 2029",
+  "title": "Ban Kiểm tra Hiệp hội HOBA LPG",
+  "members": [],
+  "chairman": {
+    "name": "Bùi An Bình",
+    "role": "Trưởng Ban Kiểm tra",
+    "company": "Chủ Cửa hàng Gas Thanh Dương",
+    "memberId": "mem-bd-22",
+    "avatarUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256",
+    "isVerified": true
+  },
+  "subtitle": "Giám sát hoạt động của Hiệp hội, kiểm tra việc chấp hành điều lệ và quản lý tài chính công khai, minh bạch.",
+  "showMembers": true,
+  "showChairman": false,
+  "viceChairmen": [
+    {
+      "name": "Nguyễn Văn Sơn",
+      "role": "Phó Trưởng Ban Kiểm tra",
+      "company": "Chủ Cửa hàng gas Quỳnh Bảo",
+      "memberId": "mem-bd-32",
+      "avatarUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256"
+    }
+  ],
+  "showViceChairmen": false,
+  "memberSectionTitle": "Ủy viên Ban Kiểm tra",
+  "chairmanSectionTitle": "Trưởng ban Kiểm tra",
+  "viceChairmanSectionTitle": "Phó Trưởng ban Kiểm tra"
+}

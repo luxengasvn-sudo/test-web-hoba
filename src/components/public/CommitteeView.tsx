@@ -3,6 +3,15 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import defaultCommitteeBanChapHanh from '@/lib/defaultCommitteeBanChapHanh.json';
+import defaultCommitteeBanThuongVu from '@/lib/defaultCommitteeBanThuongVu.json';
+import defaultCommitteeBanKiemTra from '@/lib/defaultCommitteeBanKiemTra.json';
+
+const DEFAULT_COMMITTEES = {
+  'ban-chap-hanh': defaultCommitteeBanChapHanh,
+  'ban-thuong-vu': defaultCommitteeBanThuongVu,
+  'ban-kiem-tra': defaultCommitteeBanKiemTra
+};
 
 interface LeaderMember {
   name: string;
@@ -78,8 +87,8 @@ const getDefaultTitle = (section: 'chairman' | 'viceChairman' | 'member', type: 
 };
 
 export default function CommitteeView({ type }: CommitteeViewProps) {
-  const [loading, setLoading] = useState(true);
-  const [config, setConfig] = useState<CommitteeConfig | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [config, setConfig] = useState<CommitteeConfig | null>(DEFAULT_COMMITTEES[type] as any);
   const [activeMembers, setActiveMembers] = useState<Member[]>([]);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
 
