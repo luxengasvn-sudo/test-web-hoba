@@ -546,11 +546,11 @@ export default function HomePage() {
             return (
               <div
                 key={idx}
-                className="bg-white p-6 rounded-xl flex items-center justify-center h-28 shadow-sm border border-outline-variant/20 hover:shadow-md hover:grayscale-0 transition-all cursor-pointer"
+                className="bg-white p-4 rounded-xl flex items-center justify-center h-32 shadow-sm border border-outline-variant/20 hover:shadow-md transition-all cursor-pointer"
               >
                 {member.textOnly ? (
                   <span
-                    className={`font-black text-lg ${
+                    className={`font-black text-xl ${
                       member.isRed
                         ? 'text-secondary'
                         : member.isOrange
@@ -563,7 +563,7 @@ export default function HomePage() {
                 ) : (
                   <img
                     alt={member.name}
-                    className="max-w-full max-h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                    className="max-w-full max-h-full object-contain transition-all duration-300"
                     src={member.logo}
                   />
                 )}
