@@ -75,7 +75,7 @@ export default function AboutPage() {
               .select('*')
               .eq('status', 'Active');
             if (membersDb && membersDb.length > 0) {
-              resolvedMembers = membersDb.map(d => ({
+              resolvedMembers = membersDb.map((d: any) => ({
                 id: d.id,
                 name: d.company_name,
                 logo: d.license_file_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBwWtf74gYhtlAq1IS1hNQ5pLt7PUyB5KUTbLhgRYv6HnE6oV_u_57wH3tzf7Gu632sw0dDOEGwPcVE9yeyW9nsoSKIYu6zhAnbBNLs_DAMN586bdG_Go0iluqSQSqfzXCkhA6V7FX6c26NfP5RxfXr_v80Y2xIdgeLNu-T-w8aqpnVxVdfLNKXLMrB1VRrMgB_l_1ovROIijGMRTcnJSxHCl2NBnEkiom8SJaaYm29JQdL9cUuZ6FLXiVcFjMeMtcUCUUGAtXcCeg'

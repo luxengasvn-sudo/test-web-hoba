@@ -9,6 +9,8 @@ const beVietnamPro = Be_Vietnam_Pro({
   weight: ["400", "500", "600", "700", "800"],
 });
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "HOBA LPG - Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM",
   description: "HOBA - Ngôi nhà chung của cộng đồng doanh nghiệp LPG, cam kết đồng hành cùng sự an toàn, chuyên nghiệp và thịnh vượng của ngành năng lượng phía Nam.",
