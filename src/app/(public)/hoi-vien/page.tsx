@@ -523,15 +523,16 @@ export default function MembersPage() {
 
   // Filtered & Sorted Members
   const filteredMembers = useMemo(() => {
-    const ROLE_PRIORITY: Record<string, number> = {
-      'Chủ tịch': 1,
-      'Phó Chủ tịch': 2,
-      'Ủy viên Ban Thường vụ': 3,
-      'Ủy viên Ban Chấp hành': 4,
-      'Ủy viên BCH': 4,
-      'Ban kiểm tra': 5,
-      'Hội viên chính thức': 6,
-      'Hội viên liên kết': 7
+    const getRolePriority = (roleName: string): number => {
+      const normalized = (roleName || '').trim().toLowerCase();
+      if (normalized.includes('chủ tịch') && !normalized.includes('phó')) return 1;
+      if (normalized.includes('phó chủ tịch')) return 2;
+      if (normalized.includes('thường vụ')) return 3;
+      if (normalized.includes('chấp hành') || normalized.includes('bch')) return 4;
+      if (normalized.includes('kiểm tra')) return 5;
+      if (normalized.includes('chính thức')) return 6;
+      if (normalized.includes('liên kết')) return 7;
+      return 99;
     };
 
     const filtered = memberList.filter((m) => {
@@ -556,8 +557,8 @@ export default function MembersPage() {
 
     // Sort by role priority first, then alphabetically by company name
     return [...filtered].sort((a, b) => {
-      const pA = ROLE_PRIORITY[a.association_role] ?? 99;
-      const pB = ROLE_PRIORITY[b.association_role] ?? 99;
+      const pA = getRolePriority(a.association_role);
+      const pB = getRolePriority(b.association_role);
       if (pA !== pB) {
         return pA - pB;
       }
