@@ -50,6 +50,22 @@ export default function Header() {
   const [contactEmail, setContactEmail] = useState('info@hoba.vn');
   const [contactPhone, setContactPhone] = useState('028 3831 6671');
 
+  // Safeguard: Redirect if the server served the public layout for an admin path
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname;
+      if (path === '/admin' || path.startsWith('/admin/')) {
+        let target = path;
+        if (target.endsWith('/')) {
+          target = target + 'index.html';
+        } else if (!target.endsWith('index.html')) {
+          target = target + '/index.html';
+        }
+        window.location.replace(target + window.location.search + window.location.hash);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
