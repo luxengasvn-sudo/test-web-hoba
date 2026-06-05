@@ -187,7 +187,68 @@ export function NewsDetailPage({ id, slug }: { id?: string; slug?: string }) {
           setRecentNews(formattedRecent);
         }
       } catch (err) {
-        console.error('Lỗi khi tải bài viết từ Supabase, chuyển sang fallback:', err);
+        console.warn('Lỗi tải bài viết đơn lẻ từ Supabase, chuyển sang truy vấn fallback toàn bộ bài viết:', err);
+        try {
+          const { data: allNews } = await supabase
+            .from('news')
+            .select('*')
+            .eq('status', 'Published');
+          
+          if (allNews && allNews.length > 0) {
+            const found = allNews.find(n => 
+              n.id === queryValue || 
+              (n.slug && n.slug === queryValue) || 
+              toSlug(n.title) === queryValue
+            );
+
+            if (found) {
+              let formattedDate = found.publish_date;
+              try {
+                const dt = new Date(found.publish_date);
+                formattedDate = `${dt.getDate()} Tháng ${dt.getMonth() + 1}, ${dt.getFullYear()}`;
+              } catch (_) {}
+
+              setArticle({
+                id: found.id,
+                title: found.title,
+                slug: found.slug,
+                desc: found.description || '',
+                content: found.content || '',
+                category: found.category as any,
+                date: formattedDate,
+                img: found.thumbnail_url || 'https://images.unsplash.com/photo-1542282088-fe8426682b8f'
+              });
+
+              // Load recent news excluding current found article
+              const recent = allNews
+                .filter(n => n.id !== found.id)
+                .slice(0, 3)
+                .map((r: any) => {
+                  let fd = r.publish_date;
+                  try {
+                    const dt = new Date(r.publish_date);
+                    fd = `${dt.getDate()} Tháng ${dt.getMonth() + 1}, ${dt.getFullYear()}`;
+                  } catch (_) {}
+                  return {
+                    id: r.id,
+                    title: r.title,
+                    slug: r.slug,
+                    desc: r.description || '',
+                    category: r.category as any,
+                    date: fd,
+                    img: r.thumbnail_url || 'https://images.unsplash.com/photo-1542282088-fe8426682b8f'
+                  };
+                });
+              setRecentNews(recent);
+              setLoading(false);
+              return;
+            }
+          }
+        } catch (fallbackErr) {
+          console.error('Lỗi khi truy vấn fallback toàn bộ tin tức:', fallbackErr);
+        }
+
+        // If even fallback fails, load mock news
         const found = defaultNews.find(n => id ? n.id === id : (n.slug === slug || toSlug(n.title) === slug));
         setArticle(found || null);
         setRecentNews(defaultNews.filter(n => id ? n.id !== id : (n.slug !== slug && toSlug(n.title) !== slug)));
