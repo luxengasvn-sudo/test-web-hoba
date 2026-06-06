@@ -44,7 +44,9 @@ class MockSupabaseBuilder {
 
   select(selects: string = '*') {
     this.selects = selects;
-    this.method = 'SELECT';
+    if (this.method !== 'INSERT' && this.method !== 'UPDATE' && this.method !== 'DELETE' && this.method !== 'UPSERT') {
+      this.method = 'SELECT';
+    }
     return this;
   }
 
