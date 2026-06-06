@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
+import { supabase, deleteFileFromStorage } from '@/lib/supabase';
 import RichEditor from '@/components/admin/RichEditor';
 import { toSlug, getUniqueEventSlug } from '@/lib/slug';
 
@@ -151,6 +151,10 @@ export default function AdminEvents() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Bạn có chắc chắn muốn xóa sự kiện này?')) return;
+    const targetEvent = events.find(e => e.id === id);
+    if (targetEvent && targetEvent.image_url) {
+      deleteFileFromStorage(targetEvent.image_url);
+    }
     const updated = events.filter(e => e.id !== id);
     setEvents(updated);
     await saveEventsList(updated);
@@ -214,6 +218,10 @@ export default function AdminEvents() {
     }
 
     if (editingEventId) {
+      const targetEvent = events.find(e => e.id === editingEventId);
+      if (targetEvent && targetEvent.image_url && targetEvent.image_url !== formImageUrl) {
+        deleteFileFromStorage(targetEvent.image_url);
+      }
       const idx = updated.findIndex(item => item.id === editingEventId);
       if (idx !== -1) {
         updated[idx] = {

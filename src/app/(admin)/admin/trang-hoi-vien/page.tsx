@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
+import { supabase, deleteFileFromStorage } from '@/lib/supabase';
 
 interface ChapterAdmin {
   id: string;
@@ -578,6 +578,10 @@ export default function AdminTrangHoiVien() {
   const handleDeleteChapter = async (chapId: string) => {
     if (!chapId) return;
     if (!confirm('Bạn có chắc chắn muốn xóa chi hội này và toàn bộ ban lãnh đạo trực thuộc?')) return;
+    
+    const targetChap = chapters.find(c => c && c.id === chapId);
+    const targetLeads = leaders.filter(l => l && l.chapter_id === chapId);
+
     if (supabase) {
       try {
         const { error } = await supabase.from('chapters').delete().eq('id', chapId);
@@ -587,6 +591,16 @@ export default function AdminTrangHoiVien() {
         return;
       }
     }
+
+    if (targetChap && targetChap.image_url) {
+      deleteFileFromStorage(targetChap.image_url);
+    }
+    targetLeads.forEach(l => {
+      if (l && l.avatar_url) {
+        deleteFileFromStorage(l.avatar_url);
+      }
+    });
+
     const updatedChaps = chapters.filter(c => c && c.id !== chapId);
     const updatedLeads = leaders.filter(l => l && l.chapter_id !== chapId);
     setChapters(updatedChaps);
@@ -629,6 +643,9 @@ export default function AdminTrangHoiVien() {
           if (error) throw error;
           savedChap = data;
         } else {
+          if (editingChapter?.image_url && editingChapter.image_url !== chImage) {
+            deleteFileFromStorage(editingChapter.image_url);
+          }
           const { data, error } = await supabase.from('chapters').update(payload).eq('id', chapterId).select().single();
           if (error) throw error;
           savedChap = data;
@@ -639,6 +656,9 @@ export default function AdminTrangHoiVien() {
         return;
       }
     } else {
+      if (!isNewChapter && editingChapter?.image_url && editingChapter.image_url !== chImage) {
+        deleteFileFromStorage(editingChapter.image_url);
+      }
       savedChap = {
         id: chapterId as string,
         ...payload
@@ -723,6 +743,10 @@ export default function AdminTrangHoiVien() {
   };
 
   const handleDeleteLeader = (leaderId: string) => {
+    const leader = chapterLeaders.find(l => l.id === leaderId);
+    if (leader && leader.avatar_url) {
+      deleteFileFromStorage(leader.avatar_url);
+    }
     setChapterLeaders(prev => prev.filter(l => l.id !== leaderId));
   };
 
@@ -746,6 +770,10 @@ export default function AdminTrangHoiVien() {
     if (isNewLeader) {
       nextList.push(payload);
     } else {
+      const oldLeader = chapterLeaders.find(l => l.id === editingLeaderId);
+      if (oldLeader && oldLeader.avatar_url && oldLeader.avatar_url !== lAvatar) {
+        deleteFileFromStorage(oldLeader.avatar_url);
+      }
       nextList = nextList.map(l => l.id === editingLeaderId ? payload : l);
     }
     nextList.sort((a, b) => a.order_index - b.order_index);

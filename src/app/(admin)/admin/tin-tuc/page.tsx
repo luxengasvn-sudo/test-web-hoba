@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase, deleteFileFromStorage } from '@/lib/supabase';
 import RichEditor from '@/components/admin/RichEditor';
 import { toSlug, getUniqueNewsSlug } from '@/lib/slug';
 
@@ -129,7 +129,12 @@ export default function AdminNews() {
   const handleDelete = async (id: string) => {
     if (!confirm('Bạn có chắc chắn muốn xóa bài viết này?')) return;
 
+    const targetArticle = news.find(n => n.id === id);
+
     if (!supabase) {
+      if (targetArticle && targetArticle.thumbnail_url) {
+        deleteFileFromStorage(targetArticle.thumbnail_url);
+      }
       setNews(prev => prev.filter(n => n.id !== id));
       return;
     }
@@ -137,6 +142,10 @@ export default function AdminNews() {
     try {
       const { error } = await supabase.from('news').delete().eq('id', id);
       if (error) throw error;
+      
+      if (targetArticle && targetArticle.thumbnail_url) {
+        deleteFileFromStorage(targetArticle.thumbnail_url);
+      }
       setNews(prev => prev.filter(n => n.id !== id));
     } catch (err) {
       alert('Không thể xóa bài viết. Lỗi: ' + (err as Error).message);
@@ -241,6 +250,10 @@ export default function AdminNews() {
       if (!supabase) {
         // Mock insert or update
         if (editingNewsId) {
+          const targetArticle = news.find(n => n.id === editingNewsId);
+          if (targetArticle && targetArticle.thumbnail_url && targetArticle.thumbnail_url !== formThumbnail) {
+            deleteFileFromStorage(targetArticle.thumbnail_url);
+          }
           setNews(prev => prev.map(n => n.id === editingNewsId ? {
             ...n,
             title: formTitle,
@@ -274,6 +287,10 @@ export default function AdminNews() {
       }
 
       if (editingNewsId) {
+        const targetArticle = news.find(n => n.id === editingNewsId);
+        if (targetArticle && targetArticle.thumbnail_url && targetArticle.thumbnail_url !== formThumbnail) {
+          deleteFileFromStorage(targetArticle.thumbnail_url);
+        }
         const { error } = await supabase
           .from('news')
           .update({

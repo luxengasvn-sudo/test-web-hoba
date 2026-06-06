@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
+import { supabase, deleteFileFromStorage } from '@/lib/supabase';
 
 interface MemberAdmin {
   id: string;
@@ -528,6 +528,8 @@ export default function AdminMembers() {
   const handleDelete = async (id: string) => {
     if (!confirm('Bạn có chắc chắn muốn xóa hội viên này khỏi hệ thống?')) return;
 
+    const targetMember = members.find(m => m.id === id);
+
     if (!supabase) {
       const saved = localStorage.getItem('hoba_website_members');
       if (saved) {
@@ -537,6 +539,12 @@ export default function AdminMembers() {
           localStorage.setItem('hoba_website_members', JSON.stringify(updated));
         } catch (e) {}
       }
+      if (targetMember) {
+        if (targetMember.logoUrl) deleteFileFromStorage(targetMember.logoUrl);
+        if (targetMember.representativeAvatarUrl) deleteFileFromStorage(targetMember.representativeAvatarUrl);
+        if (targetMember.licenseFileUrl) deleteFileFromStorage(targetMember.licenseFileUrl);
+        if (targetMember.safetyFileUrl) deleteFileFromStorage(targetMember.safetyFileUrl);
+      }
       setMembers(prev => prev.filter(m => m.id !== id));
       return;
     }
@@ -544,6 +552,13 @@ export default function AdminMembers() {
     try {
       const { error } = await supabase.from('members').delete().eq('id', id);
       if (error) throw error;
+      
+      if (targetMember) {
+        if (targetMember.logoUrl) deleteFileFromStorage(targetMember.logoUrl);
+        if (targetMember.representativeAvatarUrl) deleteFileFromStorage(targetMember.representativeAvatarUrl);
+        if (targetMember.licenseFileUrl) deleteFileFromStorage(targetMember.licenseFileUrl);
+        if (targetMember.safetyFileUrl) deleteFileFromStorage(targetMember.safetyFileUrl);
+      }
       setMembers(prev => prev.filter(m => m.id !== id));
     } catch (err) {
       alert('Không thể xóa hội viên. Lỗi: ' + (err as Error).message);
@@ -614,6 +629,21 @@ export default function AdminMembers() {
       }
 
       if (isEditMode && editMemberId) {
+        const targetMember = members.find(m => m.id === editMemberId);
+        if (targetMember) {
+          if (targetMember.logoUrl && targetMember.logoUrl !== formLogoUrl) {
+            deleteFileFromStorage(targetMember.logoUrl);
+          }
+          if (targetMember.representativeAvatarUrl && targetMember.representativeAvatarUrl !== formRepAvatarUrl) {
+            deleteFileFromStorage(targetMember.representativeAvatarUrl);
+          }
+          if (targetMember.licenseFileUrl && targetMember.licenseFileUrl !== formLicenseFileUrl) {
+            deleteFileFromStorage(targetMember.licenseFileUrl);
+          }
+          if (targetMember.safetyFileUrl && targetMember.safetyFileUrl !== formSafetyFileUrl) {
+            deleteFileFromStorage(targetMember.safetyFileUrl);
+          }
+        }
         currentList = currentList.map((m: any) => {
           if (m.id === editMemberId) {
             return {
@@ -668,6 +698,21 @@ export default function AdminMembers() {
 
     try {
       if (isEditMode && editMemberId) {
+        const targetMember = members.find(m => m.id === editMemberId);
+        if (targetMember) {
+          if (targetMember.logoUrl && targetMember.logoUrl !== formLogoUrl) {
+            deleteFileFromStorage(targetMember.logoUrl);
+          }
+          if (targetMember.representativeAvatarUrl && targetMember.representativeAvatarUrl !== formRepAvatarUrl) {
+            deleteFileFromStorage(targetMember.representativeAvatarUrl);
+          }
+          if (targetMember.licenseFileUrl && targetMember.licenseFileUrl !== formLicenseFileUrl) {
+            deleteFileFromStorage(targetMember.licenseFileUrl);
+          }
+          if (targetMember.safetyFileUrl && targetMember.safetyFileUrl !== formSafetyFileUrl) {
+            deleteFileFromStorage(targetMember.safetyFileUrl);
+          }
+        }
         const { error } = await supabase
           .from('members')
           .update(payload)

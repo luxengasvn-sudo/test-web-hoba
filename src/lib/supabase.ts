@@ -314,3 +314,38 @@ export const supabase: any = {
   from: (table: string) => new MockSupabaseBuilder(table),
   storage: rawSupabase ? rawSupabase.storage : mockStorage,
 };
+
+/**
+ * Tự động xóa file khỏi Supabase Storage hoặc local mock storage dựa trên URL của file
+ */
+export const deleteFileFromStorage = async (fileUrl: string | null | undefined): Promise<boolean> => {
+  if (!fileUrl) return false;
+  
+  const bucketName = 'hoba-assets';
+  let relativePath = '';
+  
+  if (fileUrl.startsWith('/uploads/')) {
+    relativePath = fileUrl.substring('/uploads/'.length);
+  } else if (fileUrl.includes('/storage/v1/object/public/' + bucketName + '/')) {
+    const splitKey = '/storage/v1/object/public/' + bucketName + '/';
+    relativePath = fileUrl.substring(fileUrl.indexOf(splitKey) + splitKey.length);
+  }
+
+  if (!relativePath) {
+    return false; // Không phải file hệ thống (ví dụ: link ảnh ngoài)
+  }
+
+  try {
+    const { error } = await supabase.storage.from(bucketName).remove([relativePath]);
+    if (error) {
+      console.error('[deleteFileFromStorage] Lỗi khi xóa tệp từ storage:', error);
+      return false;
+    }
+    console.log(`[deleteFileFromStorage] Đã xóa thành công tệp: ${relativePath}`);
+    return true;
+  } catch (err) {
+    console.error('[deleteFileFromStorage] Lỗi ngoại lệ khi xóa tệp:', err);
+    return false;
+  }
+};
+

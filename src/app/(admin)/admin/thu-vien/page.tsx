@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase, deleteFileFromStorage } from '@/lib/supabase';
 
 interface MediaItem {
   id: string;
@@ -126,6 +126,10 @@ export default function AdminLibrary() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Bạn có chắc chắn muốn xóa tệp truyền thông này khỏi thư viện?')) return;
+    const targetMedia = media.find(m => m.id === id);
+    if (targetMedia && targetMedia.url) {
+      deleteFileFromStorage(targetMedia.url);
+    }
     const updated = media.filter(m => m.id !== id);
     setMedia(updated);
     await saveLibraryToDb(updated);

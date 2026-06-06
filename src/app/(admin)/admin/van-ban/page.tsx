@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase, deleteFileFromStorage } from '@/lib/supabase';
 
 interface DocumentAdmin {
   id: string;
@@ -96,7 +96,12 @@ export default function AdminDocuments() {
   const handleDelete = async (id: string) => {
     if (!confirm('Bạn có chắc chắn muốn xóa văn bản pháp lý này?')) return;
 
+    const targetDoc = docs.find(d => d.id === id);
+
     if (!supabase) {
+      if (targetDoc && targetDoc.fileUrl) {
+        deleteFileFromStorage(targetDoc.fileUrl);
+      }
       const updated = docs.filter(d => d.id !== id);
       setDocs(updated);
       localStorage.setItem('hoba_website_documents', JSON.stringify(updated));
@@ -106,6 +111,10 @@ export default function AdminDocuments() {
     try {
       const { error } = await supabase.from('documents').delete().eq('id', id);
       if (error) throw error;
+      
+      if (targetDoc && targetDoc.fileUrl) {
+        deleteFileFromStorage(targetDoc.fileUrl);
+      }
       setDocs(prev => prev.filter(d => d.id !== id));
     } catch (err) {
       alert('Không thể xóa văn bản. Lỗi: ' + (err as Error).message);
@@ -180,6 +189,10 @@ export default function AdminDocuments() {
     if (!supabase) {
       const updatedDocs = [...docs];
       if (editingDocId) {
+        const targetDoc = docs.find(d => d.id === editingDocId);
+        if (targetDoc && targetDoc.fileUrl && targetDoc.fileUrl !== formFileUrl) {
+          deleteFileFromStorage(targetDoc.fileUrl);
+        }
         const idx = updatedDocs.findIndex(d => d.id === editingDocId);
         if (idx !== -1) {
           updatedDocs[idx] = {
@@ -218,6 +231,10 @@ export default function AdminDocuments() {
 
     try {
       if (editingDocId) {
+        const targetDoc = docs.find(d => d.id === editingDocId);
+        if (targetDoc && targetDoc.fileUrl && targetDoc.fileUrl !== formFileUrl) {
+          deleteFileFromStorage(targetDoc.fileUrl);
+        }
         const { error } = await supabase
           .from('documents')
           .update({
