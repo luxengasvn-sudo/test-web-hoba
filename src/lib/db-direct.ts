@@ -52,14 +52,22 @@ export async function executeDirectQuery(body: any) {
     if (!filters || filters.length === 0) return '';
     const parts: string[] = [];
     for (const filter of filters) {
-      const { col, val } = filter;
+      const { col, val, op = 'eq' } = filter;
       if (!isSafeIdentifier(col)) {
         throw new Error(`Invalid column identifier in filter: ${col}`);
       }
       if (val === null) {
-        parts.push(`"${col}" IS NULL`);
+        if (op === 'neq') {
+          parts.push(`"${col}" IS NOT NULL`);
+        } else {
+          parts.push(`"${col}" IS NULL`);
+        }
       } else {
-        parts.push(`"${col}" = $${paramCounter++}`);
+        if (op === 'neq') {
+          parts.push(`"${col}" != $${paramCounter++}`);
+        } else {
+          parts.push(`"${col}" = $${paramCounter++}`);
+        }
         queryParams.push(sanitizeParam(table, col, val));
       }
     }

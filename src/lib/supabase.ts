@@ -30,7 +30,7 @@ class MockSupabaseBuilder {
   private table: string;
   private method: 'SELECT' | 'INSERT' | 'UPDATE' | 'DELETE' | 'UPSERT' = 'SELECT';
   private selects: string = '*';
-  private filters: Array<{ col: string; val: any }> = [];
+  private filters: Array<{ col: string; val: any; op?: 'eq' | 'neq' }> = [];
   private orderCol?: string;
   private orderAscending?: boolean;
   private limitCount?: number;
@@ -74,7 +74,12 @@ class MockSupabaseBuilder {
   }
 
   eq(col: string, val: any) {
-    this.filters.push({ col, val });
+    this.filters.push({ col, val, op: 'eq' });
+    return this;
+  }
+
+  neq(col: string, val: any) {
+    this.filters.push({ col, val, op: 'neq' });
     return this;
   }
 
