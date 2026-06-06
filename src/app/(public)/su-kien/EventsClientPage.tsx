@@ -218,10 +218,56 @@ export default function EventsClientPage({ preSelectedSlug, initialData = {} }: 
 
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!selectedEvent) return;
     setSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setSubmitting(false);
-    setSubmitSuccess(true);
+
+    const registrationMessage = `[Đăng ký Sự kiện: ${selectedEvent.title}]
+- Họ và tên: ${fullName}
+- Đơn vị/Doanh nghiệp: ${companyName}
+- Email: ${email}
+- Số điện thoại: ${phone}`;
+
+    if (!supabase) {
+      // Offline LocalStorage mode fallback
+      const savedContacts = localStorage.getItem('hoba_website_contacts') || '[]';
+      try {
+        const list = JSON.parse(savedContacts);
+        list.unshift({
+          id: String(Date.now()),
+          name: fullName,
+          email: email,
+          phone: phone,
+          message: registrationMessage,
+          date: new Date().toISOString().split('T')[0],
+          read: false
+        });
+        localStorage.setItem('hoba_website_contacts', JSON.stringify(list));
+      } catch (err) {
+        console.error('Lỗi lưu đăng ký vào localStorage contacts:', err);
+      }
+      setSubmitting(false);
+      setSubmitSuccess(true);
+      return;
+    }
+
+    try {
+      const { error } = await supabase.from('contact_messages').insert([
+        {
+          name: fullName,
+          email: email,
+          phone: phone,
+          message: registrationMessage,
+          is_read: false
+        }
+      ]);
+
+      if (error) throw error;
+      setSubmitting(false);
+      setSubmitSuccess(true);
+    } catch (err) {
+      alert('Không thể gửi đăng ký tham dự. Lỗi: ' + (err as Error).message);
+      setSubmitting(false);
+    }
   };
 
   return (
