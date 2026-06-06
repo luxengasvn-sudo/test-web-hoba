@@ -570,13 +570,19 @@ export default function MembersPage({ initialData = {} }: MembersClientPageProps
                           >
                             <option value="all">Tất cả chức vụ</option>
                             {(() => {
-                              const roleNames = associationRoles.map(r => typeof r === 'object' && r !== null ? r.name : r);
-                              const options = Array.from(new Set(roleNames));
-                              memberList.forEach(m => {
-                                if (m.association_role && !options.includes(m.association_role)) {
-                                  options.push(m.association_role);
-                                }
-                              });
+                              const getRolePriority = (roleName: string): number => {
+                                const normalized = (roleName || '').trim().toLowerCase();
+                                if (normalized.includes('chủ tịch') && !normalized.includes('phó')) return 1;
+                                if (normalized.includes('phó chủ tịch')) return 2;
+                                if (normalized.includes('thường vụ')) return 3;
+                                if (normalized.includes('chấp hành') || normalized.includes('bch')) return 4;
+                                if (normalized.includes('kiểm tra')) return 5;
+                                if (normalized.includes('chính thức')) return 6;
+                                if (normalized.includes('liên kết')) return 7;
+                                return 99;
+                              };
+                              const options = Array.from(new Set(memberList.map(m => m.association_role).filter(Boolean)));
+                              options.sort((a, b) => getRolePriority(a) - getRolePriority(b));
                               return options.map((roleName) => (
                                 <option key={roleName} value={roleName}>{roleName}</option>
                               ));
