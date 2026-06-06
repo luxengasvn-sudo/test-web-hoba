@@ -1095,7 +1095,7 @@
     "created_at": "2026-06-03T08:00:56.36+00:00",
     "association_role": "Chủ tịch Hiệp hội",
     "join_date": "2025-04-01",
-    "logo_url": "https://lcfeznwqexpmlsoiykxh.supabase.co/storage/v1/object/public/hoba-assets/member-assets/hj3sjoi2q6n.png",
-    "representative_avatar_url": "https://lcfeznwqexpmlsoiykxh.supabase.co/storage/v1/object/public/hoba-assets/member-assets/fpvjpv8ycl.jpeg"
+    "logo_url": "/uploads/member-assets/hj3sjoi2q6n.png",
+    "representative_avatar_url": "/uploads/member-assets/fpvjpv8ycl.jpeg"
   }
 ]

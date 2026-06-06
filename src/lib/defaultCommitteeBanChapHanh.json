@@ -106,7 +106,7 @@
     "role": "Chủ tịch Hiệp hội",
     "company": "Công ty TNHH Long Thuận",
     "memberId": "mem-bd-1",
-    "avatarUrl": "https://lcfeznwqexpmlsoiykxh.supabase.co/storage/v1/object/public/hoba-assets/committees/ban-chap-hanh/w1rljpktmtb.jpeg",
+    "avatarUrl": "/uploads/committees/ban-chap-hanh/w1rljpktmtb.jpeg",
     "isVerified": true
   },
   "subtitle": "Lãnh đạo và định hướng phát triển ngành khí hóa lỏng (LPG) hướng tới tiêu chuẩn an toàn, minh bạch và bền vững.",
@@ -118,21 +118,21 @@
       "role": "Phó Chủ tịch Hiệp hội",
       "company": "Công ty TNHH Phước Thiên",
       "memberId": "mem-bd-2",
-      "avatarUrl": "https://lcfeznwqexpmlsoiykxh.supabase.co/storage/v1/object/public/hoba-assets/committees/ban-chap-hanh/4kjj0ava7qq.png"
+      "avatarUrl": "/uploads/committees/ban-chap-hanh/4kjj0ava7qq.png"
     },
     {
       "name": "Lê Khắc Huy",
       "role": "Phó Chủ tịch Hiệp hội",
       "company": "Công ty TNHH MTV Ga Việt",
       "memberId": "mem-bd-4",
-      "avatarUrl": "https://lcfeznwqexpmlsoiykxh.supabase.co/storage/v1/object/public/hoba-assets/committees/ban-chap-hanh/jpi4e4lhid.png"
+      "avatarUrl": "/uploads/committees/ban-chap-hanh/jpi4e4lhid.png"
     },
     {
       "name": "Phan Thị Huệ",
       "role": "Phó Chủ tịch Hiệp hội",
       "company": "Công ty cổ phần Hoàng Gia Việt Luxen’s Care",
       "memberId": "mem-bd-5",
-      "avatarUrl": "https://lcfeznwqexpmlsoiykxh.supabase.co/storage/v1/object/public/hoba-assets/committees/ban-chap-hanh/pfmhj47uag.png"
+      "avatarUrl": "/uploads/committees/ban-chap-hanh/pfmhj47uag.png"
     }
   ],
   "showViceChairmen": true,
