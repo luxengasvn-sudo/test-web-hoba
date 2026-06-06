@@ -4,16 +4,18 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 
 export default function AdminDashboard() {
-  const [totalMembers, setTotalMembers] = useState(150);
-  const [pendingMembers, setPendingMembers] = useState(3);
-  const [totalNews, setTotalNews] = useState(24);
-  const [totalDocs, setTotalDocs] = useState(12);
+  const [loading, setLoading] = useState(true);
+  const [totalMembers, setTotalMembers] = useState(0);
+  const [pendingMembers, setPendingMembers] = useState(0);
+  const [totalNews, setTotalNews] = useState(0);
+  const [totalDocs, setTotalDocs] = useState(0);
 
   const [logoUrl, setLogoUrl] = useState('https://lh3.googleusercontent.com/aida-public/AB6AXuDGqQKdtsfpnEDKd7JAu8yQBX437NF9yre-G8AhC0L2jkhp6KVKASaL_r8TGZh_QRNtxoTKJXj2RXxkHdzbloP5qr9ddoI8OKoucsW0qAAsP4BTZGw_OuSxkWH_7yIFBmg6xnEcQ6TW4JHRFli25nYMjoLZ2HCRMhbnXTVG7sJKa0uboKFQS39PjtPXOEjGCHqrOCfHNMf3fKTvNlIsHiQw4bsKOCnLrOmA4gvrVMw8OI1QXoKnQvFoERk0EIu4ye4Mgt_9-lpAzjg');
   const [logoUploading, setLogoUploading] = useState(false);
 
   useEffect(() => {
-    async function loadLogo() {
+    async function initDashboard() {
+      // 1. Load logo
       if (!supabase) {
         const saved = localStorage.getItem('hoba_website_config_general');
         if (saved) {
@@ -22,20 +24,42 @@ export default function AdminDashboard() {
             if (val.logoUrl) setLogoUrl(val.logoUrl);
           } catch (e) {}
         }
-        return;
+      } else {
+        try {
+          const { data } = await supabase
+            .from('website_config')
+            .select('value')
+            .eq('key', 'general')
+            .single();
+          if (data?.value?.logoUrl) {
+            setLogoUrl(data.value.logoUrl);
+          }
+        } catch (e) {}
       }
-      try {
-        const { data } = await supabase
-          .from('website_config')
-          .select('value')
-          .eq('key', 'general')
-          .single();
-        if (data?.value?.logoUrl) {
-          setLogoUrl(data.value.logoUrl);
+
+      // 2. Load stats
+      if (supabase) {
+        try {
+          const [membersRes, pendingRes, newsRes, docsRes] = await Promise.all([
+            supabase.from('members').select('*', { count: 'exact', head: true }),
+            supabase.from('members').select('*', { count: 'exact', head: true }).eq('status', 'Pending'),
+            supabase.from('news').select('*', { count: 'exact', head: true }),
+            supabase.from('documents').select('*', { count: 'exact', head: true })
+          ]);
+          
+          if (!membersRes.error && membersRes.count !== null) setTotalMembers(membersRes.count);
+          if (!pendingRes.error && pendingRes.count !== null) setPendingMembers(pendingRes.count);
+          if (!newsRes.error && newsRes.count !== null) setTotalNews(newsRes.count);
+          if (!docsRes.error && docsRes.count !== null) setTotalDocs(docsRes.count);
+        } catch (e) {
+          console.error('Lỗi khi tải thống kê từ Supabase:', e);
         }
-      } catch (e) {}
+      }
+
+      setLoading(false);
     }
-    loadLogo();
+    
+    initDashboard();
 
     const handleStorageChange = () => {
       const saved = localStorage.getItem('hoba_website_config_general');
@@ -116,42 +140,6 @@ export default function AdminDashboard() {
     }
   };
 
-  useEffect(() => {
-    async function loadStats() {
-      if (!supabase) return;
-      try {
-        // Fetch total members
-        const { count: membersCount, error: err1 } = await supabase
-          .from('members')
-          .select('*', { count: 'exact', head: true });
-
-        // Fetch pending members
-        const { count: pendingCount, error: err2 } = await supabase
-          .from('members')
-          .select('*', { count: 'exact', head: true })
-          .eq('status', 'Pending');
-
-        // Fetch total news
-        const { count: newsCount, error: err3 } = await supabase
-          .from('news')
-          .select('*', { count: 'exact', head: true });
-
-        // Fetch total documents
-        const { count: docsCount, error: err4 } = await supabase
-          .from('documents')
-          .select('*', { count: 'exact', head: true });
-
-        if (!err1 && membersCount !== null) setTotalMembers(membersCount);
-        if (!err2 && pendingCount !== null) setPendingMembers(pendingCount);
-        if (!err3 && newsCount !== null) setTotalNews(newsCount);
-        if (!err4 && docsCount !== null) setTotalDocs(docsCount);
-      } catch (e) {
-        console.error('Lỗi khi tải thống kê từ Supabase:', e);
-      }
-    }
-    loadStats();
-  }, []);
-
   const stats = [
     {
       label: 'Tổng Hội viên',
@@ -221,6 +209,14 @@ export default function AdminDashboard() {
       dotColor: 'bg-outline'
     }
   ];
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="w-8 h-8 border-4 border-[#00346f] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

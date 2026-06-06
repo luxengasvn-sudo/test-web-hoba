@@ -56,7 +56,7 @@ const renderSocialIcon = (iconName: string) => {
 };
 
 export default function AdminFooter() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [showToast, setShowToast] = useState(false);
 
   // Default values
@@ -117,6 +117,7 @@ export default function AdminFooter() {
             applyConfig(val);
           } catch (e) {}
         }
+        setLoading(false);
         return;
       }
       try {
@@ -131,6 +132,8 @@ export default function AdminFooter() {
         }
       } catch (err) {
         console.error('Lỗi tải cấu hình footer:', err);
+      } finally {
+        setLoading(false);
       }
     }
     loadFooter();
@@ -356,6 +359,14 @@ export default function AdminFooter() {
       setShowToast(false);
     }, 4000);
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="w-8 h-8 border-4 border-[#00346f] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 text-xs font-medium">

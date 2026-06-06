@@ -11,6 +11,7 @@ interface MenuItem {
 
 export default function AdminSettings() {
   const [activeTab, setActiveTab] = useState<'general' | 'menu'>('general');
+  const [loading, setLoading] = useState(true);
   const [logoUploading, setLogoUploading] = useState(false);
   const [faviconUploading, setFaviconUploading] = useState(false);
   const [config, setConfig] = useState({
@@ -164,6 +165,7 @@ export default function AdminSettings() {
             }
           } catch (e) {}
         }
+        setLoading(false);
         return;
       }
       try {
@@ -181,6 +183,8 @@ export default function AdminSettings() {
         }
       } catch (err) {
         console.error('Lỗi tải cấu hình hệ thống:', err);
+      } finally {
+        setLoading(false);
       }
     }
     loadConfig();
@@ -344,6 +348,14 @@ export default function AdminSettings() {
 
     alert('Đã cập nhật cấu hình và danh sách menu thành công!');
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="w-8 h-8 border-4 border-[#00346f] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 text-xs text-[#1c1c1a]">
