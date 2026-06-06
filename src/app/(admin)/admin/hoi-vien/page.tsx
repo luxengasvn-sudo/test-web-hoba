@@ -590,8 +590,8 @@ export default function AdminMembers() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formName || !formTaxCode || !formAddress || !formPhone || !formRepName || !formRepEmail || !formRepPhone) {
-      alert('Vui lòng nhập đầy đủ thông tin bắt buộc.');
+    if (!formName || !formAssociationRole) {
+      alert('Vui lòng nhập đầy đủ thông tin bắt buộc (Tên doanh nghiệp và Chức vụ trong Hiệp hội).');
       return;
     }
 
@@ -600,19 +600,19 @@ export default function AdminMembers() {
 
     const payload = {
       company_name: formName,
-      tax_code: formTaxCode,
-      address: formAddress,
-      phone: formPhone,
-      email: formRepEmail,
+      tax_code: formTaxCode || null,
+      address: formAddress || null,
+      phone: formPhone || null,
+      email: formRepEmail || null,
       business_type: formBusinessType,
-      representative_name: formRepName,
-      representative_role: formRepRole,
-      representative_email: formRepEmail,
-      representative_phone: formRepPhone,
+      representative_name: formRepName || null,
+      representative_role: formRepRole || null,
+      representative_email: formRepEmail || null,
+      representative_phone: formRepPhone || null,
       chapter_id: formChapterId || null,
       association_role: formAssociationRole,
       chapter_role: formChapterRole || null,
-      join_date: formJoinDate,
+      join_date: formJoinDate || null,
       logo_url: formLogoUrl || null,
       representative_avatar_url: formRepAvatarUrl || null,
       license_file_url: formLicenseFileUrl || null,
@@ -1017,13 +1017,12 @@ export default function AdminMembers() {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Mã số thuế *</label>
+                  <label className="font-bold text-on-surface-variant">Mã số thuế</label>
                   <input
                     value={formTaxCode}
                     onChange={(e) => setFormTaxCode(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="0301472589"
-                    required
                     type="text"
                   />
                 </div>
@@ -1031,13 +1030,12 @@ export default function AdminMembers() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="md:col-span-2 flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Địa chỉ trụ sở *</label>
+                  <label className="font-bold text-on-surface-variant">Địa chỉ trụ sở</label>
                   <input
                     value={formAddress}
                     onChange={(e) => setFormAddress(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="Số 456 Nguyễn Huệ, Quận 1, TP.HCM"
-                    required
                     type="text"
                   />
                 </div>
@@ -1058,13 +1056,12 @@ export default function AdminMembers() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Số điện thoại doanh nghiệp *</label>
+                  <label className="font-bold text-on-surface-variant">Số điện thoại doanh nghiệp</label>
                   <input
                     value={formPhone}
                     onChange={(e) => setFormPhone(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="028 3822 1122"
-                    required
                     type="text"
                   />
                 </div>
@@ -1102,24 +1099,22 @@ export default function AdminMembers() {
               <h4 className="font-bold text-[#00346f] border-b border-outline-variant/20 pb-1 uppercase tracking-wider text-[10px] pt-2">2. Người đại diện liên hệ</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Họ tên người đại diện *</label>
+                  <label className="font-bold text-on-surface-variant">Họ tên người đại diện</label>
                   <input
                     value={formRepName}
                     onChange={(e) => setFormRepName(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="Nguyễn Văn A"
-                    required
                     type="text"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Chức danh trong doanh nghiệp *</label>
+                  <label className="font-bold text-on-surface-variant">Chức danh trong doanh nghiệp</label>
                   <input
                     value={formRepRole}
                     onChange={(e) => setFormRepRole(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="Tổng Giám Đốc"
-                    required
                     type="text"
                   />
                 </div>
@@ -1127,24 +1122,22 @@ export default function AdminMembers() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Email người đại diện *</label>
+                  <label className="font-bold text-on-surface-variant">Email người đại diện</label>
                   <input
                     value={formRepEmail}
                     onChange={(e) => setFormRepEmail(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="rep@company.com"
-                    required
                     type="email"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Điện thoại di động đại diện *</label>
+                  <label className="font-bold text-on-surface-variant">Điện thoại di động đại diện</label>
                   <input
                     value={formRepPhone}
                     onChange={(e) => setFormRepPhone(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="0901234567"
-                    required
                     type="text"
                   />
                 </div>
@@ -1196,7 +1189,7 @@ export default function AdminMembers() {
                 </div>
                 <div className="flex flex-col gap-2">
                   <div className="flex justify-between items-center">
-                    <label className="font-bold text-on-surface-variant">Chức vụ trong Hiệp hội (BCH)</label>
+                    <label className="font-bold text-on-surface-variant">Chức vụ trong Hiệp hội (BCH) *</label>
                     <button
                       type="button"
                       onClick={handleOpenRolesEditor}
@@ -1210,6 +1203,7 @@ export default function AdminMembers() {
                     value={formAssociationRole}
                     onChange={(e) => setFormAssociationRole(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-white text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
+                    required
                   >
                     {(() => {
                       const roleNames = associationRoles.map(r => typeof r === 'object' && r !== null ? r.name : r);
@@ -1237,13 +1231,12 @@ export default function AdminMembers() {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Ngày tham gia Hiệp hội *</label>
+                  <label className="font-bold text-on-surface-variant">Ngày tham gia Hiệp hội</label>
                   <input
                     value={formJoinDate}
                     onChange={(e) => setFormJoinDate(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     type="date"
-                    required
                   />
                 </div>
               </div>
