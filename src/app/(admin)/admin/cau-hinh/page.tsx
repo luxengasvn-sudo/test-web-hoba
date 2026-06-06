@@ -12,6 +12,7 @@ interface MenuItem {
 export default function AdminSettings() {
   const [activeTab, setActiveTab] = useState<'general' | 'menu'>('general');
   const [logoUploading, setLogoUploading] = useState(false);
+  const [faviconUploading, setFaviconUploading] = useState(false);
   const [config, setConfig] = useState({
     siteName: 'HOBA LPG - Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM',
     logoTitle: 'HOBA LPG',
@@ -23,7 +24,8 @@ export default function AdminSettings() {
     mapEmbedUrl: '',
     maintenanceMode: false,
     registrationOpen: true,
-    logoUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDGqQKdtsfpnEDKd7JAu8yQBX437NF9yre-G8AhC0L2jkhp6KVKASaL_r8TGZh_QRNtxoTKJXj2RXxkHdzbloP5qr9ddoI8OKoucsW0qAAsP4BTZGw_OuSxkWH_7yIFBmg6xnEcQ6TW4JHRFli25nYMjoLZ2HCRMhbnXTVG7sJKa0uboKFQS39PjtPXOEjGCHqrOCfHNMf3fKTvNlIsHiQw4bsKOCnLrOmA4gvrVMw8OI1QXoKnQvFoERk0EIu4ye4Mgt_9-lpAzjg'
+    logoUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDGqQKdtsfpnEDKd7JAu8yQBX437NF9yre-G8AhC0L2jkhp6KVKASaL_r8TGZh_QRNtxoTKJXj2RXxkHdzbloP5qr9ddoI8OKoucsW0qAAsP4BTZGw_OuSxkWH_7yIFBmg6xnEcQ6TW4JHRFli25nYMjoLZ2HCRMhbnXTVG7sJKa0uboKFQS39PjtPXOEjGCHqrOCfHNMf3fKTvNlIsHiQw4bsKOCnLrOmA4gvrVMw8OI1QXoKnQvFoERk0EIu4ye4Mgt_9-lpAzjg',
+    faviconUrl: '/favicon.ico'
   });
 
   const [menuItems, setMenuItems] = useState<MenuItem[]>([
@@ -131,6 +133,20 @@ export default function AdminSettings() {
         alert('Lỗi tải ảnh logo: ' + (err as Error).message);
       } finally {
         setLogoUploading(false);
+      }
+    }
+  };
+
+  const handleFaviconUploadChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFaviconUploading(true);
+      try {
+        const url = await uploadImage(e.target.files[0]);
+        setConfig(prev => ({ ...prev, faviconUrl: url }));
+      } catch (err) {
+        alert('Lỗi tải ảnh favicon: ' + (err as Error).message);
+      } finally {
+        setFaviconUploading(false);
       }
     }
   };
@@ -435,6 +451,43 @@ export default function AdminSettings() {
                           className="hidden"
                           onChange={handleLogoUploadChange}
                           disabled={logoUploading}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Favicon Uploader widget */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-on-surface-variant uppercase">Favicon Website (Biểu tượng thanh địa chỉ)</label>
+                <div className="flex items-center gap-4 bg-surface-container-low/30 p-3 rounded-lg border border-outline-variant/20">
+                  <div className="w-16 h-16 rounded border border-outline-variant/30 bg-white flex items-center justify-center shrink-0">
+                    {config.faviconUrl ? (
+                      <img src={config.faviconUrl} alt="Favicon Preview" className="w-8 h-8 object-contain p-1" />
+                    ) : (
+                      <span className="material-symbols-outlined text-outline text-lg">image</span>
+                    )}
+                  </div>
+                  <div className="flex-grow flex flex-col gap-1.5">
+                    <div className="flex gap-2">
+                      <input
+                        name="faviconUrl"
+                        value={config.faviconUrl || ''}
+                        onChange={handleInputChange}
+                        className="flex-grow h-9 border border-outline-variant rounded px-3 bg-white text-[10px] outline-none focus:border-primary focus:ring-0"
+                        placeholder="Dán URL ảnh hoặc chọn file tải lên..."
+                        type="text"
+                      />
+                      <label className="h-9 px-4 bg-[#00346f] text-white text-[10px] font-bold rounded flex items-center justify-center gap-1 hover:bg-[#00346f]/90 cursor-pointer transition-colors active:scale-95">
+                        <span className="material-symbols-outlined text-xs">cloud_upload</span>
+                        {faviconUploading ? 'Đang tải...' : 'Tải lên'}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={handleFaviconUploadChange}
+                          disabled={faviconUploading}
                         />
                       </label>
                     </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 import DataSeeder from "@/components/DataSeeder";
+import { executeDirectQuery } from "@/lib/db-direct";
 
 const beVietnamPro = Be_Vietnam_Pro({
   variable: "--font-be-vietnam-pro",
@@ -17,14 +18,30 @@ export const metadata: Metadata = {
   keywords: "HOBA, LPG, khí hóa lỏng, hiệp hội gas, TP.HCM, an toàn gas",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let faviconUrl = "/favicon.ico";
+  try {
+    const configData = await executeDirectQuery({
+      method: "SELECT",
+      table: "website_config",
+      filters: [{ col: "key", val: "general" }],
+      isSingle: true,
+    });
+    if (configData && configData.value && configData.value.faviconUrl) {
+      faviconUrl = configData.value.faviconUrl;
+    }
+  } catch (error) {
+    console.error("Error fetching favicon in layout:", error);
+  }
+
   return (
     <html lang="vi" className={`${beVietnamPro.variable} h-full antialiased`}>
       <head>
+        <link rel="icon" href={faviconUrl} />
         <script
           dangerouslySetInnerHTML={{
             __html: `
