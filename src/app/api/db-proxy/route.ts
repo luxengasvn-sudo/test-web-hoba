@@ -22,6 +22,13 @@ function isSafeSelect(str: string): boolean {
   return /^[a-zA-Z0-9_,\s\*]+$/.test(str);
 }
 
+function sanitizeParam(table: string, col: string, val: any): any {
+  if (table === 'website_config' && col === 'value' && typeof val === 'object' && val !== null) {
+    return JSON.stringify(val);
+  }
+  return val;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -60,7 +67,7 @@ export async function POST(req: NextRequest) {
           parts.push(`"${col}" IS NULL`);
         } else {
           parts.push(`"${col}" = $${paramCounter++}`);
-          queryParams.push(val);
+          queryParams.push(sanitizeParam(table, col, val));
         }
       }
       return ` WHERE ${parts.join(' AND ')}`;
@@ -111,7 +118,7 @@ export async function POST(req: NextRequest) {
         const rowPlaceholders: string[] = [];
         for (const col of columns) {
           rowPlaceholders.push(`$${paramCounter++}`);
-          queryParams.push(row[col]);
+          queryParams.push(sanitizeParam(table, col, row[col]));
         }
         valPlaceholderRows.push(`(${rowPlaceholders.join(', ')})`);
       }
@@ -138,7 +145,7 @@ export async function POST(req: NextRequest) {
         const rowPlaceholders: string[] = [];
         for (const col of columns) {
           rowPlaceholders.push(`$${paramCounter++}`);
-          queryParams.push(row[col]);
+          queryParams.push(sanitizeParam(table, col, row[col]));
         }
         valPlaceholderRows.push(`(${rowPlaceholders.join(', ')})`);
       }
@@ -168,7 +175,7 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({ error: `Invalid column in update: ${col}` }, { status: 400 });
         }
         setParts.push(`"${col}" = $${paramCounter++}`);
-        queryParams.push(updatePayload[col]);
+        queryParams.push(sanitizeParam(table, col, updatePayload[col]));
       }
 
       queryText = `UPDATE "${table}" SET ${setParts.join(', ')}`;
