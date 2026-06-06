@@ -148,6 +148,15 @@ const getRoleColor = (roleName: string, configuredRoles: any[]) => {
   return { bg: '#e7e5e4', text: '#1c1c1a' };
 };
 
+const abbreviateRole = (role: string): string => {
+  if (!role) return '';
+  return role
+    .replace(/Ban Chấp hành/g, 'BCH')
+    .replace(/Ban Thường vụ/g, 'BTV')
+    .replace(/Ban Kiểm tra/g, 'BKT')
+    .replace(/Ban Thường trực/g, 'BTT');
+};
+
 interface MembersClientPageProps {
   initialData?: any;
 }
@@ -484,6 +493,19 @@ export default function MembersPage({ initialData = {} }: MembersClientPageProps
     });
   }, [searchQuery, selectedRole, selectedRegion, memberList]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const paginatedMembers = useMemo(() => {
+    const startIndex = (currentPage - 1) * 20;
+    return filteredMembers.slice(startIndex, startIndex + 20);
+  }, [filteredMembers, currentPage]);
+
+  const totalPages = Math.ceil(filteredMembers.length / 20);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedRole, selectedRegion]);
+
   const filteredChapters = useMemo(() => {
     return finalChapters.filter(c => {
       return c.name.toLowerCase().includes(chapterSearch.toLowerCase()) || 
@@ -614,7 +636,8 @@ export default function MembersPage({ initialData = {} }: MembersClientPageProps
                       </div>
                     </div>
 
-                    <div className="bg-white border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm">
+                    {/* Desktop View Table */}
+                    <div className="hidden md:block bg-white border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm">
                       <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse text-xs">
                           <thead>
@@ -629,10 +652,10 @@ export default function MembersPage({ initialData = {} }: MembersClientPageProps
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-outline-variant/20">
-                            {filteredMembers.length > 0 ? (
-                              filteredMembers.map((m, idx) => (
+                            {paginatedMembers.length > 0 ? (
+                              paginatedMembers.map((m, idx) => (
                                 <tr key={m.id} className="hover:bg-surface-container/30 transition-colors group">
-                                  <td className="px-6 py-4 text-on-surface-variant font-medium">{idx + 1}</td>
+                                  <td className="px-6 py-4 text-on-surface-variant font-medium">{(currentPage - 1) * 20 + idx + 1}</td>
                                   <td className="px-6 py-4 font-bold">{m.representative_name}</td>
                                   <td className="px-6 py-4 text-on-surface-variant">{m.representative_role}</td>
                                   <td className="px-6 py-4">
@@ -676,6 +699,104 @@ export default function MembersPage({ initialData = {} }: MembersClientPageProps
                         </table>
                       </div>
                     </div>
+
+                    {/* Mobile View List */}
+                    <div className="block md:hidden bg-white border border-outline-variant/30 rounded-xl shadow-sm overflow-hidden divide-y divide-outline-variant/20">
+                      {paginatedMembers.length > 0 ? (
+                        paginatedMembers.map((m, idx) => (
+                          <div 
+                            key={m.id} 
+                            className="flex items-center gap-3 p-4 hover:bg-surface-container-low transition-colors duration-200 odd:bg-white even:bg-surface-container-lowest"
+                          >
+                            {/* STT Badge */}
+                            <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs shrink-0 font-sans">
+                              {(currentPage - 1) * 20 + idx + 1}
+                            </div>
+                            {/* Member Details */}
+                            <div className="flex-grow min-w-0 text-left space-y-1">
+                              {/* Name (representative_name) */}
+                              <div className="font-extrabold text-primary text-sm truncate" title={m.representative_name}>
+                                {m.representative_name}
+                              </div>
+                              {/* Association Role (abbreviated, truncate) */}
+                              <div className="font-bold text-secondary text-xs truncate" title={m.association_role}>
+                                {abbreviateRole(m.association_role)}
+                              </div>
+                              {/* Company Name (clickable, truncate) */}
+                              <div className="font-semibold text-on-surface text-xs truncate" title={m.company_name}>
+                                <button
+                                  onClick={() => setSelectedMember(m)}
+                                  className="text-secondary hover:text-primary hover:underline font-semibold text-left truncate block w-full"
+                                >
+                                  {m.company_name}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="py-8 text-center text-on-surface-variant text-sm font-medium">
+                          Không tìm thấy hội viên nào khớp với bộ lọc.
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Pagination Controls */}
+                    {totalPages > 1 && (
+                      <div className="flex justify-center items-center gap-2 pt-6 pb-2">
+                        <button
+                          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                          disabled={currentPage === 1}
+                          className="w-8 h-8 rounded-lg border border-outline-variant/30 flex items-center justify-center bg-white text-on-surface hover:bg-surface-container disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                          title="Trang trước"
+                        >
+                          <span className="material-symbols-outlined text-base">chevron_left</span>
+                        </button>
+
+                        {Array.from({ length: totalPages }).map((_, idx) => {
+                          const pageNum = idx + 1;
+                          if (
+                            pageNum === 1 || 
+                            pageNum === totalPages || 
+                            Math.abs(pageNum - currentPage) <= 1
+                          ) {
+                            return (
+                              <button
+                                key={pageNum}
+                                onClick={() => setCurrentPage(pageNum)}
+                                className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-colors border ${
+                                  currentPage === pageNum 
+                                    ? 'bg-[#00346f] text-white border-[#00346f]' 
+                                    : 'bg-white text-on-surface border-outline-variant/30 hover:bg-surface-container'
+                                }`}
+                              >
+                                {pageNum}
+                              </button>
+                            );
+                          }
+                          if (
+                            (pageNum === 2 && currentPage > 3) ||
+                            (pageNum === totalPages - 1 && currentPage < totalPages - 2)
+                          ) {
+                            return (
+                              <span key={pageNum} className="text-on-surface-variant/65 text-xs px-1 select-none font-bold">
+                                ...
+                              </span>
+                            );
+                          }
+                          return null;
+                        })}
+
+                        <button
+                          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                          disabled={currentPage === totalPages}
+                          className="w-8 h-8 rounded-lg border border-outline-variant/30 flex items-center justify-center bg-white text-on-surface hover:bg-surface-container disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                          title="Trang sau"
+                        >
+                          <span className="material-symbols-outlined text-base">chevron_right</span>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
 
