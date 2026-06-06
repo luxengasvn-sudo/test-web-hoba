@@ -12,17 +12,7 @@ const beVietnamPro = Be_Vietnam_Pro({
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: "HOBA LPG - Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM",
-  description: "HOBA - Ngôi nhà chung của cộng đồng doanh nghiệp LPG, cam kết đồng hành cùng sự an toàn, chuyên nghiệp và thịnh vượng của ngành năng lượng phía Nam.",
-  keywords: "HOBA, LPG, khí hóa lỏng, hiệp hội gas, TP.HCM, an toàn gas",
-};
-
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export async function generateMetadata(): Promise<Metadata> {
   let faviconUrl = "/favicon.ico";
   try {
     const configData = await executeDirectQuery({
@@ -35,13 +25,27 @@ export default async function RootLayout({
       faviconUrl = configData.value.faviconUrl;
     }
   } catch (error) {
-    console.error("Error fetching favicon in layout:", error);
+    console.error("Error fetching favicon in metadata:", error);
   }
 
+  return {
+    title: "HOBA LPG - Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM",
+    description: "HOBA - Ngôi nhà chung của cộng đồng doanh nghiệp LPG, cam kết đồng hành cùng sự an toàn, chuyên nghiệp và thịnh vượng của ngành năng lượng phía Nam.",
+    keywords: "HOBA, LPG, khí hóa lỏng, hiệp hội gas, TP.HCM, an toàn gas",
+    icons: {
+      icon: faviconUrl,
+    }
+  };
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="vi" className={`${beVietnamPro.variable} h-full antialiased`}>
       <head>
-        <link rel="icon" href={faviconUrl} />
         <script
           dangerouslySetInnerHTML={{
             __html: `
