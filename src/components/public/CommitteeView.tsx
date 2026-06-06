@@ -28,15 +28,6 @@ const formatDate = (date: any): string => {
   }
 };
 
-const abbreviateRole = (role: string): string => {
-  if (!role) return '';
-  return role
-    .replace(/Ban Chấp hành/g, 'BCH')
-    .replace(/Ban Thường vụ/g, 'BTV')
-    .replace(/Ban Kiểm tra/g, 'BKT')
-    .replace(/Ban Thường trực/g, 'BTT');
-};
-
 interface LeaderMember {
   name: string;
   role: string;
@@ -674,9 +665,9 @@ export default function CommitteeView({
                     <div className="font-extrabold text-primary text-sm truncate" title={member.name}>
                       {member.name}
                     </div>
-                    {/* Role (1 row, abbreviated, truncate) */}
+                    {/* Role (1 row, truncate) */}
                     <div className="font-bold text-secondary text-xs truncate" title={member.role || 'Ủy viên'}>
-                      {abbreviateRole(member.role || 'Ủy viên')}
+                      {member.role || 'Ủy viên'}
                     </div>
                     {/* Company (1 row, truncate) */}
                     <div className="font-semibold text-on-surface text-xs truncate" title={member.company}>

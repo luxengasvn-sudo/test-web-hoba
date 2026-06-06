@@ -148,15 +148,6 @@ const getRoleColor = (roleName: string, configuredRoles: any[]) => {
   return { bg: '#e7e5e4', text: '#1c1c1a' };
 };
 
-const abbreviateRole = (role: string): string => {
-  if (!role) return '';
-  return role
-    .replace(/Ban Chấp hành/g, 'BCH')
-    .replace(/Ban Thường vụ/g, 'BTV')
-    .replace(/Ban Kiểm tra/g, 'BKT')
-    .replace(/Ban Thường trực/g, 'BTT');
-};
-
 interface MembersClientPageProps {
   initialData?: any;
 }
@@ -718,9 +709,9 @@ export default function MembersPage({ initialData = {} }: MembersClientPageProps
                               <div className="font-extrabold text-primary text-sm truncate" title={m.representative_name}>
                                 {m.representative_name}
                               </div>
-                              {/* Association Role (abbreviated, truncate) */}
+                              {/* Association Role (truncate) */}
                               <div className="font-bold text-secondary text-xs truncate" title={m.association_role}>
-                                {abbreviateRole(m.association_role)}
+                                {m.association_role}
                               </div>
                               {/* Company Name (clickable, truncate) */}
                               <div className="font-semibold text-on-surface text-xs truncate" title={m.company_name}>
