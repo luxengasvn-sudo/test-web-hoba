@@ -9,6 +9,19 @@ export default async function Page() {
   const initialData: any = {};
 
   try {
+    // 0. Fetch website general logo
+    let websiteLogo = '';
+    const generalData = await executeDirectQuery({
+      method: 'SELECT',
+      table: 'website_config',
+      filters: [{ col: 'key', val: 'general' }],
+      isSingle: true
+    });
+    if (generalData?.value?.logoUrl) {
+      websiteLogo = generalData.value.logoUrl;
+    }
+    initialData.websiteLogo = websiteLogo;
+
     // 1. Fetch page layout configs
     const pageConfig = await executeDirectQuery({
       method: 'SELECT',
@@ -85,7 +98,7 @@ export default async function Page() {
           association_role: d.association_role || 'Hội viên chính thức',
           chapter_role: d.chapter_role,
           join_date: d.join_date ? d.join_date.split('T')[0] : d.created_at.split('T')[0],
-          logo_url: d.logo_url || d.license_file_url,
+          logo_url: d.logo_url || d.license_file_url || websiteLogo || '',
           representative_avatar_url: d.representative_avatar_url || ''
         };
       });

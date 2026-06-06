@@ -147,6 +147,43 @@ export default function CommitteeView({
 
   const [activeMembers, setActiveMembers] = useState<Member[]>(resolveInitialMembers());
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [websiteLogo, setWebsiteLogo] = useState<string>('');
+
+  useEffect(() => {
+    async function loadWebsiteLogo() {
+      // 1. Check localStorage first
+      const savedGeneral = localStorage.getItem('hoba_website_config_general');
+      if (savedGeneral) {
+        try {
+          const parsed = JSON.parse(savedGeneral);
+          if (parsed?.logoUrl) {
+            setWebsiteLogo(parsed.logoUrl);
+            return;
+          }
+        } catch (_) {}
+      }
+
+      // 2. Query from Supabase if available
+      if (supabase) {
+        try {
+          const { data, error } = await supabase
+            .from('website_config')
+            .select('value')
+            .eq('key', 'general')
+            .single();
+          if (!error && data?.value) {
+            const parsed = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+            if (parsed?.logoUrl) {
+              setWebsiteLogo(parsed.logoUrl);
+            }
+          }
+        } catch (err) {
+          console.error('Error loading general config for website logo in CommitteeView:', err);
+        }
+      }
+    }
+    loadWebsiteLogo();
+  }, []);
 
   useEffect(() => {
     if (initialMembers && initialChapters) {
@@ -712,7 +749,7 @@ export default function CommitteeView({
                   <img
                     alt={selectedMember.company_name}
                     className="max-h-full max-w-full object-contain"
-                    src={selectedMember.logo_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBer5UmMRZAfoqcbQdDj2YlNi-He_BCVlNf4MgqxLxNKyZhxs2rlXnTNAqZbaOiTeyYlL1dKFi1854zNIHtNCJ8NS1MBXIakzRkGoKnJ59PX-0GsHP55Ri6sRjzQsXO2dIJnVzIye1cxWosv32otDlO2WjVzzPiZYwCg1VZr-P6fXh0Pyct1ti4yt_rYCByE5K-BrVK8F49XzS9PTCmIby_i9yBXXhfu3YST4hjjv-5pa86OAaD9cRPlLwHbGb9RlGHs3XTrUWzulE'}
+                    src={selectedMember.logo_url || websiteLogo || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBer5UmMRZAfoqcbQdDj2YlNi-He_BCVlNf4MgqxLxNKyZhxs2rlXnTNAqZbaOiTeyYlL1dKFi1854zNIHtNCJ8NS1MBXIakzRkGoKnJ59PX-0GsHP55Ri6sRjzQsXO2dIJnVzIye1cxWosv32otDlO2WjVzzPiZYwCg1VZr-P6fXh0Pyct1ti4yt_rYCByE5K-BrVK8F49XzS9PTCmIby_i9yBXXhfu3YST4hjjv-5pa86OAaD9cRPlLwHbGb9RlGHs3XTrUWzulE'}
                   />
                 </div>
                 <div className="text-center sm:text-left space-y-2">

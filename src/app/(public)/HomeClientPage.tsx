@@ -13,6 +13,7 @@ export default function HomeClientPage({
   const [stats, setStats] = useState(initialData.stats || defaultHomePage.stats);
   const [coreServices, setCoreServices] = useState(initialData.coreServices || defaultHomePage.coreServices);
   const [heroImage, setHeroImage] = useState(initialData.heroImage || defaultHomePage.heroImage);
+  const [websiteLogo, setWebsiteLogo] = useState(initialData.websiteLogo || '');
 
   const mockActiveMembers = [
     { name: 'Saigon Petro', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCUSaADTHuO0LeW68laxKr1qy5yC1GTS_ZMkN3B3Bk8_GdXGeqGYbF0o9npgtS7B1SN9Q0rltt5aXIffVkM3BlPgVVzI8pArb-gKVO2tSlefjfbDUAlMaVWSsY4Eljq9-h-vBmck0v3SrFG9Mj-3v4ZjvKBtgZ4PzNjThhlqmt5XcMsoe9i24a1cqq-o4NItX0xwJ7eNBvZxigXmSDVsR6oQw5flyk3MYT4qmWEVd79cVskyyUgh0YrEvLEPsqb26TSmnVlXMPCh3I' },
@@ -109,6 +110,37 @@ export default function HomeClientPage({
         }
       }
 
+      // 0. Fetch website general logo first
+      let currentLogo = initialData.websiteLogo || '';
+      if (supabase) {
+        try {
+          const { data: genConfig } = await fetchWithRetry(() =>
+            supabase!.from('website_config').select('value').eq('key', 'general').single(),
+            'general'
+          );
+          if (genConfig?.value) {
+            const parsed = typeof genConfig.value === 'string' ? JSON.parse(genConfig.value) : genConfig.value;
+            if (parsed?.logoUrl) {
+              currentLogo = parsed.logoUrl;
+              setWebsiteLogo(parsed.logoUrl);
+            }
+          }
+        } catch (_) {}
+      } else {
+        const savedGeneral = localStorage.getItem('hoba_website_config_general');
+        if (savedGeneral) {
+          try {
+            const parsed = JSON.parse(savedGeneral);
+            if (parsed?.logoUrl) {
+              currentLogo = parsed.logoUrl;
+              setWebsiteLogo(parsed.logoUrl);
+            }
+          } catch (_) {}
+        }
+      }
+
+      const defaultPlaceholder = currentLogo || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBwWtf74gYhtlAq1IS1hNQ5pLt7PUyB5KUTbLhgRYv6HnE6oV_u_57wH3tzf7Gu632sw0dDOEGwPcVE9yeyW9nsoSKIYu6zhAnbBNLs_DAMN586bdG_Go0iluqSQSqfzXCkhA6V7FX6c26NfP5RxfXr_v80Y2xIdgeLNu-T-w8aqpnVxVdfLNKXLMrB1VRrMgB_l_1ovROIijGMRTcnJSxHCl2NBnEkiom8SJaaYm29JQdL9cUuZ6FLXiVcFjMeMtcUCUUGAtXcCeg';
+
       // 1. Fetch active members first (or load from localStorage as fallback)
       let resolvedMembers: any[] = [];
       if (supabase) {
@@ -122,7 +154,7 @@ export default function HomeClientPage({
             resolvedMembers = membersDb.map((d: any) => ({
               id: d.id,
               name: d.company_name,
-              logo: d.logo_url || d.license_file_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBwWtf74gYhtlAq1IS1hNQ5pLt7PUyB5KUTbLhgRYv6HnE6oV_u_57wH3tzf7Gu632sw0dDOEGwPcVE9yeyW9nsoSKIYu6zhAnbBNLs_DAMN586bdG_Go0iluqSQSqfzXCkhA6V7FX6c26NfP5RxfXr_v80Y2xIdgeLNu-T-w8aqpnVxVdfLNKXLMrB1VRrMgB_l_1ovROIijGMRTcnJSxHCl2NBnEkiom8SJaaYm29JQdL9cUuZ6FLXiVcFjMeMtcUCUUGAtXcCeg'
+              logo: d.logo_url || d.license_file_url || defaultPlaceholder
             }));
           }
         } catch (e) {
@@ -140,7 +172,7 @@ export default function HomeClientPage({
               resolvedMembers = active.map((d: any) => ({
                 id: d.id,
                 name: d.company_name,
-                logo: d.logo_url || d.license_file_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBwWtf74gYhtlAq1IS1hNQ5pLt7PUyB5KUTbLhgRYv6HnE6oV_u_57wH3tzf7Gu632sw0dDOEGwPcVE9yeyW9nsoSKIYu6zhAnbBNLs_DAMN586bdG_Go0iluqSQSqfzXCkhA6V7FX6c26NfP5RxfXr_v80Y2xIdgeLNu-T-w8aqpnVxVdfLNKXLMrB1VRrMgB_l_1ovROIijGMRTcnJSxHCl2NBnEkiom8SJaaYm29JQdL9cUuZ6FLXiVcFjMeMtcUCUUGAtXcCeg'
+                logo: d.logo_url || d.license_file_url || defaultPlaceholder
               }));
             }
           } catch (e) {}
@@ -181,9 +213,15 @@ export default function HomeClientPage({
         }
         
         if (loadedFeaturedMembers && loadedFeaturedMembers.length > 0) {
-          setFeaturedMembers(loadedFeaturedMembers);
+          setFeaturedMembers(loadedFeaturedMembers.map((m: any) => ({
+            ...m,
+            logo: m.logo || defaultPlaceholder
+          })));
         } else if (val && val.featuredMembers && Array.isArray(val.featuredMembers)) {
-          setFeaturedMembers(val.featuredMembers);
+          setFeaturedMembers(val.featuredMembers.map((m: any) => ({
+            ...m,
+            logo: m.logo || defaultPlaceholder
+          })));
         } else if (val && val.featuredMemberIds && Array.isArray(val.featuredMemberIds)) {
           const sorted = val.featuredMemberIds.map((id: string) => {
             return resolvedMembers.find((m: any) => m.id === id);
@@ -340,9 +378,15 @@ export default function HomeClientPage({
 
       // Resolve featured members representation based on resolves
       if (loadedFeaturedMembers && loadedFeaturedMembers.length > 0) {
-        setFeaturedMembers(loadedFeaturedMembers);
+        setFeaturedMembers(loadedFeaturedMembers.map((m: any) => ({
+          ...m,
+          logo: m.logo || defaultPlaceholder
+        })));
       } else if (val && val.featuredMembers && Array.isArray(val.featuredMembers)) {
-        setFeaturedMembers(val.featuredMembers);
+        setFeaturedMembers(val.featuredMembers.map((m: any) => ({
+          ...m,
+          logo: m.logo || defaultPlaceholder
+        })));
       } else if (val && val.featuredMemberIds && Array.isArray(val.featuredMemberIds)) {
         const sorted = val.featuredMemberIds.map((id: string) => {
           return resolvedMembers.find((m: any) => m.id === id);

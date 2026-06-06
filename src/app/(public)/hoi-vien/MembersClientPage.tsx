@@ -224,6 +224,7 @@ export default function MembersPage({ initialData = {} }: MembersClientPageProps
 
   const [memberList, setMemberList] = useState<Member[]>(initialData.memberList || (defaultMembers as Member[]));
   const [chapterList, setChapterList] = useState<Chapter[]>(initialData.chapterList || (defaultChapters as Chapter[]));
+  const [websiteLogo, setWebsiteLogo] = useState(initialData.websiteLogo || '');
 
   useEffect(() => {
     const normalizeSections = (rawSections: any[]) => {
@@ -311,6 +312,35 @@ export default function MembersPage({ initialData = {} }: MembersClientPageProps
         }
       }
 
+      let currentLogo = initialData.websiteLogo || '';
+      if (supabase) {
+        try {
+          const { data: genConfig } = await supabase
+            .from('website_config')
+            .select('value')
+            .eq('key', 'general')
+            .single();
+          if (genConfig?.value) {
+            const parsed = typeof genConfig.value === 'string' ? JSON.parse(genConfig.value) : genConfig.value;
+            if (parsed?.logoUrl) {
+              currentLogo = parsed.logoUrl;
+              setWebsiteLogo(parsed.logoUrl);
+            }
+          }
+        } catch (_) {}
+      } else {
+        const savedGeneral = localStorage.getItem('hoba_website_config_general');
+        if (savedGeneral) {
+          try {
+            const parsed = JSON.parse(savedGeneral);
+            if (parsed?.logoUrl) {
+              currentLogo = parsed.logoUrl;
+              setWebsiteLogo(parsed.logoUrl);
+            }
+          } catch (_) {}
+        }
+      }
+
       let chaptersMap: Record<string, string> = {};
       if (supabase) {
         try {
@@ -366,7 +396,7 @@ export default function MembersPage({ initialData = {} }: MembersClientPageProps
                 association_role: d.association_role || 'Hội viên chính thức',
                 chapter_role: d.chapter_role,
                 join_date: d.join_date ? d.join_date.split('T')[0] : d.created_at.split('T')[0],
-                logo_url: d.logo_url || d.license_file_url,
+                logo_url: d.logo_url || d.license_file_url || currentLogo || '',
                 representative_avatar_url: d.representative_avatar_url || ''
               };
             });
@@ -399,7 +429,7 @@ export default function MembersPage({ initialData = {} }: MembersClientPageProps
                 association_role: d.association_role || 'Hội viên chính thức',
                 chapter_role: d.chapter_role || undefined,
                 join_date: d.join_date ? d.join_date.split('T')[0] : (d.created_at ? d.created_at.split('T')[0] : new Date().toISOString().split('T')[0]),
-                logo_url: d.logo_url || d.license_file_url || undefined,
+                logo_url: d.logo_url || d.license_file_url || currentLogo || '',
                 representative_avatar_url: d.representative_avatar_url || ''
               };
             });
@@ -947,6 +977,7 @@ export default function MembersPage({ initialData = {} }: MembersClientPageProps
                     className="max-h-full max-w-full object-contain"
                     src={
                       selectedMember.logo_url ||
+                      websiteLogo ||
                       'https://lh3.googleusercontent.com/aida-public/AB6AXuBer5UmMRZAfoqcbQdDj2YlNi-He_BCVlNf4MgqxLxNKyZhxs2rlXnTNAqZbaOiTeyYlL1dKFi1854zNIHtNCJ8NS1MBXIakzRkGoKnJ59PX-0GsHP55Ri6sRjzQsXO2dIJnVzIye1cxWosv32otDlO2WjVzzPiZYwCg1VZr-P6fXh0Pyct1ti4yt_rYCByE5K-BrVK8F49XzS9PTCmIby_i9yBXXhfu3YST4hjjv-5pa86OAaD9cRPlLwHbGb9RlGHs3XTrUWzulE'
                     }
                   />

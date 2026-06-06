@@ -21,6 +21,21 @@ export default async function Page() {
   const initialData: any = {};
 
   try {
+    // 0. Fetch website general logo
+    let websiteLogo = '';
+    const generalData = await executeDirectQuery({
+      method: 'SELECT',
+      table: 'website_config',
+      filters: [{ col: 'key', val: 'general' }],
+      isSingle: true
+    });
+    if (generalData?.value?.logoUrl) {
+      websiteLogo = checkImageFallback(generalData.value.logoUrl, '');
+    }
+    initialData.websiteLogo = websiteLogo;
+
+    const defaultLogoPlaceholder = websiteLogo || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBwWtf74gYhtlAq1IS1hNQ5pLt7PUyB5KUTbLhgRYv6HnE6oV_u_57wH3tzf7Gu632sw0dDOEGwPcVE9yeyW9nsoSKIYu6zhAnbBNLs_DAMN586bdG_Go0iluqSQSqfzXCkhA6V7FX6c26NfP5RxfXr_v80Y2xIdgeLNu-T-w8aqpnVxVdfLNKXLMrB1VRrMgB_l_1ovROIijGMRTcnJSxHCl2NBnEkiom8SJaaYm29JQdL9cUuZ6FLXiVcFjMeMtcUCUUGAtXcCeg';
+
     // 1. Fetch active members
     let resolvedMembers: any[] = [];
     const membersDb = await executeDirectQuery({
@@ -32,7 +47,7 @@ export default async function Page() {
       resolvedMembers = membersDb.map((d: any) => ({
         id: d.id,
         name: d.company_name,
-        logo: checkImageFallback(d.logo_url || d.license_file_url, 'https://lh3.googleusercontent.com/aida-public/AB6AXuBwWtf74gYhtlAq1IS1hNQ5pLt7PUyB5KUTbLhgRYv6HnE6oV_u_57wH3tzf7Gu632sw0dDOEGwPcVE9yeyW9nsoSKIYu6zhAnbBNLs_DAMN586bdG_Go0iluqSQSqfzXCkhA6V7FX6c26NfP5RxfXr_v80Y2xIdgeLNu-T-w8aqpnVxVdfLNKXLMrB1VRrMgB_l_1ovROIijGMRTcnJSxHCl2NBnEkiom8SJaaYm29JQdL9cUuZ6FLXiVcFjMeMtcUCUUGAtXcCeg')
+        logo: checkImageFallback(d.logo_url || d.license_file_url, defaultLogoPlaceholder)
       }));
     }
 
@@ -67,8 +82,6 @@ export default async function Page() {
     if (featuredData?.value && Array.isArray(featuredData.value)) {
       loadedFeaturedMembers = featuredData.value;
     }
-
-    const defaultLogoPlaceholder = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBwWtf74gYhtlAq1IS1hNQ5pLt7PUyB5KUTbLhgRYv6HnE6oV_u_57wH3tzf7Gu632sw0dDOEGwPcVE9yeyW9nsoSKIYu6zhAnbBNLs_DAMN586bdG_Go0iluqSQSqfzXCkhA6V7FX6c26NfP5RxfXr_v80Y2xIdgeLNu-T-w8aqpnVxVdfLNKXLMrB1VRrMgB_l_1ovROIijGMRTcnJSxHCl2NBnEkiom8SJaaYm29JQdL9cUuZ6FLXiVcFjMeMtcUCUUGAtXcCeg';
 
     if (loadedFeaturedMembers && loadedFeaturedMembers.length > 0) {
       initialData.featuredMembers = loadedFeaturedMembers.map((m: any) => ({

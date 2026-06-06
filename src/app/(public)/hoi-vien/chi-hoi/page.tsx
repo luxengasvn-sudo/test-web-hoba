@@ -59,12 +59,43 @@ function ChapterDetailPageContent() {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [websiteLogo, setWebsiteLogo] = useState<string>('');
 
   useEffect(() => {
     if (!id) return;
 
     async function loadData() {
       setLoading(true);
+
+      // 0. Fetch website general logo
+      let currentLogo = '';
+      if (supabase) {
+        try {
+          const { data: genConfig } = await supabase
+            .from('website_config')
+            .select('value')
+            .eq('key', 'general')
+            .single();
+          if (genConfig?.value) {
+            const parsed = typeof genConfig.value === 'string' ? JSON.parse(genConfig.value) : genConfig.value;
+            if (parsed?.logoUrl) {
+              currentLogo = parsed.logoUrl;
+              setWebsiteLogo(parsed.logoUrl);
+            }
+          }
+        } catch (_) {}
+      } else {
+        const savedGeneral = localStorage.getItem('hoba_website_config_general');
+        if (savedGeneral) {
+          try {
+            const parsed = JSON.parse(savedGeneral);
+            if (parsed?.logoUrl) {
+              currentLogo = parsed.logoUrl;
+              setWebsiteLogo(parsed.logoUrl);
+            }
+          } catch (_) {}
+        }
+      }
 
       if (supabase) {
         try {
@@ -130,7 +161,7 @@ function ChapterDetailPageContent() {
                 association_role: d.association_role || 'Hội viên chính thức',
                 chapter_role: d.chapter_role,
                 join_date: d.join_date ? d.join_date.split('T')[0] : d.created_at?.split('T')[0],
-                logo_url: d.logo_url || d.license_file_url,
+                logo_url: d.logo_url || d.license_file_url || currentLogo || '',
                 representative_avatar_url: d.representative_avatar_url || '',
                 chapter_id: d.chapter_id,
               }))
@@ -191,7 +222,7 @@ function ChapterDetailPageContent() {
                   association_role: d.association_role || 'Hội viên chính thức',
                   chapter_role: d.chapter_role,
                   join_date: d.join_date ? d.join_date.split('T')[0] : d.created_at?.split('T')[0] || '',
-                  logo_url: d.logo_url || d.license_file_url,
+                  logo_url: d.logo_url || d.license_file_url || currentLogo || '',
                   representative_avatar_url: d.representative_avatar_url || '',
                   chapter_id: d.chapter_id,
                 }))
@@ -466,7 +497,7 @@ function ChapterDetailPageContent() {
                   <img
                     alt={selectedMember.company_name}
                     className="max-h-full max-w-full object-contain"
-                    src={selectedMember.logo_url || defaultImage}
+                    src={selectedMember.logo_url || websiteLogo || defaultImage}
                   />
                 </div>
                 <div className="text-center sm:text-left space-y-2">
