@@ -13,6 +13,21 @@ const DEFAULT_COMMITTEES = {
   'ban-kiem-tra': defaultCommitteeBanKiemTra
 };
 
+const formatDate = (date: any): string => {
+  if (!date) return '';
+  try {
+    if (date instanceof Date) {
+      return date.toISOString().split('T')[0];
+    }
+    if (typeof date === 'object' && typeof date.toISOString === 'function') {
+      return date.toISOString().split('T')[0];
+    }
+    return String(date).split('T')[0];
+  } catch (e) {
+    return '';
+  }
+};
+
 interface LeaderMember {
   name: string;
   role: string;
@@ -124,7 +139,7 @@ export default function CommitteeView({
       chapter_name: d.chapter_id ? (chaptersMap[d.chapter_id] || 'Chi hội liên kết') : undefined,
       association_role: d.association_role || 'Hội viên chính thức',
       chapter_role: d.chapter_role,
-      join_date: d.join_date ? d.join_date.split('T')[0] : d.created_at.split('T')[0],
+      join_date: formatDate(d.join_date || d.created_at),
       logo_url: d.logo_url || d.license_file_url,
       representative_avatar_url: d.representative_avatar_url || ''
     }));
@@ -183,7 +198,7 @@ export default function CommitteeView({
                 chapter_name: d.chapter_id ? (chaptersMap[d.chapter_id] || 'Chi hội liên kết') : undefined,
                 association_role: d.association_role || 'Hội viên chính thức',
                 chapter_role: d.chapter_role,
-                join_date: d.join_date ? d.join_date.split('T')[0] : d.created_at.split('T')[0],
+                join_date: formatDate(d.join_date || d.created_at),
                 logo_url: d.logo_url || d.license_file_url,
                 representative_avatar_url: d.representative_avatar_url || ''
               };
@@ -218,7 +233,7 @@ export default function CommitteeView({
                 chapter_name: d.chapter_id ? (chaptersMap[d.chapter_id] || 'Chi hội liên kết') : undefined,
                 association_role: d.association_role || 'Hội viên chính thức',
                 chapter_role: d.chapter_role || undefined,
-                join_date: d.join_date ? d.join_date.split('T')[0] : (d.created_at ? d.created_at.split('T')[0] : new Date().toISOString().split('T')[0]),
+                join_date: formatDate(d.join_date || d.created_at || new Date()),
                 logo_url: d.logo_url || d.license_file_url || undefined,
                 representative_avatar_url: d.representative_avatar_url || ''
               };
@@ -281,7 +296,7 @@ export default function CommitteeView({
             chapter_name: chapterName,
             association_role: memberData.association_role || 'Hội viên chính thức',
             chapter_role: memberData.chapter_role,
-            join_date: memberData.join_date ? memberData.join_date.split('T')[0] : memberData.created_at.split('T')[0],
+            join_date: formatDate(memberData.join_date || memberData.created_at),
             logo_url: memberData.logo_url || memberData.license_file_url,
             representative_avatar_url: memberData.representative_avatar_url || ''
           };
@@ -317,7 +332,7 @@ export default function CommitteeView({
             chapter_name: memberData.chapter_id ? 'Chi hội liên kết' : undefined,
             association_role: memberData.association_role || 'Hội viên chính thức',
             chapter_role: memberData.chapter_role || undefined,
-            join_date: memberData.join_date ? memberData.join_date.split('T')[0] : (memberData.created_at ? memberData.created_at.split('T')[0] : new Date().toISOString().split('T')[0]),
+            join_date: formatDate(memberData.join_date || memberData.created_at || new Date()),
             logo_url: memberData.logo_url || memberData.license_file_url || undefined,
             representative_avatar_url: memberData.representative_avatar_url || ''
           };

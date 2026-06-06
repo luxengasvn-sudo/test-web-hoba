@@ -21,7 +21,7 @@ export default async function Page() {
         title: d.title,
         category: d.category,
         issuer: d.issuer,
-        date: d.publish_date,
+        date: d.publish_date ? (d.publish_date instanceof Date ? d.publish_date.toISOString().split('T')[0] : String(d.publish_date).split('T')[0]) : '',
         fileSize: d.file_size || '1.5 MB',
         description: d.description || '',
         fileUrl: d.file_url || '#'
