@@ -70,6 +70,9 @@ export default function HomeClientPage({
 
   useEffect(() => {
     async function loadHomeData() {
+      if (initialData && Object.keys(initialData).length > 0) {
+        return;
+      }
       // Helper to fetch with timeout and retry
       async function fetchWithRetry(queryFn: () => any, label: string, retryCount = 0): Promise<any> {
         const ms = 8000;

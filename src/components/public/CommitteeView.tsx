@@ -62,6 +62,9 @@ interface CommitteeConfig {
 
 interface CommitteeViewProps {
   type: 'ban-chap-hanh' | 'ban-kiem-tra' | 'ban-thuong-vu';
+  initialConfig?: CommitteeConfig;
+  initialMembers?: any[];
+  initialChapters?: any[];
 }
 
 const getDefaultTitle = (section: 'chairman' | 'viceChairman' | 'member', type: 'ban-chap-hanh' | 'ban-kiem-tra' | 'ban-thuong-vu') => {
@@ -86,13 +89,56 @@ const getDefaultTitle = (section: 'chairman' | 'viceChairman' | 'member', type: 
   }
 };
 
-export default function CommitteeView({ type }: CommitteeViewProps) {
-  const [loading, setLoading] = useState(false);
-  const [config, setConfig] = useState<CommitteeConfig | null>(DEFAULT_COMMITTEES[type] as any);
-  const [activeMembers, setActiveMembers] = useState<Member[]>([]);
+export default function CommitteeView({
+  type,
+  initialConfig,
+  initialMembers,
+  initialChapters
+}: CommitteeViewProps) {
+  const [loading, setLoading] = useState(!initialConfig);
+  const [config, setConfig] = useState<CommitteeConfig | null>(initialConfig || DEFAULT_COMMITTEES[type] as any);
+
+  const resolveInitialMembers = () => {
+    if (!initialMembers) return [];
+    const chaptersMap: Record<string, string> = {};
+    if (initialChapters) {
+      initialChapters.forEach((c: any) => {
+        chaptersMap[c.id] = c.name;
+      });
+    }
+    return initialMembers.map((d: any) => ({
+      id: d.id,
+      company_name: d.company_name,
+      tax_code: d.tax_code,
+      address: d.address,
+      phone: d.phone,
+      email: d.email,
+      business_type: d.business_type,
+      representative_name: d.representative_name,
+      representative_role: d.representative_role,
+      representative_email: d.representative_email,
+      representative_phone: d.representative_phone,
+      status: d.status,
+      created_at: d.created_at,
+      chapter_id: d.chapter_id,
+      chapter_name: d.chapter_id ? (chaptersMap[d.chapter_id] || 'Chi hội liên kết') : undefined,
+      association_role: d.association_role || 'Hội viên chính thức',
+      chapter_role: d.chapter_role,
+      join_date: d.join_date ? d.join_date.split('T')[0] : d.created_at.split('T')[0],
+      logo_url: d.logo_url || d.license_file_url,
+      representative_avatar_url: d.representative_avatar_url || ''
+    }));
+  };
+
+  const [activeMembers, setActiveMembers] = useState<Member[]>(resolveInitialMembers());
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
 
   useEffect(() => {
+    if (initialMembers && initialChapters) {
+      setActiveMembers(resolveInitialMembers());
+      return;
+    }
+
     async function loadMembersData() {
       let chaptersMap: Record<string, string> = {};
       if (supabase) {
@@ -185,19 +231,17 @@ export default function CommitteeView({ type }: CommitteeViewProps) {
       }
     }
     loadMembersData();
-  }, []);
+  }, [initialMembers, initialChapters]);
 
   const handleShowMemberDetail = async (memberId?: string) => {
     if (!memberId) return;
     
-    // Try to find in state first
     const found = activeMembers.find(m => m.id === memberId);
     if (found) {
       setSelectedMember(found);
       return;
     }
 
-    // Fallback: Fetch directly from source
     if (supabase) {
       try {
         const { data: memberData } = await supabase
@@ -207,7 +251,6 @@ export default function CommitteeView({ type }: CommitteeViewProps) {
           .single();
         
         if (memberData) {
-          // Resolve chapter name
           let chapterName = 'Chi hội liên kết';
           if (memberData.chapter_id) {
             const { data: chapterData } = await supabase
@@ -250,7 +293,6 @@ export default function CommitteeView({ type }: CommitteeViewProps) {
       }
     }
 
-    // Fallback to localStorage
     const saved = localStorage.getItem('hoba_website_members');
     if (saved) {
       try {
@@ -299,11 +341,16 @@ export default function CommitteeView({ type }: CommitteeViewProps) {
   };
 
   useEffect(() => {
+    if (initialConfig) {
+      setConfig(initialConfig);
+      setLoading(false);
+      return;
+    }
+
     async function loadCommitteeData() {
       const storageKey = `hoba_website_committee_${type}`;
       let dataVal: any = null;
 
-      // 1. Try to load from LocalStorage first if not using Supabase, or as fallback
       const saved = typeof window !== 'undefined' ? localStorage.getItem(storageKey) : null;
       if (saved) {
         try {
@@ -313,7 +360,6 @@ export default function CommitteeView({ type }: CommitteeViewProps) {
         }
       }
 
-      // 2. Try to fetch from Supabase if available
       if (supabase) {
         try {
           const { data, error } = await supabase
@@ -322,7 +368,6 @@ export default function CommitteeView({ type }: CommitteeViewProps) {
             .eq('key', storageKey)
             .single();
           if (!error && data?.value) {
-            // Check if the value is a string (due to initial data seeder format) or already an object
             if (typeof data.value === 'string') {
               dataVal = JSON.parse(data.value);
             } else {
@@ -341,7 +386,7 @@ export default function CommitteeView({ type }: CommitteeViewProps) {
     }
 
     loadCommitteeData();
-  }, [type]);
+  }, [type, initialConfig]);
 
   if (loading) {
     return (
