@@ -11,7 +11,7 @@ export default function AdminTrangChu() {
   const [heroImage, setHeroImage] = useState('https://lh3.googleusercontent.com/aida-public/AB6AXuC981IWi1G9KO6TlBAeTvoEdHnU475mZUvpzKUy14ifBcHuc4b2zuDgHQNPQ2pPa1hNnCLFGrjwaaqqGhFcVpcCxdIlQZV1p_Vb6d2wfxy59lin66jklDgq9NGYjR4dSi5aUJ7vP7rQGNc70B9WC-g9cGfWoyIgi8SpKmbuwy2b4E7XrzpBKz9l2Gyr2B2cvva27oEuWW85ETPFGIk24eGr6JkgaTYZVPHxuaRxATS-URlM6yT-Jnu0VnYiPfUXGOeqtIJtDpOw4a0');
   const [uploading, setUploading] = useState(false);
   const [aboutTitle, setAboutTitle] = useState('HIỆP HỘI KINH DOANH KHÍ HÓA LỎNG TP.HCM');
-  const [aboutDesc, setAboutDesc] = useState('HOBA là tổ chức xã hội – nghề nghiệp hội tụ các tinh hoa doanh nghiệp trong lĩnh vực LPG. Chúng tôi không chỉ là người đại diện pháp lý mà còn là nền tảng kết nối chiến lược, định hướng tiêu chuẩn an toàn cao nhất cho thị trường.');
+  const [aboutDesc, setAboutDesc] = useState('Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM là tổ chức xã hội - nghề nghiệp tự nguyện của các doanh nghiệp, tổ chức và chuyên gia hoạt động trong lĩnh vực sản xuất, chiết nạp, lưu trữ, vận chuyển, kinh doanh và dịch vụ thương mại khí hóa lỏng (LPG) trên địa bàn Thành phố Hồ Chí Minh và các khu vực lân cận');
   const [aboutImage, setAboutImage] = useState('https://lh3.googleusercontent.com/aida-public/AB6AXuBqie_pC3yMckoN2RbI--_RMwqaycD-sE8uNjKGm1FYP4SuDo4Bk_DoW8FUfF5HZBFyE2S74tiVXbJg9vHPDi60KxsMnl9tK_9RvcEVcILr8J8xd5TjTAruNuf3db-Gwy4Kb5FvIKtk35uWDdSOWlVsvITLSEFRwOtiZ4946ZRBlOrGlV9a4b40tsttuO67wPg5hKgKI3TVz1c8T_rONHoB_-tlV2x6YjTCExPwRqjjfG4Qm2IJnhUprj3rNJr25ksTMbc-7ceVtUA');
   const [aboutUploading, setAboutUploading] = useState(false);
 
