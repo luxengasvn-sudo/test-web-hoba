@@ -78,6 +78,21 @@ export default async function Page() {
     });
 
     if (membersData && membersData.length > 0) {
+      const formatDate = (date: any): string => {
+        if (!date) return '';
+        try {
+          if (date instanceof Date) {
+            return date.toISOString().split('T')[0];
+          }
+          if (typeof date === 'object' && typeof date.toISOString === 'function') {
+            return date.toISOString().split('T')[0];
+          }
+          return String(date).split('T')[0];
+        } catch (e) {
+          return '';
+        }
+      };
+
       initialData.memberList = membersData.map((d: any) => {
         return {
           id: d.id,
@@ -92,12 +107,12 @@ export default async function Page() {
           representative_email: d.representative_email,
           representative_phone: d.representative_phone,
           status: d.status,
-          created_at: d.created_at,
+          created_at: formatDate(d.created_at),
           chapter_id: d.chapter_id,
           chapter_name: d.chapter_id ? (chaptersMap[d.chapter_id] || 'Chi hội liên kết') : undefined,
           association_role: d.association_role || 'Hội viên chính thức',
           chapter_role: d.chapter_role,
-          join_date: d.join_date ? d.join_date.split('T')[0] : d.created_at.split('T')[0],
+          join_date: d.join_date ? formatDate(d.join_date) : formatDate(d.created_at),
           logo_url: d.logo_url || d.license_file_url || websiteLogo || '',
           representative_avatar_url: d.representative_avatar_url || ''
         };
