@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { DEFAULT_HOBA_LOGO } from '@/lib/constants';
 
 interface Chapter {
   id: string;
@@ -240,7 +241,7 @@ function ChapterDetailPageContent() {
   }
 
   const defaultImage = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTP1VwRhiXz7IslKk8lyrl_NZjrM0MYtWMLyaBrXhEX2DRZ9wIHjlle-92NsUhnYmQwD4yTguPqimc2ewjOD30dygdkHwHt7s9NXsMPSnzWvTyHO_1lM5j2kM_9BcFoN9m67VEakH0ReGkHCz2mX7R0kfbHFSyqSNrqYFcUsBMK0sm4skbO_7LO2Qs237Mbc_zUrwOxQ0lEHdDE-3w74hK182bzXXoJ9Nz4No0EMfJPJZ14JUTiBDxNw-onJOCwry6C0bNPzf9aJY';
-  const defaultAvatar = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256';
+  const defaultAvatar = DEFAULT_HOBA_LOGO;
 
   const regionColors: Record<string, string> = {
     'Miền Bắc': '#004a99',
@@ -468,7 +469,10 @@ function ChapterDetailPageContent() {
                   <img
                     alt={selectedMember.company_name}
                     className="max-h-full max-w-full object-contain"
-                    src={selectedMember.logo_url || defaultImage}
+                    src={selectedMember.logo_url || DEFAULT_HOBA_LOGO}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = DEFAULT_HOBA_LOGO;
+                    }}
                   />
                 </div>
                 <div className="text-center sm:text-left space-y-2">
@@ -490,10 +494,21 @@ function ChapterDetailPageContent() {
                     <span className="material-symbols-outlined text-sm">domain</span> Thông tin doanh nghiệp
                   </h5>
                   <div className="space-y-2 text-[11px]">
-                    <div><span className="text-on-surface-variant font-semibold">Mã số thuế:</span> {selectedMember.tax_code}</div>
-                    <div><span className="text-on-surface-variant font-semibold">Địa chỉ:</span> {selectedMember.address}</div>
-                    <div><span className="text-on-surface-variant font-semibold">Điện thoại:</span> {selectedMember.phone}</div>
-                    <div><span className="text-on-surface-variant font-semibold">Email:</span> {selectedMember.email}</div>
+                    {selectedMember.tax_code && selectedMember.tax_code !== 'Đang cập nhật' ? (
+                      <div><span className="text-on-surface-variant font-semibold">Mã số thuế:</span> {selectedMember.tax_code}</div>
+                    ) : null}
+                    {selectedMember.address && selectedMember.address !== 'Đang cập nhật' ? (
+                      <div><span className="text-on-surface-variant font-semibold">Địa chỉ:</span> {selectedMember.address}</div>
+                    ) : null}
+                    {selectedMember.phone ? (
+                      <div><span className="text-on-surface-variant font-semibold">Điện thoại:</span> {selectedMember.phone}</div>
+                    ) : null}
+                    {selectedMember.email ? (
+                      <div><span className="text-on-surface-variant font-semibold">Email:</span> {selectedMember.email}</div>
+                    ) : null}
+                    {!selectedMember.tax_code && !selectedMember.address && !selectedMember.phone && !selectedMember.email && (
+                      <div className="text-on-surface-variant italic">Thông tin liên hệ được bảo mật hoặc liên hệ qua Văn phòng Hiệp hội.</div>
+                    )}
                   </div>
                 </div>
 
@@ -502,42 +517,91 @@ function ChapterDetailPageContent() {
                     <span className="material-symbols-outlined text-sm">person</span> Người đại diện liên hệ
                   </h5>
                   <div className="flex gap-4 items-start pt-1">
-                    {selectedMember.representative_avatar_url && (
-                      <div className="w-14 h-14 rounded-full overflow-hidden border border-outline-variant/40 bg-white shrink-0">
-                        <img
-                          src={selectedMember.representative_avatar_url}
-                          alt="Representative"
-                          className="w-full h-full object-cover"
-                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                        />
-                      </div>
-                    )}
+                    <div className="w-14 h-14 rounded-full overflow-hidden border border-outline-variant/40 bg-white shrink-0 p-1 flex items-center justify-center">
+                      <img
+                        src={selectedMember.representative_avatar_url || DEFAULT_HOBA_LOGO}
+                        alt="Representative"
+                        className="w-full h-full object-contain rounded-full"
+                        onError={(e) => { (e.target as HTMLImageElement).src = DEFAULT_HOBA_LOGO; }}
+                      />
+                    </div>
                     <div className="space-y-2 text-[11px] flex-grow">
-                      <div><span className="text-on-surface-variant font-semibold">Họ tên:</span> {selectedMember.representative_name}</div>
-                      <div><span className="text-on-surface-variant font-semibold">Chức danh:</span> {selectedMember.representative_role}</div>
-                      <div><span className="text-on-surface-variant font-semibold">Điện thoại:</span> {selectedMember.representative_phone}</div>
-                      <div><span className="text-on-surface-variant font-semibold">Email:</span> {selectedMember.representative_email}</div>
+                      {selectedMember.representative_name ? (
+                        <div><span className="text-on-surface-variant font-semibold">Họ tên:</span> {selectedMember.representative_name}</div>
+                      ) : null}
+                      {selectedMember.representative_role ? (
+                        <div><span className="text-on-surface-variant font-semibold">Chức danh:</span> {selectedMember.representative_role}</div>
+                      ) : null}
+                      {selectedMember.representative_phone ? (
+                        <div><span className="text-on-surface-variant font-semibold">Điện thoại:</span> {selectedMember.representative_phone}</div>
+                      ) : null}
+                      {selectedMember.representative_email ? (
+                        <div><span className="text-on-surface-variant font-semibold">Email:</span> {selectedMember.representative_email}</div>
+                      ) : null}
+                      {!selectedMember.representative_name && !selectedMember.representative_role && !selectedMember.representative_phone && !selectedMember.representative_email && (
+                        <div className="text-on-surface-variant italic">Thông tin người đại diện đang cập nhật.</div>
+                      )}
                     </div>
                   </div>
                 </div>
 
                 <div className="col-span-full space-y-3 bg-[#fcf9f5] p-4 border border-outline-variant/30 rounded-lg">
                   <h5 className="font-bold text-[#00346f] border-b border-outline-variant/40 pb-1 flex items-center gap-1">
-                    <span className="material-symbols-outlined text-sm">hub</span> Liên kết Hiệp hội
+                    <span className="material-symbols-outlined text-sm">hub</span> Liên kết Hiệp hội & Ban Lãnh đạo
                   </h5>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-[11px] pt-1">
                     <div><span className="text-on-surface-variant font-semibold block mb-0.5">Chức vụ Hiệp hội</span> {selectedMember.association_role}</div>
                     <div><span className="text-on-surface-variant font-semibold block mb-0.5">Vai trò Chi hội</span> {selectedMember.chapter_role || '—'}</div>
                     <div><span className="text-on-surface-variant font-semibold block mb-0.5">Ngày gia nhập</span> {selectedMember.join_date}</div>
                   </div>
+
+                  {/* Dynamic Committee Links */}
+                  <div className="pt-2 border-t border-outline-variant/20 flex flex-wrap gap-2">
+                    {(selectedMember.association_role.includes('Chấp hành') || selectedMember.association_role.includes('BCH') || selectedMember.association_role.includes('Chủ tịch')) && (
+                      <Link
+                        href="/ban-chap-hanh"
+                        className="inline-flex items-center gap-1 bg-[#bb0013] hover:bg-[#93000d] text-white px-2.5 py-1 rounded text-[10px] font-bold transition-colors shadow-sm"
+                      >
+                        <span className="material-symbols-outlined text-xs">groups</span>
+                        Xem Ban Chấp hành →
+                      </Link>
+                    )}
+
+                    {selectedMember.association_role.includes('Thường vụ') && (
+                      <Link
+                        href="/ban-thuong-vu"
+                        className="inline-flex items-center gap-1 bg-[#0284c7] hover:bg-[#0369a1] text-white px-2.5 py-1 rounded text-[10px] font-bold transition-colors shadow-sm"
+                      >
+                        <span className="material-symbols-outlined text-xs">shield</span>
+                        Xem Ban Thường vụ →
+                      </Link>
+                    )}
+
+                    {selectedMember.association_role.includes('Kiểm tra') && (
+                      <Link
+                        href="/ban-kiem-tra"
+                        className="inline-flex items-center gap-1 bg-[#d97706] hover:bg-[#b45309] text-white px-2.5 py-1 rounded text-[10px] font-bold transition-colors shadow-sm"
+                      >
+                        <span className="material-symbols-outlined text-xs">policy</span>
+                        Xem Ban Kiểm tra →
+                      </Link>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-outline-variant/30 flex justify-end">
+            <div className="mt-8 pt-4 border-t border-outline-variant/30 flex flex-col sm:flex-row justify-between items-center gap-3">
+              <Link
+                href={`/hoi-vien?id=${selectedMember.id}`}
+                className="bg-[#00346f] hover:bg-[#00244f] text-white font-bold px-4 py-2.5 rounded-lg text-xs flex items-center gap-1.5 transition-colors w-full sm:w-auto justify-center"
+              >
+                <span className="material-symbols-outlined text-sm">badge</span>
+                Xem trên Danh bạ Hội viên →
+              </Link>
               <button
                 onClick={() => setSelectedMember(null)}
-                className="bg-[#00346f] hover:bg-[#00346f]/90 text-white font-bold px-6 py-2.5 rounded-lg text-xs"
+                className="bg-surface-container hover:bg-surface-variant text-on-surface font-bold px-6 py-2.5 rounded-lg text-xs w-full sm:w-auto"
               >
                 Đóng
               </button>

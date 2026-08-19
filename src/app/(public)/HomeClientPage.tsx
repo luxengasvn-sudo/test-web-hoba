@@ -517,31 +517,33 @@ export default function HomeClientPage({
             <h2 className="text-primary text-3xl md:text-4xl font-black section-title-line section-title-line-center">LĨNH VỰC HOẠT ĐỘNG</h2>
             <p className="text-on-surface-variant text-sm">Hệ sinh thái hỗ trợ toàn diện để doanh nghiệp hội viên phát triển bền vững.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
             {coreServices.map((service: any, idx: number) => (
-              <div
+              <Link
                 key={idx}
-                className="group relative overflow-hidden bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 border border-outline-variant/30 hover:-translate-y-1 p-6"
+                href={service.linkUrl || "/gioi-thieu"}
+                className="group relative overflow-hidden bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 border border-outline-variant/30 hover:-translate-y-1 p-4 md:p-6 block"
               >
                 <div className="relative z-10">
-                  <div className="w-12 h-12 bg-primary-container/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 mb-6">
-                    <span className="material-symbols-outlined text-2xl">{service.icon}</span>
+                  <div className="flex items-center gap-2.5 mb-2 md:block md:mb-0">
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-primary-container/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 shrink-0 md:mb-6">
+                      <span className="material-symbols-outlined text-xl md:text-2xl">{service.icon}</span>
+                    </div>
+                    <h3 className="text-xs md:text-lg font-bold text-primary leading-tight md:mb-3">{service.title}</h3>
                   </div>
-                  <h3 className="text-lg font-bold text-primary mb-3">{service.title}</h3>
-                  <p className="text-xs text-on-surface-variant leading-relaxed mb-5">{service.desc}</p>
+                  <p className="text-[10px] md:text-xs text-on-surface-variant leading-normal md:leading-relaxed mb-3 md:mb-5">{service.desc}</p>
                   {service.showLink !== false && (
-                    <Link
-                      href={service.linkUrl || "/gioi-thieu"}
-                      className="inline-flex items-center gap-1.5 text-secondary font-bold text-xs group-hover:gap-3 transition-all"
+                    <span
+                      className="hidden md:inline-flex items-center gap-1.5 text-secondary font-bold text-xs group-hover:gap-3 transition-all"
                     >
                       Chi tiết <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                    </Link>
+                    </span>
                   )}
                 </div>
-                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity hidden md:block">
                   <span className="material-symbols-outlined text-7xl">{service.bgIcon}</span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -655,9 +657,9 @@ export default function HomeClientPage({
                   </div>
                 </article>
               )}
-              <div className="grid sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-4 md:gap-6">
                 {liveArticles.slice(1).map((article: any, idx: number) => (
-                  <article key={idx} className="group space-y-3 bg-white p-4 rounded-2xl border border-outline-variant/10 hover:shadow-md transition-shadow">
+                  <article key={idx} className="group space-y-2 md:space-y-3 bg-white p-3 md:p-4 rounded-2xl border border-outline-variant/10 hover:shadow-md transition-shadow">
                     <a href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
                       <div className="rounded-xl overflow-hidden aspect-video shadow-sm cursor-pointer">
                         <img

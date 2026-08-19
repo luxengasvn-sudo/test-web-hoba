@@ -14,6 +14,9 @@ export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(): Promise<Metadata> {
   let faviconUrl = "/favicon.ico";
+  let siteName = "HOBA LPG - Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM";
+  let siteDesc = "HOBA - Ngôi nhà chung của cộng đồng doanh nghiệp LPG, cam kết đồng hành cùng sự an toàn, chuyên nghiệp và thịnh vượng của ngành năng lượng phía Nam.";
+
   try {
     const configData = await executeDirectQuery({
       method: "SELECT",
@@ -21,16 +24,19 @@ export async function generateMetadata(): Promise<Metadata> {
       filters: [{ col: "key", val: "general" }],
       isSingle: true,
     });
-    if (configData && configData.value && configData.value.faviconUrl) {
-      faviconUrl = configData.value.faviconUrl;
+    if (configData && configData.value) {
+      if (configData.value.faviconUrl) faviconUrl = configData.value.faviconUrl;
+      if (configData.value.siteName) siteName = configData.value.siteName;
+      if (configData.value.siteDescription) siteDesc = configData.value.siteDescription;
+      else if (configData.value.footerDesc) siteDesc = configData.value.footerDesc;
     }
   } catch (error) {
-    console.error("Error fetching favicon in metadata:", error);
+    console.error("Error fetching metadata config:", error);
   }
 
   return {
-    title: "HOBA LPG - Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM",
-    description: "HOBA - Ngôi nhà chung của cộng đồng doanh nghiệp LPG, cam kết đồng hành cùng sự an toàn, chuyên nghiệp và thịnh vượng của ngành năng lượng phía Nam.",
+    title: siteName,
+    description: siteDesc,
     keywords: "HOBA, LPG, khí hóa lỏng, hiệp hội gas, TP.HCM, an toàn gas",
     icons: {
       icon: faviconUrl,

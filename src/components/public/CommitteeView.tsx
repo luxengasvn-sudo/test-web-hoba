@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 import defaultCommitteeBanChapHanh from '@/lib/defaultCommitteeBanChapHanh.json';
 import defaultCommitteeBanThuongVu from '@/lib/defaultCommitteeBanThuongVu.json';
 import defaultCommitteeBanKiemTra from '@/lib/defaultCommitteeBanKiemTra.json';
+import { DEFAULT_HOBA_LOGO } from '@/lib/constants';
 
 const DEFAULT_COMMITTEES = {
   'ban-chap-hanh': defaultCommitteeBanChapHanh,
@@ -248,23 +249,38 @@ export default function CommitteeView({
     loadMembersData();
   }, [initialMembers, initialChapters]);
 
-  const handleShowMemberDetail = async (memberId?: string) => {
-    if (!memberId) return;
-    
-    const found = activeMembers.find(m => m.id === memberId);
+  const handleShowMemberDetail = async (memberId?: string, name?: string, company?: string) => {
+    // 1. Try to find by memberId first in activeMembers
+    let found = memberId ? activeMembers.find(m => m.id === memberId) : null;
+
+    // 2. Try to match by representative_name or company_name in activeMembers
+    if (!found && name) {
+      const cleanName = name.trim().toLowerCase();
+      found = activeMembers.find(m => (m.representative_name || '').trim().toLowerCase() === cleanName);
+    }
+    if (!found && company) {
+      const cleanCompany = company.trim().toLowerCase();
+      found = activeMembers.find(m => (m.company_name || '').trim().toLowerCase() === cleanCompany);
+    }
+
     if (found) {
       setSelectedMember(found);
       return;
     }
 
-    if (supabase) {
+    // 3. Query direct database if not loaded in memory
+    if (supabase && (memberId || name || company)) {
       try {
-        const { data: memberData } = await supabase
-          .from('members')
-          .select('*')
-          .eq('id', memberId)
-          .single();
-        
+        let query = supabase.from('members').select('*');
+        if (memberId && memberId !== 'preview') {
+          query = query.eq('id', memberId);
+        } else if (name) {
+          query = query.ilike('representative_name', `%${name.trim()}%`);
+        } else if (company) {
+          query = query.ilike('company_name', `%${company.trim()}%`);
+        }
+
+        const { data: memberData } = await query.limit(1).maybeSingle();
         if (memberData) {
           let chapterName = 'Chi hội liên kết';
           if (memberData.chapter_id) {
@@ -294,11 +310,11 @@ export default function CommitteeView({
             created_at: memberData.created_at,
             chapter_id: memberData.chapter_id,
             chapter_name: chapterName,
-            association_role: memberData.association_role || 'Hội viên chính thức',
+            association_role: memberData.association_role || getBreadcrumbTitle(),
             chapter_role: memberData.chapter_role,
             join_date: formatDate(memberData.join_date || memberData.created_at),
-            logo_url: memberData.logo_url || memberData.license_file_url,
-            representative_avatar_url: memberData.representative_avatar_url || ''
+            logo_url: memberData.logo_url || memberData.license_file_url || DEFAULT_HOBA_LOGO,
+            representative_avatar_url: memberData.representative_avatar_url || DEFAULT_HOBA_LOGO
           };
           setSelectedMember(resolvedMember);
           return;
@@ -308,39 +324,27 @@ export default function CommitteeView({
       }
     }
 
-    const saved = localStorage.getItem('hoba_website_members');
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        const memberData = data.find((d: any) => d.id === memberId);
-        if (memberData) {
-          const resolvedMember: Member = {
-            id: memberData.id,
-            company_name: memberData.company_name,
-            tax_code: memberData.tax_code,
-            address: memberData.address,
-            phone: memberData.phone,
-            email: memberData.email,
-            business_type: memberData.business_type,
-            representative_name: memberData.representative_name,
-            representative_role: memberData.representative_role,
-            representative_email: memberData.representative_email,
-            representative_phone: memberData.representative_phone,
-            status: memberData.status,
-            created_at: memberData.created_at || new Date().toISOString(),
-            chapter_id: memberData.chapter_id || undefined,
-            chapter_name: memberData.chapter_id ? 'Chi hội liên kết' : undefined,
-            association_role: memberData.association_role || 'Hội viên chính thức',
-            chapter_role: memberData.chapter_role || undefined,
-            join_date: formatDate(memberData.join_date || memberData.created_at || new Date()),
-            logo_url: memberData.logo_url || memberData.license_file_url || undefined,
-            representative_avatar_url: memberData.representative_avatar_url || ''
-          };
-          setSelectedMember(resolvedMember);
-        }
-      } catch (e) {
-        console.error('Error parsing member from localStorage fallback:', e);
-      }
+    // 4. Graceful preview object when not in database
+    if (name || company) {
+      setSelectedMember({
+        id: memberId || 'preview',
+        company_name: company || 'Doanh nghiệp Hội viên HOBA',
+        tax_code: 'Đang cập nhật',
+        address: 'Thành phố Hồ Chí Minh, Việt Nam',
+        phone: '028 3831 66710',
+        email: 'info@hobalpg.vn',
+        business_type: 'Kinh doanh Khí hóa lỏng LPG',
+        representative_name: name || 'Ủy viên Ban Lãnh đạo',
+        representative_role: 'Lãnh đạo / Đại diện',
+        representative_email: 'info@hobalpg.vn',
+        representative_phone: '028 3831 66710',
+        status: 'Active',
+        created_at: new Date().toISOString(),
+        association_role: getBreadcrumbTitle(),
+        join_date: 'Ban Lãnh đạo Hiệp hội',
+        logo_url: DEFAULT_HOBA_LOGO,
+        representative_avatar_url: DEFAULT_HOBA_LOGO
+      });
     }
   };
 
@@ -431,7 +435,7 @@ export default function CommitteeView({
     );
   }
 
-  const defaultAvatar = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256';
+  const defaultAvatar = DEFAULT_HOBA_LOGO;
 
   // Build the effective members list for the table:
   // If chairman or vice-chairmen sections are hidden, merge them into the members table
@@ -496,7 +500,10 @@ export default function CommitteeView({
             <h2 className="text-xl md:text-2xl font-black text-primary border-l-4 border-secondary pl-3 uppercase tracking-wide">
               {config.chairmanSectionTitle || getDefaultTitle('chairman', type)}
             </h2>
-            <div className="max-w-3xl bg-white border border-outline-variant/30 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.02)] overflow-hidden flex flex-col md:flex-row items-center md:items-stretch group hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300">
+            <div 
+              onClick={() => handleShowMemberDetail(config.chairman.memberId, config.chairman.name, config.chairman.company)}
+              className="max-w-3xl bg-white border border-outline-variant/30 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.02)] overflow-hidden flex flex-col md:flex-row items-center md:items-stretch group hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300 cursor-pointer"
+            >
               
               {/* Avatar Column */}
               <div className="w-full md:w-72 relative min-h-[300px] md:min-h-auto overflow-hidden bg-surface-container-low flex-shrink-0">
@@ -504,6 +511,9 @@ export default function CommitteeView({
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   alt={config.chairman.name}
                   src={config.chairman.avatarUrl || defaultAvatar}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = defaultAvatar;
+                  }}
                 />
               </div>
 
@@ -511,7 +521,7 @@ export default function CommitteeView({
               <div className="p-8 flex flex-col justify-center flex-grow text-left space-y-4">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-xl md:text-2xl font-extrabold text-primary tracking-tight">
+                    <h3 className="text-xl md:text-2xl font-extrabold text-primary tracking-tight group-hover:text-secondary transition-colors">
                       {config.chairman.name}
                     </h3>
                     {config.chairman.isVerified !== false && (
@@ -529,18 +539,15 @@ export default function CommitteeView({
 
                 <div className="space-y-2">
                   <span className="text-[10px] font-bold text-on-surface-variant uppercase block tracking-wider">Đơn vị công tác</span>
-                  {config.chairman.memberId ? (
-                    <button
-                      onClick={() => handleShowMemberDetail(config.chairman.memberId)}
-                      className="text-sm font-semibold text-secondary hover:text-primary hover:underline leading-relaxed block text-left"
-                    >
-                      {config.chairman.company}
-                    </button>
-                  ) : (
-                    <p className="text-sm font-semibold text-on-surface leading-relaxed">
-                      {config.chairman.company}
-                    </p>
-                  )}
+                  <p className="text-sm font-semibold text-on-surface group-hover:text-primary group-hover:underline leading-relaxed">
+                    {config.chairman.company}
+                  </p>
+                </div>
+
+                <div className="pt-2">
+                  <span className="inline-flex items-center gap-1 text-xs font-bold text-primary group-hover:text-secondary transition-colors">
+                    Xem hồ sơ chi tiết <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                  </span>
                 </div>
               </div>
             </div>
@@ -557,7 +564,8 @@ export default function CommitteeView({
               {config.viceChairmen.map((vc, idx) => (
                 <div 
                   key={idx} 
-                  className="bg-white border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm flex flex-col group hover:shadow-md hover:border-primary/20 transition-all duration-300"
+                  onClick={() => handleShowMemberDetail(vc.memberId, vc.name, vc.company)}
+                  className="bg-white border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm flex flex-col group hover:shadow-md hover:border-primary/20 transition-all duration-300 cursor-pointer"
                 >
                   {/* Portrait Area */}
                   <div className="aspect-[4/5] relative bg-surface-container-low overflow-hidden">
@@ -565,6 +573,9 @@ export default function CommitteeView({
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       alt={vc.name}
                       src={vc.avatarUrl || defaultAvatar}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = defaultAvatar;
+                      }}
                     />
                   </div>
 
@@ -581,18 +592,15 @@ export default function CommitteeView({
 
                     <div className="space-y-1 border-t border-outline-variant/20 pt-3">
                       <span className="text-[9px] font-bold text-on-surface-variant uppercase block tracking-widest">Đơn vị công tác</span>
-                      {vc.memberId ? (
-                        <button
-                          onClick={() => handleShowMemberDetail(vc.memberId)}
-                          className="text-[11px] font-semibold text-secondary hover:text-primary hover:underline leading-normal line-clamp-3 block font-sans text-left"
-                        >
-                          {vc.company}
-                        </button>
-                      ) : (
-                        <p className="text-[11px] font-semibold text-on-surface leading-normal line-clamp-3">
-                          {vc.company}
-                        </p>
-                      )}
+                      <p className="text-[11px] font-semibold text-on-surface group-hover:text-primary group-hover:underline leading-normal line-clamp-3">
+                        {vc.company}
+                      </p>
+                    </div>
+
+                    <div className="pt-1">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-primary group-hover:text-secondary transition-colors">
+                        Chi tiết <span className="material-symbols-outlined text-xs">arrow_forward</span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -618,28 +626,26 @@ export default function CommitteeView({
                       <th className="py-4 px-6 text-xs font-bold uppercase tracking-wider">Họ và tên</th>
                       <th className="py-4 px-6 text-xs font-bold uppercase tracking-wider">Chức vụ tại Hiệp hội</th>
                       <th className="py-4 px-6 text-xs font-bold uppercase tracking-wider">Đơn vị công tác</th>
+                      <th className="py-4 px-6 text-xs font-bold uppercase tracking-wider text-right">Hồ sơ</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-outline-variant/20 text-xs">
                     {effectiveMembers.map((member, idx) => (
                       <tr 
                         key={idx} 
-                        className="hover:bg-surface-container-low transition-colors duration-200 odd:bg-white even:bg-surface-container-lowest"
+                        onClick={() => handleShowMemberDetail(member.memberId, member.name, member.company)}
+                        className="hover:bg-surface-container-low transition-colors duration-200 odd:bg-white even:bg-surface-container-lowest cursor-pointer group"
                       >
                         <td className="py-4 px-6 font-bold text-on-surface-variant text-center">{idx + 1}</td>
-                        <td className="py-4 px-6 font-extrabold text-primary text-sm">{member.name}</td>
+                        <td className="py-4 px-6 font-extrabold text-primary text-sm group-hover:text-secondary transition-colors">{member.name}</td>
                         <td className="py-4 px-6 font-bold text-secondary">{member.role || 'Ủy viên'}</td>
-                        <td className="py-4 px-6 font-semibold text-on-surface">
-                          {member.memberId ? (
-                            <button
-                              onClick={() => handleShowMemberDetail(member.memberId)}
-                              className="text-secondary hover:text-primary hover:underline font-semibold text-left"
-                            >
-                              {member.company}
-                            </button>
-                          ) : (
-                            member.company
-                          )}
+                        <td className="py-4 px-6 font-semibold text-on-surface group-hover:text-primary group-hover:underline">
+                          {member.company}
+                        </td>
+                        <td className="py-4 px-6 text-right font-bold text-primary group-hover:text-secondary">
+                          <span className="inline-flex items-center gap-0.5 text-xs">
+                            Chi tiết <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                          </span>
                         </td>
                       </tr>
                     ))}
@@ -653,7 +659,8 @@ export default function CommitteeView({
               {effectiveMembers.map((member, idx) => (
                 <div 
                   key={idx} 
-                  className="flex items-center gap-3 p-4 hover:bg-surface-container-low transition-colors duration-200 odd:bg-white even:bg-surface-container-lowest"
+                  onClick={() => handleShowMemberDetail(member.memberId, member.name, member.company)}
+                  className="flex items-center gap-3 p-4 hover:bg-surface-container-low transition-colors duration-200 odd:bg-white even:bg-surface-container-lowest cursor-pointer group"
                 >
                   {/* STT Badge */}
                   <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs shrink-0 font-sans">
@@ -662,7 +669,7 @@ export default function CommitteeView({
                   {/* Member Details */}
                   <div className="flex-grow min-w-0 text-left space-y-1">
                     {/* Name (1 row, truncate) */}
-                    <div className="font-extrabold text-primary text-sm truncate" title={member.name}>
+                    <div className="font-extrabold text-primary text-sm truncate group-hover:text-secondary" title={member.name}>
                       {member.name}
                     </div>
                     {/* Role (1 row, truncate) */}
@@ -670,19 +677,11 @@ export default function CommitteeView({
                       {member.role || 'Ủy viên'}
                     </div>
                     {/* Company (1 row, truncate) */}
-                    <div className="font-semibold text-on-surface text-xs truncate" title={member.company}>
-                      {member.memberId ? (
-                        <button
-                          onClick={() => handleShowMemberDetail(member.memberId)}
-                          className="text-secondary hover:text-primary hover:underline font-semibold text-left truncate block w-full"
-                        >
-                          {member.company}
-                        </button>
-                      ) : (
-                        member.company
-                      )}
+                    <div className="font-semibold text-on-surface text-xs truncate group-hover:text-primary" title={member.company}>
+                      {member.company}
                     </div>
                   </div>
+                  <span className="material-symbols-outlined text-outline text-base group-hover:text-primary">chevron_right</span>
                 </div>
               ))}
             </div>
@@ -712,7 +711,10 @@ export default function CommitteeView({
                   <img
                     alt={selectedMember.company_name}
                     className="max-h-full max-w-full object-contain"
-                    src={selectedMember.logo_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBer5UmMRZAfoqcbQdDj2YlNi-He_BCVlNf4MgqxLxNKyZhxs2rlXnTNAqZbaOiTeyYlL1dKFi1854zNIHtNCJ8NS1MBXIakzRkGoKnJ59PX-0GsHP55Ri6sRjzQsXO2dIJnVzIye1cxWosv32otDlO2WjVzzPiZYwCg1VZr-P6fXh0Pyct1ti4yt_rYCByE5K-BrVK8F49XzS9PTCmIby_i9yBXXhfu3YST4hjjv-5pa86OAaD9cRPlLwHbGb9RlGHs3XTrUWzulE'}
+                    src={selectedMember.logo_url || DEFAULT_HOBA_LOGO}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = DEFAULT_HOBA_LOGO;
+                    }}
                   />
                 </div>
                 <div className="text-center sm:text-left space-y-2">
@@ -736,10 +738,21 @@ export default function CommitteeView({
                     <span className="material-symbols-outlined text-sm">domain</span> Thông tin doanh nghiệp
                   </h5>
                   <div className="space-y-2 text-[11px]">
-                    <div><span className="text-on-surface-variant font-semibold">Mã số thuế:</span> {selectedMember.tax_code}</div>
-                    <div><span className="text-on-surface-variant font-semibold">Địa chỉ:</span> {selectedMember.address}</div>
-                    <div><span className="text-on-surface-variant font-semibold">Điện thoại:</span> {selectedMember.phone}</div>
-                    <div><span className="text-on-surface-variant font-semibold">Email:</span> {selectedMember.email}</div>
+                    {selectedMember.tax_code && selectedMember.tax_code !== 'Đang cập nhật' ? (
+                      <div><span className="text-on-surface-variant font-semibold">Mã số thuế:</span> {selectedMember.tax_code}</div>
+                    ) : null}
+                    {selectedMember.address && selectedMember.address !== 'Đang cập nhật' ? (
+                      <div><span className="text-on-surface-variant font-semibold">Địa chỉ:</span> {selectedMember.address}</div>
+                    ) : null}
+                    {selectedMember.phone ? (
+                      <div><span className="text-on-surface-variant font-semibold">Điện thoại:</span> {selectedMember.phone}</div>
+                    ) : null}
+                    {selectedMember.email ? (
+                      <div><span className="text-on-surface-variant font-semibold">Email:</span> {selectedMember.email}</div>
+                    ) : null}
+                    {!selectedMember.tax_code && !selectedMember.address && !selectedMember.phone && !selectedMember.email && (
+                      <div className="text-on-surface-variant italic">Thông tin liên hệ được bảo mật hoặc liên hệ qua Văn phòng Hiệp hội.</div>
+                    )}
                   </div>
                 </div>
 
@@ -749,23 +762,32 @@ export default function CommitteeView({
                     <span className="material-symbols-outlined text-sm">person</span> Người đại diện liên hệ
                   </h5>
                   <div className="flex gap-4 items-start pt-1">
-                    {selectedMember.representative_avatar_url && (
-                      <div className="w-16 h-16 rounded-full overflow-hidden border border-outline-variant/40 bg-white shrink-0">
-                        <img 
-                          src={selectedMember.representative_avatar_url} 
-                          alt="Representative" 
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = 'none';
-                          }}
-                        />
-                      </div>
-                    )}
+                    <div className="w-16 h-16 rounded-full overflow-hidden border border-outline-variant/40 bg-white shrink-0 p-1 flex items-center justify-center">
+                      <img 
+                        src={selectedMember.representative_avatar_url || DEFAULT_HOBA_LOGO} 
+                        alt="Representative" 
+                        className="w-full h-full object-contain rounded-full"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = DEFAULT_HOBA_LOGO;
+                        }}
+                      />
+                    </div>
                     <div className="space-y-2 text-[11px] flex-grow">
-                      <div><span className="text-on-surface-variant font-semibold">Họ tên:</span> {selectedMember.representative_name}</div>
-                      <div><span className="text-on-surface-variant font-semibold">Chức danh:</span> {selectedMember.representative_role}</div>
-                      <div><span className="text-on-surface-variant font-semibold">Điện thoại liên hệ:</span> {selectedMember.representative_phone}</div>
-                      <div><span className="text-on-surface-variant font-semibold">Email cá nhân:</span> {selectedMember.representative_email}</div>
+                      {selectedMember.representative_name ? (
+                        <div><span className="text-on-surface-variant font-semibold">Họ tên:</span> {selectedMember.representative_name}</div>
+                      ) : null}
+                      {selectedMember.representative_role ? (
+                        <div><span className="text-on-surface-variant font-semibold">Chức danh:</span> {selectedMember.representative_role}</div>
+                      ) : null}
+                      {selectedMember.representative_phone ? (
+                        <div><span className="text-on-surface-variant font-semibold">Điện thoại liên hệ:</span> {selectedMember.representative_phone}</div>
+                      ) : null}
+                      {selectedMember.representative_email ? (
+                        <div><span className="text-on-surface-variant font-semibold">Email cá nhân:</span> {selectedMember.representative_email}</div>
+                      ) : null}
+                      {!selectedMember.representative_name && !selectedMember.representative_role && !selectedMember.representative_phone && !selectedMember.representative_email && (
+                        <div className="text-on-surface-variant italic">Thông tin người đại diện đang cập nhật.</div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -783,10 +805,27 @@ export default function CommitteeView({
               </div>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-outline-variant/30 flex justify-end">
+            <div className="mt-8 pt-4 border-t border-outline-variant/30 flex flex-col sm:flex-row justify-between items-center gap-3">
+              {selectedMember.id && selectedMember.id !== 'preview' ? (
+                <Link
+                  href={`/hoi-vien?id=${selectedMember.id}`}
+                  className="bg-[#00346f] hover:bg-[#00244f] text-white font-bold px-4 py-2.5 rounded-lg text-xs flex items-center gap-1.5 transition-colors w-full sm:w-auto justify-center"
+                >
+                  <span className="material-symbols-outlined text-sm">badge</span>
+                  Xem trên Danh bạ Hội viên →
+                </Link>
+              ) : (
+                <Link
+                  href="/hoi-vien"
+                  className="bg-[#00346f] hover:bg-[#00244f] text-white font-bold px-4 py-2.5 rounded-lg text-xs flex items-center gap-1.5 transition-colors w-full sm:w-auto justify-center"
+                >
+                  <span className="material-symbols-outlined text-sm">groups</span>
+                  Đến Danh bạ Hội viên →
+                </Link>
+              )}
               <button
                 onClick={() => setSelectedMember(null)}
-                className="bg-[#00346f] hover:bg-[#00346f]/90 text-white font-bold px-6 py-2.5 rounded-lg text-xs"
+                className="bg-surface-container hover:bg-surface-variant text-on-surface font-bold px-6 py-2.5 rounded-lg text-xs w-full sm:w-auto"
               >
                 Đóng
               </button>

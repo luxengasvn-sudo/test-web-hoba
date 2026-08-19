@@ -2,6 +2,7 @@ import { executeDirectQuery } from '@/lib/db-direct';
 import MembersClientPage from './MembersClientPage';
 import defaultMembers from '@/lib/defaultMembers.json';
 import defaultChapters from '@/lib/defaultChapters.json';
+import { DEFAULT_HOBA_LOGO } from '@/lib/constants';
 
 export const dynamic = 'force-dynamic';
 
@@ -87,8 +88,8 @@ export default async function Page() {
           join_date: d.join_date
             ? (d.join_date instanceof Date ? d.join_date.toISOString().split('T')[0] : String(d.join_date).split('T')[0])
             : (d.created_at instanceof Date ? d.created_at.toISOString().split('T')[0] : String(d.created_at).split('T')[0]),
-          logo_url: d.logo_url || d.license_file_url,
-          representative_avatar_url: d.representative_avatar_url || ''
+          logo_url: d.logo_url || d.license_file_url || DEFAULT_HOBA_LOGO,
+          representative_avatar_url: d.representative_avatar_url || DEFAULT_HOBA_LOGO
         };
       });
     } else {

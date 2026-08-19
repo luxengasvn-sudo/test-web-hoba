@@ -1,0 +1,26 @@
+﻿# Danh sách công việc dự án Boba V2 (PostgreSQL)
+
+- [ ] **Khởi động dự án & Kết nối CSDL**
+    - [ ] Cài đặt các dependencies cần thiết (`pg`, `@types/pg`)
+    - [ ] Cấu hình biến môi trường kết nối PostgreSQL (.env)
+    - [ ] Viết helper kết nối database (`src/lib/db.ts`)
+    - [ ] Thiết lập bảng settings & viết API cấu hình hệ thống
+- [ ] **Cập nhật giao diện Công cộng (Public Components & Pages)**
+    - [ ] Đọc cấu hình động tại Header & Footer
+    - [ ] Tích hợp danh sách Tin tức & Sự kiện nổi bật trên Trang chủ
+    - [ ] Động hóa trang Hội viên (lọc theo ngành nghề/vị trí)
+    - [ ] Động hóa trang Văn bản pháp lý (tìm kiếm, tải PDF/DOC)
+    - [ ] Động hóa trang Tin tức (phân trang, chi tiết bài viết)
+    - [ ] Động hóa trang Sự kiện & Đào tạo
+    - [ ] Xử lý Form Liên hệ & Form Đăng ký Hội viên gửi về DB
+- [ ] **Xây dựng hệ thống Admin Dashboard**
+    - [ ] Trang Đăng nhập Quản trị viên
+    - [ ] CRUD Quản lý Tin tức (Rich Text Editor)
+    - [ ] CRUD Quản lý Hội viên (Phê duyệt hồ sơ đăng ký)
+    - [ ] CRUD Quản lý Văn bản pháp lý (Upload PDF)
+    - [ ] Trang cấu hình Cài đặt hệ thống (Instant Auto-save logo/hotline/address)
+    - [ ] Tích hợp thư viện Upload Media dùng chung
+- [ ] **Hoàn thiện & Kiểm thử**
+    - [ ] Kiểm tra responsive toàn trang
+    - [ ] Tối ưu hóa SEO & Thẻ Metadata cho các trang tin tức/văn bản
+    - [ ] Chạy lệnh `npm run build` xác nhận Exit Code 0 sạch lỗi

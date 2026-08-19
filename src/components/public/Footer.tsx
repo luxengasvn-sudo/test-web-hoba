@@ -39,7 +39,13 @@ export default function Footer({ initialConfig }: { initialConfig?: any }) {
   const [address, setAddress] = useState(() => initialConfig?.address || 'Số 7, đường Nguyễn Trung Trực, KP. Bình Minh 1, Phường Dĩ An, TP Hồ Chí Minh, Việt Nam');
   const [phone, setPhone] = useState(() => initialConfig?.contactPhone || '028 3831 66710');
   const [email, setEmail] = useState(() => initialConfig?.contactEmail || 'info@hobalpg.vn');
-  const [copyText, setCopyText] = useState(() => initialConfig?.copyText || '© 2026 HOBA - Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM. All rights reserved.');
+  const currentYear = new Date().getFullYear();
+  const [copyText, setCopyText] = useState(() => {
+    if (initialConfig?.copyText) {
+      return initialConfig.copyText.replace(/©\s*\d{4}/, `© ${currentYear}`);
+    }
+    return `© ${currentYear} ${initialConfig?.logoTitle || 'HOBA'} - Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM. All rights reserved.`;
+  });
   const [facebookUrl, setFacebookUrl] = useState(() => initialConfig?.facebookUrl || 'https://facebook.com/hobagroup');
   const [footerDesc, setFooterDesc] = useState(() => initialConfig?.footerDesc || 'Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM - Nơi kết nối, bảo vệ và định hướng phát triển bền vững cho cộng đồng doanh nghiệp LPG phía Nam.');
   const [logoUrl, setLogoUrl] = useState(() => initialConfig?.logoUrl || 'https://lh3.googleusercontent.com/aida-public/AB6AXuDGqQKdtsfpnEDKd7JAu8yQBX437NF9yre-G8AhC0L2jkhp6KVKASaL_r8TGZh_QRNtxoTKJXj2RXxkHdzbloP5qr9ddoI8OKoucsW0qAAsP4BTZGw_OuSxkWH_7yIFBmg6xnEcQ6TW4JHRFli25nYMjoLZ2HCRMhbnXTVG7sJKa0uboKFQS39PjtPXOEjGCHqrOCfHNMf3fKTvNlIsHiQw4bsKOCnLrOmA4gvrVMw8OI1QXoKnQvFoERk0EIu4ye4Mgt_9-lpAzjg');
@@ -120,7 +126,7 @@ export default function Footer({ initialConfig }: { initialConfig?: any }) {
     if (val.address) setAddress(val.address);
     if (val.contactPhone) setPhone(val.contactPhone);
     if (val.contactEmail) setEmail(val.contactEmail);
-    if (val.copyText) setCopyText(val.copyText);
+    if (val.copyText) setCopyText(val.copyText.replace(/©\s*\d{4}/, `© ${currentYear}`));
     if (val.facebookUrl) setFacebookUrl(val.facebookUrl);
     if (val.footerDesc) setFooterDesc(val.footerDesc);
     if (val.quickLinks && Array.isArray(val.quickLinks)) setQuickLinks(val.quickLinks);

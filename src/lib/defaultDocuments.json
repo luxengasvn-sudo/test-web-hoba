@@ -1,32 +1,52 @@
 [
   {
-    "code": "87/2018/NĐ-CP",
-    "title": "Nghị định 87 về kinh doanh khí",
+    "code": "105/2025/NĐ-CP",
+    "title": "Nghị định 105/2025/NĐ-CP quy định chi tiết Luật Phòng cháy, chữa cháy và cứu nạn, cứu hộ",
     "category": "Quy chuẩn",
-    "issuer": "Bộ Công Thương",
+    "issuer": "Chính phủ",
+    "date": "2025-05-15",
+    "fileSize": "6.3 MB",
+    "description": "Nghị định quy định chi tiết một số điều và biện pháp thi hành Luật Phòng cháy, chữa cháy và cứu nạn, cứu hộ đối với các cơ sở kinh doanh, chiết nạp, tồn chứa khí LPG.",
+    "fileUrl": "/uploads/documents/ND-105-2025-ve-PCCC.pdf"
+  },
+  {
+    "code": "87/2018/NĐ-CP",
+    "title": "Nghị định 87/2018/NĐ-CP về kinh doanh khí",
+    "category": "Quy chuẩn",
+    "issuer": "Chính phủ",
     "date": "2018-06-15",
     "fileSize": "1.7 MB",
     "description": "Nghị định này quy định về hoạt động kinh doanh khí và điều kiện kinh doanh khí tại thị trường Việt Nam.",
-    "fileUrl": "/uploads/documents/vxjot9bvg1a.pdf"
+    "fileUrl": "/uploads/documents/ND-87-ve-Kinh-doanh-khi.pdf"
   },
   {
     "code": "96/2016/NĐ-CP",
-    "title": "NĐ 96 quy định về ANTT đối với một số ngành nghề KD",
+    "title": "Nghị định 96/2016/NĐ-CP quy định điều kiện về ANTT đối với một số ngành, nghề KD có điều kiện",
     "category": "Quy chuẩn",
-    "issuer": "Bộ Công Thương",
+    "issuer": "Chính phủ",
     "date": "2016-07-01",
     "fileSize": "1.8 MB",
-    "description": "Nghị định này quy định điều kiện về an ninh, trật tự, công tác quản lý nhà nước và trách nhiệm của tổ chức, cá nhân trong hoạt động ngành, nghề đầu tư kinh doanh có điều kiện về an ninh, trật tự trên lãnh thổ Việt Nam.",
-    "fileUrl": "/uploads/documents/rpx8y3xi9q9.pdf"
+    "description": "Nghị định này quy định điều kiện về an ninh, trật tự, công tác quản lý nhà nước và trách nhiệm của tổ chức, cá nhân trong hoạt động kinh doanh khí và các ngành nghề đầu tư kinh doanh có điều kiện.",
+    "fileUrl": "/uploads/documents/ND-96-quy-dinh-ve-ANTT.pdf"
   },
   {
-    "code": "105/2025/NĐ-CP",
-    "title": "NĐ 105.2025 về PCCC",
-    "category": "Quy chuẩn",
-    "issuer": "Bộ Công Thương",
-    "date": "2025-05-15",
-    "fileSize": "6.3 MB",
-    "description": "Nghị định này quy định chi tiết một số điều và biện pháp thi hành Luật Phòng cháy, chữa cháy và cứu nạn, cứu hộ",
-    "fileUrl": "/uploads/documents/ozgh78bthf8.pdf"
+    "code": "14/QĐ-UBND",
+    "title": "Quyết định phê duyệt Điều lệ Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM",
+    "category": "Quyết định",
+    "issuer": "UBND TP. Hồ Chí Minh",
+    "date": "2025-02-10",
+    "fileSize": "825 KB",
+    "description": "Quyết định chính thức của Ủy ban Nhân dân TP. Hồ Chí Minh về việc phê duyệt và công nhận Điều lệ hoạt động của Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM (HOBA LPG).",
+    "fileUrl": "/uploads/documents/14-Quyet-dinh-phe-duyet-dieu-le-HOBA-2025.pdf"
+  },
+  {
+    "code": "12/QC-HOBA",
+    "title": "Quy chế hoạt động nội bộ Hiệp hội Gas TP.HCM 2025",
+    "category": "Hướng dẫn",
+    "issuer": "Hiệp hội HOBA",
+    "date": "2025-01-15",
+    "fileSize": "5.7 MB",
+    "description": "Quy chế tổ chức, phân công nhiệm vụ và hoạt động điều hành nội bộ của Ban Chấp hành, Ban Thường vụ, Ban Kiểm tra và các Chi hội trực thuộc Hiệp hội HOBA.",
+    "fileUrl": "/uploads/documents/12-Quy-che-hoat-dong-noi-bo-2025.pdf"
   }
 ]

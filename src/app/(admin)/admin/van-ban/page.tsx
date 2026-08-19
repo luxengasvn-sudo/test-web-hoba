@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
+import defaultDocuments from '@/lib/defaultDocuments.json';
 
 interface DocumentAdmin {
   id: string;
@@ -34,11 +35,31 @@ export default function AdminDocuments() {
   const [formFileUrl, setFormFileUrl] = useState('#');
   const [fileUploading, setFileUploading] = useState(false);
 
-  const defaultDocs: DocumentAdmin[] = [
-    { id: '1', code: 'QCVN 08:2026/BCT', title: 'Quy chuẩn kỹ thuật quốc gia về an toàn trạm nạp khí hóa lỏng (LPG)', category: 'Quy chuẩn', issuer: 'Bộ Công Thương', date: '2026-04-20', fileSize: '2.4 MB', description: 'Quy chuẩn an toàn bắt buộc đối với hệ thống thiết bị công nghiệp trạm nạp LPG.' },
-    { id: '2', code: 'Thông tư 12/2026/BXD', title: 'Quy định về an toàn phòng cháy chữa cháy đối với hệ thống gas đô thị', category: 'Thông tư', issuer: 'Bộ Xây dựng', date: '2026-03-15', fileSize: '1.8 MB', description: 'Các quy định mới ban hành về thiết kế PCCC hệ thống đường ống gas đô thị.' },
-    { id: '3', code: 'Nghị định 87/2026/NĐ-CP', title: 'Quy định về điều kiện kinh doanh khí gas và các biện pháp bảo đảm an toàn', category: 'Quyết định', issuer: 'Chính phủ', date: '2026-02-01', fileSize: '3.1 MB', description: 'Nghị định nền tảng quy định về cấp giấy chứng nhận đủ điều kiện nạp/kinh doanh gas.' }
-  ];
+  const defaultDocs: DocumentAdmin[] = defaultDocuments.map((d, idx) => ({
+    id: String(idx + 1),
+    code: d.code,
+    title: d.title,
+    category: d.category,
+    issuer: d.issuer,
+    date: d.date,
+    fileSize: d.fileSize,
+    description: d.description,
+    fileUrl: d.fileUrl
+  }));
+
+  const getCleanDocUrl = (code: string, fileUrl?: string) => {
+    const c = (code || '').trim();
+    if (c === '105/2025/NĐ-CP') return '/uploads/documents/ND-105-2025-ve-PCCC.pdf';
+    if (c === '87/2018/NĐ-CP') return '/uploads/documents/ND-87-ve-Kinh-doanh-khi.pdf';
+    if (c === '96/2016/NĐ-CP') return '/uploads/documents/ND-96-quy-dinh-ve-ANTT.pdf';
+    if (c === '14/QĐ-UBND') return '/uploads/documents/14-Quyet-dinh-phe-duyet-dieu-le-HOBA-2025.pdf';
+    if (c === '12/QC-HOBA') return '/uploads/documents/12-Quy-che-hoat-dong-noi-bo-2025.pdf';
+    if (!fileUrl || fileUrl === '#' || fileUrl.includes('hobalpg.vn/uploads/documents/')) {
+      const match = defaultDocs.find(def => def.code === c);
+      if (match) return match.fileUrl || '#';
+    }
+    return fileUrl || '#';
+  };
 
   const fetchDocs = async () => {
     setLoading(true);
@@ -46,12 +67,19 @@ export default function AdminDocuments() {
       const saved = localStorage.getItem('hoba_website_documents');
       if (saved) {
         try {
-          setDocs(JSON.parse(saved));
+          const parsed = JSON.parse(saved);
+          if (!Array.isArray(parsed) || parsed.length === 0 || !parsed.some(d => d.code === '105/2025/NĐ-CP') || parsed.some(d => d.fileUrl === '#')) {
+            setDocs(defaultDocs);
+            localStorage.setItem('hoba_website_documents', JSON.stringify(defaultDocs));
+          } else {
+            setDocs(parsed);
+          }
         } catch (e) {
           setDocs(defaultDocs);
         }
       } else {
         setDocs(defaultDocs);
+        localStorage.setItem('hoba_website_documents', JSON.stringify(defaultDocs));
       }
       setLoading(false);
       return;
@@ -66,7 +94,9 @@ export default function AdminDocuments() {
       if (error) throw error;
 
       if (data && data.length > 0) {
-        const formatted: DocumentAdmin[] = data.map((d: any) => ({
+        const validItems = data.filter((d: any) => !d.title?.toLowerCase().includes('test') && !d.code?.toLowerCase().includes('test'));
+
+        const formatted: DocumentAdmin[] = validItems.map((d: any) => ({
           id: d.id,
           code: d.code,
           title: d.title,
@@ -75,11 +105,37 @@ export default function AdminDocuments() {
           date: d.publish_date,
           fileSize: d.file_size || '1.0 MB',
           description: d.description || '',
-          fileUrl: d.file_url || '#'
+          fileUrl: getCleanDocUrl(d.code, d.file_url)
         }));
-        setDocs(formatted);
+
+        const normalizeCode = (code: string) => {
+          return (code || '')
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/đ/g, 'd')
+            .replace(/Đ/g, 'D')
+            .replace(/[^a-zA-Z0-9]/g, '')
+            .toUpperCase();
+        };
+
+        const docMap = new Map<string, DocumentAdmin>();
+        for (const def of defaultDocs) {
+          docMap.set(normalizeCode(def.code), def);
+        }
+        for (const m of formatted) {
+          const norm = normalizeCode(m.code);
+          if (norm) {
+            const existing = docMap.get(norm);
+            if (existing && existing.description && (!m.description || m.description.length < existing.description.length)) {
+              continue;
+            }
+            docMap.set(norm, m);
+          }
+        }
+
+        setDocs(Array.from(docMap.values()));
       } else {
-        setDocs([]);
+        setDocs(defaultDocs);
       }
     } catch (err) {
       console.error('Lỗi khi tải văn bản pháp lý từ Supabase, chuyển sang fallback:', err);
@@ -271,7 +327,7 @@ export default function AdminDocuments() {
     setFormFileUrl('#');
   };
 
-  const handleOpenEditModal = (doc: DocumentAdmin) => {
+  const handleOpenEdit = (doc: DocumentAdmin) => {
     setEditingDocId(doc.id);
     setFormCode(doc.code);
     setFormTitle(doc.title);
@@ -286,9 +342,11 @@ export default function AdminDocuments() {
 
   const handleDownload = async (fileUrl: string, title: string, code: string, fileSize: string) => {
     if (!fileUrl || fileUrl === '#') {
-      alert(`Mô phỏng tải xuống tài liệu: ${title} (${code})`);
+      alert(`Tài liệu đang được cập nhật: ${title} (${code})`);
       return;
     }
+
+    const safeFileName = `${code.replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`;
 
     if (fileUrl.startsWith('indexeddb:')) {
       const key = fileUrl.replace('indexeddb:', '');
@@ -299,10 +357,11 @@ export default function AdminDocuments() {
           const url = URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = url;
-          const fileName = (blob as any).name || `${code.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
-          link.download = fileName;
+          link.download = (blob as any).name || safeFileName;
+          document.body.appendChild(link);
           link.click();
-          setTimeout(() => URL.revokeObjectURL(url), 100);
+          document.body.removeChild(link);
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
           return;
         }
       } catch (e) {
@@ -314,23 +373,49 @@ export default function AdminDocuments() {
       try {
         const res = await fetch(fileUrl);
         if (res.ok) {
-          window.open(fileUrl, '_blank');
+          const blob = await res.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = blobUrl;
+          link.download = safeFileName;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
           return;
         }
       } catch (err) {
         // Blob expired
       }
-
-      const mockContent = `Tài liệu: ${title}\nSố hiệu: ${code}\nDung lượng: ${fileSize}\n\n[Chế độ Mock Data] Đây là tập tin mô phỏng của tài liệu pháp lý đã tải lên hệ thống.`;
-      const blob = new Blob([mockContent], { type: 'text/plain;charset=utf-8' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `${code.replace(/[^a-zA-Z0-9]/g, '_')}_mock.txt`;
-      link.click();
-      return;
     }
 
-    window.open(fileUrl, '_blank');
+    // Direct fetch blob download for static / public URLs to ensure file is saved to disk
+    try {
+      const res = await fetch(fileUrl);
+      if (res.ok) {
+        const blob = await res.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = safeFileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+        return;
+      }
+    } catch (err) {
+      console.warn('Direct fetch download error:', err);
+    }
+
+    // Fallback: create download anchor
+    const link = document.createElement('a');
+    link.href = fileUrl;
+    link.download = safeFileName;
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const filteredDocs = docs.filter(doc => {
@@ -388,7 +473,7 @@ export default function AdminDocuments() {
                   <th className="p-4 w-28">Loại văn bản</th>
                   <th className="p-4 w-40">Cơ quan ban hành</th>
                   <th className="p-4 w-28">Ngày ban hành</th>
-                  <th className="p-4 w-20 text-center">Tải file</th>
+                  <th className="p-4 w-20 text-center">Xem file</th>
                   <th className="p-4 text-center w-20">Thao tác</th>
                 </tr>
               </thead>
@@ -421,18 +506,20 @@ export default function AdminDocuments() {
                       <td className="p-4 text-on-surface-variant font-medium">{doc.issuer}</td>
                       <td className="p-4 text-on-surface-variant font-medium">{doc.date}</td>
                       <td className="p-4 text-center">
-                        <button
-                          onClick={() => handleDownload(doc.fileUrl || '#', doc.title, doc.code, doc.fileSize)}
-                          className="text-secondary hover:text-[#93000d] inline-flex items-center justify-center p-1.5 rounded transition-all"
-                          title={`Tải xuống file (${doc.fileSize})`}
+                        <a
+                          href={doc.fileUrl || '#'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:text-[#002752] inline-flex items-center justify-center p-1.5 rounded transition-all hover:bg-surface-container"
+                          title="Xem trực tuyến (PDF)"
                         >
-                          <span className="material-symbols-outlined text-sm">download</span>
-                        </button>
+                          <span className="material-symbols-outlined text-base">visibility</span>
+                        </a>
                       </td>
                       <td className="p-4">
                         <div className="flex gap-1.5 justify-center">
                           <button
-                            onClick={() => handleOpenEditModal(doc)}
+                            onClick={() => handleOpenEdit(doc)}
                             className="text-primary hover:text-secondary px-1 py-1 rounded transition-colors"
                             title="Chỉnh sửa văn bản"
                           >

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import { DEFAULT_HOBA_LOGO } from '@/lib/constants';
 
 interface MemberAdmin {
   id: string;
@@ -50,14 +51,11 @@ function TableImage({ src }: { src: string | undefined }) {
     setError(false);
   }, [src]);
 
-  if (error || !src) {
-    return <span className="material-symbols-outlined text-outline text-[16px]">image</span>;
-  }
   return (
     <img
-      src={src}
+      src={error || !src ? DEFAULT_HOBA_LOGO : src}
       alt="Logo"
-      className="w-8 h-8 rounded border object-contain bg-white shrink-0"
+      className="w-8 h-8 rounded border object-contain bg-white shrink-0 p-0.5"
       onError={() => setError(true)}
     />
   );
@@ -69,18 +67,11 @@ function PreviewImage({ src, isAvatar = false }: { src: string | undefined; isAv
     setError(false);
   }, [src]);
 
-  if (error || !src) {
-    return (
-      <span className="material-symbols-outlined text-outline text-xl">
-        {isAvatar ? 'person' : 'image'}
-      </span>
-    );
-  }
   return (
     <img
-      src={src}
+      src={error || !src ? DEFAULT_HOBA_LOGO : src}
       alt="Preview"
-      className="w-full h-full object-cover"
+      className={`w-full h-full ${isAvatar ? 'object-contain p-1 rounded-full' : 'object-contain p-1'}`}
       onError={() => setError(true)}
     />
   );
@@ -456,23 +447,23 @@ export default function AdminMembers() {
 
       if (data && data.length > 0) {
         const formatted: MemberAdmin[] = data.map((d: any) => ({
-          id: d.id,
-          name: d.company_name,
-          taxCode: d.tax_code,
-          type: d.business_type,
-          email: d.email,
-          phone: d.phone,
-          address: d.address,
-          representativeName: d.representative_name,
-          representativeRole: d.representative_role,
-          representativeEmail: d.representative_email,
-          representativePhone: d.representative_phone,
-          status: d.status,
-          date: d.created_at ? d.created_at.split('T')[0] : new Date().toISOString().split('T')[0],
+          id: d.id || '',
+          name: d.company_name || '',
+          taxCode: d.tax_code || '',
+          type: d.business_type || 'Phân phối & Bán lẻ',
+          email: d.email || '',
+          phone: d.phone || '',
+          address: d.address || '',
+          representativeName: d.representative_name || '',
+          representativeRole: d.representative_role || '',
+          representativeEmail: d.representative_email || '',
+          representativePhone: d.representative_phone || '',
+          status: d.status || 'Active',
+          date: d.created_at ? (typeof d.created_at === 'string' ? d.created_at.split('T')[0] : new Date(d.created_at).toISOString().split('T')[0]) : new Date().toISOString().split('T')[0],
           chapterId: d.chapter_id || '',
           associationRole: d.association_role || 'Hội viên chính thức',
           chapterRole: d.chapter_role || '',
-          joinDate: d.join_date ? d.join_date.split('T')[0] : (d.created_at ? d.created_at.split('T')[0] : new Date().toISOString().split('T')[0]),
+          joinDate: d.join_date ? (typeof d.join_date === 'string' ? d.join_date.split('T')[0] : new Date(d.join_date).toISOString().split('T')[0]) : (d.created_at ? (typeof d.created_at === 'string' ? d.created_at.split('T')[0] : new Date(d.created_at).toISOString().split('T')[0]) : new Date().toISOString().split('T')[0]),
           logoUrl: d.logo_url || '',
           representativeAvatarUrl: d.representative_avatar_url || '',
           licenseFileUrl: d.license_file_url || '',
@@ -575,8 +566,8 @@ export default function AdminMembers() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formName || !formTaxCode || !formAddress || !formPhone || !formRepName || !formRepEmail || !formRepPhone) {
-      alert('Vui lòng nhập đầy đủ thông tin bắt buộc.');
+    if (!formName || !formName.trim()) {
+      alert('Vui lòng nhập Tên doanh nghiệp.');
       return;
     }
 
@@ -743,10 +734,12 @@ export default function AdminMembers() {
   };
 
   const filteredMembers = members.filter(m => {
-    const q = search.toLowerCase();
-    const matchesSearch = m.name.toLowerCase().includes(q) ||
-                          m.taxCode.includes(q) ||
-                          (m.representativeName || '').toLowerCase().includes(q);
+    if (!m) return false;
+    const q = (search || '').trim().toLowerCase();
+    const name = (m.name || '').toLowerCase();
+    const taxCode = (m.taxCode || '').toLowerCase();
+    const repName = (m.representativeName || '').toLowerCase();
+    const matchesSearch = !q || name.includes(q) || taxCode.includes(q) || repName.includes(q);
     const matchesStatus = filter === 'all' || m.status === filter;
     return matchesSearch && matchesStatus;
   });
@@ -972,13 +965,12 @@ export default function AdminMembers() {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Mã số thuế *</label>
+                  <label className="font-bold text-on-surface-variant">Mã số thuế</label>
                   <input
                     value={formTaxCode}
                     onChange={(e) => setFormTaxCode(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="0301472589"
-                    required
                     type="text"
                   />
                 </div>
@@ -986,13 +978,12 @@ export default function AdminMembers() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="md:col-span-2 flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Địa chỉ trụ sở *</label>
+                  <label className="font-bold text-on-surface-variant">Địa chỉ trụ sở</label>
                   <input
                     value={formAddress}
                     onChange={(e) => setFormAddress(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="Số 456 Nguyễn Huệ, Quận 1, TP.HCM"
-                    required
                     type="text"
                   />
                 </div>
@@ -1013,13 +1004,12 @@ export default function AdminMembers() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Số điện thoại doanh nghiệp *</label>
+                  <label className="font-bold text-on-surface-variant">Số điện thoại doanh nghiệp</label>
                   <input
                     value={formPhone}
                     onChange={(e) => setFormPhone(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="028 3822 1122"
-                    required
                     type="text"
                   />
                 </div>
@@ -1057,24 +1047,22 @@ export default function AdminMembers() {
               <h4 className="font-bold text-[#00346f] border-b border-outline-variant/20 pb-1 uppercase tracking-wider text-[10px] pt-2">2. Người đại diện liên hệ</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Họ tên người đại diện *</label>
+                  <label className="font-bold text-on-surface-variant">Họ tên người đại diện</label>
                   <input
                     value={formRepName}
                     onChange={(e) => setFormRepName(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="Nguyễn Văn A"
-                    required
                     type="text"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Chức danh trong doanh nghiệp *</label>
+                  <label className="font-bold text-on-surface-variant">Chức danh trong doanh nghiệp</label>
                   <input
                     value={formRepRole}
                     onChange={(e) => setFormRepRole(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="Tổng Giám Đốc"
-                    required
                     type="text"
                   />
                 </div>
@@ -1082,24 +1070,22 @@ export default function AdminMembers() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Email người đại diện *</label>
+                  <label className="font-bold text-on-surface-variant">Email người đại diện</label>
                   <input
                     value={formRepEmail}
                     onChange={(e) => setFormRepEmail(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="rep@company.com"
-                    required
                     type="email"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Điện thoại di động đại diện *</label>
+                  <label className="font-bold text-on-surface-variant">Điện thoại di động đại diện</label>
                   <input
                     value={formRepPhone}
                     onChange={(e) => setFormRepPhone(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-surface text-on-surface text-xs focus:border-primary focus:ring-0 outline-none"
                     placeholder="0901234567"
-                    required
                     type="text"
                   />
                 </div>
