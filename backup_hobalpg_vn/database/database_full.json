@@ -1,0 +1,2541 @@
+{
+  "website_config": [
+    {
+      "key": "memberspage",
+      "value": {
+        "stats": [
+          {
+            "icon": "groups",
+            "label": " Hội viên",
+            "value": "61"
+          },
+          {
+            "icon": "location_on",
+            "label": "Việt nam",
+            "value": "1"
+          },
+          {
+            "icon": "verified",
+            "label": "Cam kết an toàn",
+            "value": "100%"
+          },
+          {
+            "icon": "calendar_today",
+            "label": "Năm thành lập",
+            "value": "2025"
+          }
+        ],
+        "steps": [
+          {
+            "desc": "Doanh nghiệp điền thông tin và nộp hồ sơ đăng ký online.",
+            "icon": "description",
+            "step": "01",
+            "title": "Đăng ký hồ sơ"
+          },
+          {
+            "desc": "Ban chấp hành xem xét, thẩm định và phê duyệt hồ sơ.",
+            "icon": "fact_check",
+            "step": "02",
+            "title": "Xét duyệt"
+          },
+          {
+            "desc": "Kích hoạt quyền hội viên và bắt đầu các hoạt động kết nối.",
+            "icon": "handshake",
+            "step": "03",
+            "title": "Kết nối - Kích hoạt"
+          },
+          {
+            "desc": "Hưởng đầy đủ quyền lợi và tham gia các sự kiện của Hiệp hội.",
+            "icon": "celebration",
+            "step": "04",
+            "title": "Tham gia cộng đồng"
+          }
+        ],
+        "subtext": "Nơi quy tụ các doanh nghiệp hàng đầu trong lĩnh vực Khí dầu mỏ hóa lỏng (LPG) tại Việt Nam, cam kết vì sự phát triển bền vững và an toàn năng lượng.",
+        "benefits": [
+          {
+            "desc": "Kết nối với cộng đồng hội viên và đối tác chiến lược trong ngành LPG toàn quốc.",
+            "icon": "hub",
+            "title": "Kết nối doanh nghiệp"
+          },
+          {
+            "desc": "Cập nhật nhanh chóng chính sách, quy định pháp luật mới nhất liên quan đến khí hóa lỏng.",
+            "icon": "update",
+            "title": "Cập nhật chính sách"
+          },
+          {
+            "desc": "Tham gia các buổi gặp mặt chia sẻ các kiến thức chuyên môn LPG",
+            "icon": "school",
+            "title": "Chia sẻ chuyên môn"
+          },
+          {
+            "desc": "Cơ hội hợp tác, mở rộng thị trường và phát triển các liên kết kinh doanh bền vững.",
+            "icon": "rocket_launch",
+            "title": "Xúc tiến hợp tác"
+          },
+          {
+            "desc": "Tư vấn, hỗ trợ pháp lý và bảo vệ quyền lợi hợp pháp của hội viên trong kinh doanh.",
+            "icon": "gavel",
+            "title": "Hỗ trợ pháp lý"
+          },
+          {
+            "desc": "Tăng uy tín và hình ảnh thương hiệu thông qua các hoạt động cộng đồng của Hiệp hội.",
+            "icon": "verified",
+            "title": "Nâng cao uy tín"
+          },
+          {
+            "desc": "Mô tả quyền lợi...",
+            "icon": "verified",
+            "title": "Quyền lợi mới"
+          },
+          {
+            "desc": "Mô tả quyền lợi...",
+            "icon": "verified",
+            "title": "Quyền lợi mới"
+          }
+        ],
+        "headline": "Danh sách Hội viên Hiệp hội",
+        "sections": [
+          {
+            "id": "hero",
+            "name": "1. Banner chính",
+            "visible": true
+          },
+          {
+            "id": "tabs",
+            "name": "2. Danh sách Hội viên",
+            "visible": true
+          },
+          {
+            "id": "stats",
+            "name": "3. Thống kê tổng hợp",
+            "visible": true
+          },
+          {
+            "id": "benefits",
+            "name": "4. Quyền lợi hội viên",
+            "visible": false
+          },
+          {
+            "id": "steps",
+            "name": "5. Quy trình gia nhập",
+            "visible": true
+          }
+        ],
+        "heroImage": "https://lh3.googleusercontent.com/aida-public/AB6AXuBTP1VwRhiXz7IslKk8lyrl_NZjrM0MYtWMLyaBrXhEX2DRZ9wIHjlle-92NsUhnYmQwD4yTguPqimc2ewjOD30dygdkHwHt7s9NXsMPSnzWvTyHO_1lM5j2kM_9BcFoN9m67VEakH0ReGkHCz2mX7R0kfbHFSyqSNrqYFcUsBMK0sm4skbO_7LO2Qs237Mbc_zUrwOxQ0lEHdDE-3w74hK182bzXXoJ9Nz4No0EMfJPJZ14JUTiBDxNw-onJOCwry6C0bNPzf9aJY",
+        "associationRoles": [
+          {
+            "name": "Chủ tịch Hiệp Hội",
+            "color": "#bb0013",
+            "textColor": "#ffffff"
+          },
+          {
+            "name": "Phó Chủ tịch Hiệp Hội",
+            "color": "#00346f",
+            "textColor": "#ffffff"
+          },
+          {
+            "name": "Ban kiểm tra",
+            "color": "#d97706",
+            "textColor": "#ffffff"
+          },
+          {
+            "name": "Ủy viên Ban Thường vụ",
+            "color": "#0284c7",
+            "textColor": "#ffffff"
+          },
+          {
+            "name": "Ủy viên Ban Chấp hành",
+            "color": "#d7e2ff",
+            "textColor": "#001b3f"
+          },
+          {
+            "name": "Hội viên chính thức",
+            "color": "#e7e5e4",
+            "textColor": "#1c1c1a"
+          },
+          {
+            "name": "Hội viên liên kết",
+            "color": "#e7e5e4",
+            "textColor": "#1c1c1a"
+          }
+        ]
+      },
+      "updated_at": "2026-06-05T08:42:30.056Z"
+    },
+    {
+      "key": "homepage",
+      "value": {
+        "stats": [
+          {
+            "icon": "groups",
+            "label": "Hội viên liên kết",
+            "value": "60+"
+          },
+          {
+            "icon": "workspace_premium",
+            "label": "Năm hoạt động",
+            "value": "2+"
+          },
+          {
+            "icon": "school",
+            "label": "Kết nối tạo giá trị",
+            "value": "100+"
+          },
+          {
+            "icon": "handshake",
+            "label": "Đối tác chiến lược",
+            "value": "10+"
+          }
+        ],
+        "subtext": "Hiệp hội HOBA LPG hướng tới việc xây dựng môi trường kinh doanh an toàn, tuân thủ chặt chẽ các hành lang pháp lý đặc thù của Việt Nam trong lĩnh vực LPG",
+        "features": [
+          {
+            "id": "f1",
+            "desc": "Kiến nghị xây dựng các quy chuẩn kỹ thuật về an toàn LPG.",
+            "icon": "security",
+            "title": "Tiêu chuẩn an toàn"
+          },
+          {
+            "id": "f2",
+            "desc": "Chia sẻ kiến thức quản trị trong ngành",
+            "icon": "school",
+            "title": "Chia sẻ kiến thức"
+          },
+          {
+            "id": "1780283310992",
+            "desc": "Kết nối các doanh nghiệp trong và ngoài ngành",
+            "icon": "handshake",
+            "title": "Kết Nối"
+          },
+          {
+            "id": "1780283346871",
+            "desc": "Thúc đẩy tính minh bạch của thị trường LPG.",
+            "icon": "groups",
+            "title": "Bảo vệ Cộng Đồng"
+          }
+        ],
+        "headline": "An toàn năng lượng - Phát triển bền vững",
+        "sections": [
+          {
+            "id": "hero",
+            "name": "1. Hero Banner",
+            "visible": true
+          },
+          {
+            "id": "services",
+            "name": "3. Lĩnh vực hoạt động",
+            "visible": true
+          },
+          {
+            "id": "news",
+            "name": "2. News & Events",
+            "visible": true
+          },
+          {
+            "id": "stats",
+            "name": "4. Statistics Counter",
+            "visible": false
+          },
+          {
+            "id": "members",
+            "name": "5. Hội viên tiêu biểu",
+            "visible": true
+          }
+        ],
+        "aboutDesc": "Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM là tổ chức xã hội - nghề nghiệp tự nguyện của các doanh nghiệp, tổ chức và chuyên gia hoạt động trong lĩnh vực sản xuất, chiết nạp, lưu trữ, vận chuyển, kinh doanh và dịch vụ thương mại khí hóa lỏng (LPG) trên địa bàn Thành phố Hồ Chí Minh và các khu vực lân cận",
+        "heroImage": "/uploads/homepage/9dud1y1i5cs.jpeg",
+        "aboutImage": "/uploads/homepage/248l113laqaj.JPG",
+        "aboutTitle": "HIỆP HỘI KINH DOANH KHÍ HÓA LỎNG TP.HCM",
+        "heroBtn1Url": "/gioi-thieu",
+        "heroBtn2Url": "/dang-ky",
+        "coreServices": [
+          {
+            "desc": "Mở rộng mạng lưới hợp tác, chia sẻ nguồn lực và tạo dựng các mối quan hệ kinh doanh chiến lược.",
+            "icon": "handshake",
+            "title": "Kết nối doanh nghiệp",
+            "bgIcon": "diversity_3",
+            "showLink": false
+          },
+          {
+            "desc": "Cung cấp báo cáo phân tích giá gas quốc tế, xu hướng tiêu dùng và biến động chính sách.",
+            "icon": "trending_up",
+            "title": "Phân tích thị trường",
+            "bgIcon": "query_stats",
+            "showLink": false
+          },
+          {
+            "desc": "Tư vấn và phổ biến các thông tư, quy định mới liên quan đến kinh doanh và an toàn khí hóa lỏng.",
+            "icon": "gavel",
+            "title": "Tư vấn pháp lý",
+            "bgIcon": "balance",
+            "showLink": false
+          },
+          {
+            "desc": "Chia sẻ kiến thức trong ngành LPG",
+            "icon": "engineering",
+            "title": "Chia sẻ an toàn",
+            "bgIcon": "school",
+            "showLink": false
+          },
+          {
+            "desc": "Tổ chức các diễn đàn xúc tiến đầu tư và các buổi giao lưu ngành gas toàn quốc định kỳ.",
+            "icon": "groups_2",
+            "title": "Sự kiện & Hội Thảo",
+            "bgIcon": "event_seat",
+            "showLink": false
+          },
+          {
+            "desc": "Tư vấn tháo gỡ vướng mắc về giấy phép và các thủ tục hành chính chuyên ngành năng lượng.",
+            "icon": "support_agent",
+            "title": "Hỗ trợ thủ tục",
+            "bgIcon": "health_and_safety",
+            "showLink": false
+          }
+        ],
+        "heroBtn1Show": true,
+        "heroBtn1Text": "Khám phá",
+        "heroBtn2Show": true,
+        "heroBtn2Text": "Đăng ký Hội viên",
+        "featuredMembers": [
+          {
+            "id": "sp1",
+            "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuCUSaADTHuO0LeW68laxKr1qy5yC1GTS_ZMkN3B3Bk8_GdXGeqGYbF0o9npgtS7B1SN9Q0rltt5aXIffVkM3BlPgVVzI8pArb-gKVO2tSlefjfbDUAlMaVWSsY4Eljq9-h-vBmck0v3SrFG9Mj-3v4ZjvKBtgZ4PzNjThhlqmt5XcMsoe9i24a1cqq-o4NItX0xwJ7eNBvZxigXmSDVsR6oQw5flyk3MYT4qmWEVd79cVskyyUgh0YrEvLEPsqb26TSmnVlXMPCh3I",
+            "name": "Saigon Petro"
+          },
+          {
+            "id": "cg1",
+            "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuB-4CTXIocyVnnwyyHfAW2HBH3dLylJiYdJfzfRNk0sebpSDvYhL9ShY3uTaeX8Kca509b_k-2_UX7kcsoCDloaKRxN9FqWOSAIJ4zT4SUUrnCjxePkI5wOcmj63TodEipgcPO7KNuCorerGkEBENchfOaTXtDAFSwxE9sGyIGFf0GEK3QxcrGNWKxDi8WLTHLdj6X2NKVKo_i1y5GoL9X8w5iqqpca0J-qgEz159K6P6V7Wlw-gMDIqUJZ2ete1qlJtu3WQIUxMrU",
+            "name": "City Gas"
+          },
+          {
+            "id": "vg1",
+            "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuC7eTnvK5aYgdRpQ7r0JrThIhssN0j12GcjAzcrszxjSAtC1JzdscsKEliCTSujgiOjdIduDejriCsmUzgC_jBK4p0R8HAqKoKN5vfBScoDvHnjlazdSDRe3RS2RBm5E0sZPVn48gGk8Z4RYAi8__gyoBMqDSd2Tg_f88VrVSZn6DO26vy0EwdmJljaS9q11ROrep_qQfOz7Ny6V2XBa8ia5yjLujsw4TSYMRx7OF6mB13nu2XoEx9EiyUBJomlpAF9oX3C2n3a6x4",
+            "name": "VT-GAS"
+          },
+          {
+            "id": "pv1",
+            "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuBwWtf74gYhtlAq1IS1hNQ5pLt7PUyB5KUTbLhgRYv6HnE6oV_u_57wH3tzf7Gu632sw0dDOEGwPcVE9yeyW9nsoSKIYu6zhAnbBNLs_DAMN586bdG_Go0iluqSQSqfzXCkhA6V7FX6c26NfP5RxfXr_v80Y2xIdgeLNu-T-w8aqpnVxVdfLNKXLMrB1VRrMgB_l_1ovROIijGMRTcnJSxHCl2NBnEkiom8SJaaYm29JQdL9cUuZ6FLXiVcFjMeMtcUCUUGAtXcCeg",
+            "name": "PETROVIETNAM GAS"
+          },
+          {
+            "id": "bm1",
+            "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuD1p0v3-44vz10qrmIHA53j7oMkCHzMVTMi5RiGUaylSuVWs9pv-OCq2L2wYHeAumF4kaa_jC97eMHBp9ULCITYP3pv58yMcUnlbyEAb7TpNQekXTlPruB3TmkvQbLogChaztNMoyNxYFHv3c0LRXMwwZDUjCGrLDVqyIJ7kbw9mCF-zL9q7bJNwr67OTVgY8Tgjn_szspCSyNxiRZIm26DU799H-Na5x--fvXe_XpEaj0puYvKfuzKou2VM_UXG1K8cj-7Jx4DTTc",
+            "name": "BINH MINH ENERGY"
+          },
+          {
+            "id": "vc1",
+            "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuBZpcPDOgvB4aa_20YveL9ydc5ZGz3e8LnSvzQG4FXaJIFdU5ZbWueUPLZQTBPsoLbIL4Drm32xlDbKpgHcxWlkpaVoHvMAni-zTPhV095xHNedL5LcAzMW8gF5jYyGhhtklq6tYZjQ_C-IBiADh13sRgUREZQswv22-z0qJdIrnMlFLXJQaoEY5vzwBzSA-S51cM39LVaVPYWR6orgIxst1DF5oFTdJDJi_GPNGACmXyJqPXQt6iktYG9_lWfwOMdSn80nyxUL0_o",
+            "name": "VIPCO"
+          }
+        ]
+      },
+      "updated_at": "2026-06-05T08:42:30.056Z"
+    },
+    {
+      "key": "aboutpage",
+      "value": {
+        "values": [
+          {
+            "desc": "Đại diện và bảo vệ quyền, lợi ích hợp pháp của các hội viên; làm cầu nối vững chắc giữa doanh nghiệp với các cơ quan quản lý Nhà nước; thúc đẩy thị trường LPG phát triển minh bạch, lành mạnh, an toàn và bền vững.",
+            "icon": "ads_click",
+            "title": "Sứ mệnh"
+          },
+          {
+            "desc": "Trở thành tổ chức hiệp hội ngành hàng uy tín, tiên phong trong việc chuẩn hóa an toàn phòng chống cháy nổ, và thúc đẩy chuyển đổi số, áp dụng công nghệ vào chuỗi cung ứng LPG tại Việt Nam.",
+            "icon": "visibility",
+            "title": "Tầm nhìn"
+          },
+          {
+            "desc": "Đoàn kết - Vững tiến - Kiến tạo giá trị chung",
+            "icon": "diamond",
+            "title": "Giá trị cốt lõi"
+          }
+        ],
+        "heroDesc": "Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM — Kết nối doanh nghiệp, đồng hành phát triển vì ngành LPG an toàn và bền vững.",
+        "overview": "Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM là tổ chức xã hội - nghề nghiệp tự nguyện của các doanh nghiệp, tổ chức và chuyên gia hoạt động trong lĩnh vực sản xuất, chiết nạp, lưu trữ, vận chuyển, kinh doanh và dịch vụ thương mại khí hóa lỏng (LPG) trên địa bàn Thành phố Hồ Chí Minh và các khu vực lân cận",
+        "sections": [
+          {
+            "id": "hero",
+            "name": "1. Banner trang Giới thiệu",
+            "visible": true
+          },
+          {
+            "id": "overview",
+            "name": "2. Tổng quan về HOBA",
+            "visible": true
+          },
+          {
+            "id": "values",
+            "name": "3. Sứ mệnh - Tầm nhìn - Giá trị",
+            "visible": true
+          },
+          {
+            "id": "timeline",
+            "name": "4. Lịch sử phát triển / Timeline",
+            "visible": true
+          },
+          {
+            "id": "org",
+            "name": "5. Cơ cấu tổ chức",
+            "visible": true
+          },
+          {
+            "id": "whyjoin",
+            "name": "6. Vì sao tham gia HOBA?",
+            "visible": true
+          },
+          {
+            "id": "members",
+            "name": "7. Hội viên tiêu biểu",
+            "visible": true
+          }
+        ],
+        "heroImage": "/uploads/aboutpage/kdzi73862y.jpeg",
+        "heroTitle": "Giới thiệu HOBA",
+        "milestones": [
+          {
+            "id": "m1",
+            "date": "4/2025",
+            "desc": "Mốc thời gian thành lập đầu tiên.",
+            "title": "Hiệp hội Kinh doanh khí hóa lỏng (gas) tỉnh Bình Dương"
+          },
+          {
+            "id": "m2",
+            "date": "11/2025",
+            "desc": "Mốc thời gian đổi tên chính thức.",
+            "title": "Đổi tên thành Hiệp hội kinh doanh khí hóa lỏng Tp HCM ( HOBA )"
+          },
+          {
+            "id": "1780368272979",
+            "date": "2026",
+            "desc": "Phát triển - kết nối mở rộng doanh nghiệp trong và ngoài ngành LPG",
+            "title": "Đẩy mạnh kết nối"
+          }
+        ],
+        "orgStructure": [
+          {
+            "desc": "Định hướng chiến lược, điều hành hoạt động của hiệp hội.",
+            "icon": "account_balance",
+            "title": "Ban chấp hành"
+          },
+          {
+            "desc": "Tham mưu, quản lý, triển khai các hoạt động thường xuyên.",
+            "icon": "corporate_fare",
+            "title": "Văn phòng hiệp hội"
+          },
+          {
+            "desc": "Các tiểu ban: ban phát triển hội viên, ban tài chính, ban truyền thông mkt, ban chính sách pháp luật.... ",
+            "icon": "settings_suggest",
+            "title": "Ban chuyên môn"
+          },
+          {
+            "desc": "Các doanh nghiệp sản xuất, kinh doanh LPG trên địa bàn.",
+            "icon": "domain_verification",
+            "title": "Hội viên doanh nghiệp"
+          }
+        ],
+        "overviewImage": "/uploads/aboutpage/uqgujmqt62.JPG",
+        "whyJoinReasons": [
+          {
+            "desc": "Mở rộng mạng lưới, kết nối với các đối tác hàng đầu trong ngành.",
+            "icon": "hub",
+            "title": "Kết nối cộng đồng"
+          },
+          {
+            "desc": "Nắm bắt kịp thời các quy định pháp luật và thông tin thị trường mới nhất.",
+            "icon": "description",
+            "title": "Cập nhật chính sách"
+          },
+          {
+            "desc": "Tham gia các buổi chia sẻ kết nối chia sẻ kiến thức kinh nghiệm thực tế",
+            "icon": "school",
+            "title": "Nâng cao năng lực"
+          },
+          {
+            "desc": "Tăng cường hợp tác, hỗ trợ lẫn nhau trong kinh doanh và xử lý rủi ro.",
+            "icon": "handshake",
+            "title": "Hợp tác bền vững"
+          }
+        ],
+        "featuredMembers": [
+          {
+            "id": "sp1",
+            "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuCUSaADTHuO0LeW68laxKr1qy5yC1GTS_ZMkN3B3Bk8_GdXGeqGYbF0o9npgtS7B1SN9Q0rltt5aXIffVkM3BlPgVVzI8pArb-gKVO2tSlefjfbDUAlMaVWSsY4Eljq9-h-vBmck0v3SrFG9Mj-3v4ZjvKBtgZ4PzNjThhlqmt5XcMsoe9i24a1cqq-o4NItX0xwJ7eNBvZxigXmSDVsR6oQw5flyk3MYT4qmWEVd79cVskyyUgh0YrEvLEPsqb26TSmnVlXMPCh3I",
+            "name": "Saigon Petro"
+          },
+          {
+            "id": "cg1",
+            "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuB-4CTXIocyVnnwyyHfAW2HBH3dLylJiYdJfzfRNk0sebpSDvYhL9ShY3uTaeX8Kca509b_k-2_UX7kcsoCDloaKRxN9FqWOSAIJ4zT4SUUrnCjxePkI5wOcmj63TodEipgcPO7KNuCorerGkEBENchfOaTXtDAFSwxE9sGyIGFf0GEK3QxcrGNWKxDi8WLTHLdj6X2NKVKo_i1y5GoL9X8w5iqqpca0J-qgEz159K6P6V7Wlw-gMDIqUJZ2ete1qlJtu3WQIUxMrU",
+            "name": "City Gas"
+          },
+          {
+            "id": "vg1",
+            "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuC7eTnvK5aYgdRpQ7r0JrThIhssN0j12GcjAzcrszxjSAtC1JzdscsKEliCTSujgiOjdIduDejriCsmUzgC_jBK4p0R8HAqKoKN5vfBScoDvHnjlazdSDRe3RS2RBm5E0sZPVn48gGk8Z4RYAi8__gyoBMqDSd2Tg_f88VrVSZn6DO26vy0EwdmJljaS9q11ROrep_qQfOz7Ny6V2XBa8ia5yjLujsw4TSYMRx7OF6mB13nu2XoEx9EiyUBJomlpAF9oX3C2n3a6x4",
+            "name": "VT-GAS"
+          },
+          {
+            "id": "pv1",
+            "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuBwWtf74gYhtlAq1IS1hNQ5pLt7PUyB5KUTbLhgRYv6HnE6oV_u_57wH3tzf7Gu632sw0dDOEGwPcVE9yeyW9nsoSKIYu6zhAnbBNLs_DAMN586bdG_Go0iluqSQSqfzXCkhA6V7FX6c26NfP5RxfXr_v80Y2xIdgeLNu-T-w8aqpnVxVdfLNKXLMrB1VRrMgB_l_1ovROIijGMRTcnJSxHCl2NBnEkiom8SJaaYm29JQdL9cUuZ6FLXiVcFjMeMtcUCUUGAtXcCeg",
+            "name": "PETROVIETNAM GAS"
+          },
+          {
+            "id": "bm1",
+            "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuD1p0v3-44vz10qrmIHA53j7oMkCHzMVTMi5RiGUaylSuVWs9pv-OCq2L2wYHeAumF4kaa_jC97eMHBp9ULCITYP3pv58yMcUnlbyEAb7TpNQekXTlPruB3TmkvQbLogChaztNMoyNxYFHv3c0LRXMwwZDUjCGrLDVqyIJ7kbw9mCF-zL9q7bJNwr67OTVgY8Tgjn_szspCSyNxiRZIm26DU799H-Na5x--fvXe_XpEaj0puYvKfuzKou2VM_UXG1K8cj-7Jx4DTTc",
+            "name": "BINH MINH ENERGY"
+          },
+          {
+            "id": "vc1",
+            "logo": "https://lh3.googleusercontent.com/aida-public/AB6AXuBZpcPDOgvB4aa_20YveL9ydc5ZGz3e8LnSvzQG4FXaJIFdU5ZbWueUPLZQTBPsoLbIL4Drm32xlDbKpgHcxWlkpaVoHvMAni-zTPhV095xHNedL5LcAzMW8gF5jYyGhhtklq6tYZjQ_C-IBiADh13sRgUREZQswv22-z0qJdIrnMlFLXJQaoEY5vzwBzSA-S51cM39LVaVPYWR6orgIxst1DF5oFTdJDJi_GPNGACmXyJqPXQt6iktYG9_lWfwOMdSn80nyxUL0_o",
+            "name": "VIPCO"
+          }
+        ]
+      },
+      "updated_at": "2026-06-05T08:42:30.056Z"
+    },
+    {
+      "key": "hoba_website_committee_ban-chap-hanh",
+      "value": {
+        "term": "NHIỆM KỲ 2025 - 2029",
+        "title": "Ban Chấp hành Hiệp hội HOBA LPG",
+        "members": [
+          {
+            "name": "Phạm Trung Kiên",
+            "role": "Ủy Viên Ban Chấp Hành",
+            "company": ""
+          },
+          {
+            "name": "Đinh Huy Long",
+            "role": "Ủy Viên Ban Chấp Hành",
+            "company": ""
+          },
+          {
+            "name": "Phạm Tấn Đạt",
+            "role": "Ủy Viên Ban Chấp Hành",
+            "company": ""
+          },
+          {
+            "name": "Nguyễn Thanh Tùng",
+            "role": "Ủy Viên Ban Chấp Hành",
+            "company": ""
+          },
+          {
+            "name": "Trần Công Anh Tuấn",
+            "role": "Ủy Viên Ban Chấp Hành",
+            "company": ""
+          },
+          {
+            "name": "Nguyễn Văn Chính",
+            "role": "Ủy Viên Ban Chấp Hành",
+            "company": ""
+          },
+          {
+            "name": "Đoàn Văn Tuyên",
+            "role": "Ủy Viên Ban Chấp Hành",
+            "company": ""
+          },
+          {
+            "name": "Lê Văn Hoàng",
+            "role": "Ủy Viên Ban Chấp Hành",
+            "company": ""
+          },
+          {
+            "name": "Trần Thanh Bằng",
+            "role": "Ủy Viên Ban Chấp Hành",
+            "company": ""
+          },
+          {
+            "name": "Bùi An Bình",
+            "role": "Ủy Viên Ban Chấp Hành",
+            "company": ""
+          },
+          {
+            "name": "Tô Văn Dương",
+            "role": "Ủy Viên Ban Chấp Hành",
+            "company": ""
+          },
+          {
+            "name": "Đinh Quang Dương",
+            "role": "Ủy Viên Ban Chấp Hành",
+            "company": ""
+          },
+          {
+            "name": "Nguyễn Thiện Nhân",
+            "role": "Ủy Viên Ban Chấp Hành",
+            "company": ""
+          }
+        ],
+        "chairman": {
+          "name": "Đinh Văn Hiểu",
+          "role": "Chủ tịch Hiệp hội",
+          "company": "Công ty TNHH Long Thuận",
+          "memberId": "mem-bd-1",
+          "avatarUrl": "/uploads/committees/ban-chap-hanh/5jvacq8esdh.jpg",
+          "isVerified": true
+        },
+        "subtitle": "Lãnh đạo và định hướng phát triển ngành khí hóa lỏng (LPG) hướng tới tiêu chuẩn an toàn, minh bạch và bền vững.",
+        "showMembers": true,
+        "showChairman": true,
+        "viceChairmen": [
+          {
+            "name": "Trần Đức Nhã",
+            "role": "Phó Chủ tịch Hiệp hội",
+            "company": "Công ty TNHH Phước Thiên",
+            "memberId": "mem-bd-2",
+            "avatarUrl": "/uploads/committees/ban-chap-hanh/ce32dwz0txo.png"
+          },
+          {
+            "name": "Phan Thị Huệ",
+            "role": "Phó Chủ tịch Hiệp hội",
+            "company": "Công ty cổ phần Hoàng Gia Việt Luxen’s Care",
+            "memberId": "mem-bd-5",
+            "avatarUrl": "/uploads/committees/ban-chap-hanh/mo1d734pum8.png"
+          },
+          {
+            "name": "Lê Khắc Huy",
+            "role": "Phó Chủ tịch Hiệp hội",
+            "company": "Công ty TNHH MTV Ga Việt",
+            "memberId": "mem-bd-4",
+            "avatarUrl": "/uploads/committees/ban-chap-hanh/oks5eaec2w.png"
+          },
+          {
+            "name": "Nguyễn Vĩnh Lộc",
+            "role": "Phó Chủ tịch Hiệp hội",
+            "company": "Công ty TNHH THành Vĩnh Phú",
+            "memberId": "34dc84d9-19b5-4a50-a0c6-469e5d42ac8c",
+            "avatarUrl": "/uploads/committees/ban-chap-hanh/oks5eaec2w.png"
+          }
+        ],
+        "showViceChairmen": true,
+        "memberSectionTitle": "Danh sách Ủy viên",
+        "chairmanSectionTitle": "Chủ tịch Hiệp hội",
+        "viceChairmanSectionTitle": "Phó Chủ tịch & Ban Thường trực"
+      },
+      "updated_at": "2026-06-05T08:42:30.056Z"
+    },
+    {
+      "key": "custom_pages",
+      "value": {
+        "pages": [
+          {
+            "id": "dieu-khoan",
+            "slug": "dieu-khoan-su-dung",
+            "title": "Điều khoản sử dụng dịch vụ",
+            "status": "Published",
+            "content": "\n        <h2>1. Quy định chung</h2>\n        <p>Chào mừng bạn đến với Cổng thông tin điện tử của Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM (HOBA LPG). Khi truy cập và sử dụng website này, bạn đồng ý tuân thủ các điều khoản quy định dưới đây.</p>\n        <h2>2. Quyền sở hữu trí tuệ</h2>\n        <p>Tất cả nội dung, tài liệu, bài viết kỹ thuật, thiết kế và logo trên website này đều thuộc quyền sở hữu của HOBA LPG hoặc đã được sự đồng ý của đối tác sở hữu bản quyền. Mọi hình thức sao chép, phân phối phi thương mại cần ghi rõ nguồn gốc HOBA LPG.</p>\n        <h2>3. Trách nhiệm của hội viên</h2>\n        <p>Hội viên có trách nhiệm bảo mật thông tin tài khoản (nếu có), cung cấp thông tin đăng ký chính xác, trung thực và tuân thủ các quy định pháp luật hiện hành về an toàn phòng cháy chữa cháy và chiết nạp LPG.</p>\n      ",
+            "created_at": "2026-05-20",
+            "description": "Điều khoản sử dụng dịch vụ và trách nhiệm của hội viên khi tham gia hoạt động tại website Hiệp hội HOBA LPG.",
+            "thumbnail_url": "https://lh3.googleusercontent.com/aida-public/AB6AXuDTnDaM8uzQn1_0DhmhC7KmeGLksQoODMcExU4UgxEcKMACoKgUXJW_2llmo7m-ViDB3xt2KW3AffPsNIEWvPC1uYoP833s0_aSIdyHJqgQJ3M7CeBBlXZb6AXaffkH0smJ-ud5Q1xRd87Fq9fBxQkp-UOoxSITgv85D-HFOp0IhgyruXjbG3lsDx9HPlbswwwJyQC1LeI0F7lTCuuNnRSBcWo3UUy-H2FP9vD9KSPm35z6PtDtTWMejNSdqXtYLoWrH28NsiAEQHc"
+          },
+          {
+            "id": "bao-mat",
+            "slug": "chinh-sach-bao-mat",
+            "title": "Chính sách bảo mật thông tin",
+            "status": "Published",
+            "content": "\n        <h2>1. Thu thập thông tin</h2>\n        <p>Chúng tôi chỉ thu thập các thông tin cần thiết phục vụ cho quá trình đăng ký hội viên, bao gồm tên doanh nghiệp, mã số thuế, địa chỉ văn phòng, thông tin liên lạc của đại diện doanh nghiệp.</p>\n        <h2>2. Sử dụng thông tin</h2>\n        <p>Thông tin thu thập chỉ được dùng trong nội bộ Ban thư ký Hiệp hội để quản lý danh sách hội viên, gửi thư mời hội thảo kỹ thuật, cập nhật thông tư nghị định hoặc phục vụ yêu cầu đồng bộ hiển thị Trang hội viên công khai (khi có sự đồng ý).</p>\n        <h2>3. Cam kết bảo mật</h2>\n        <p>HOBA LPG cam kết không bán, chia sẻ hay cung cấp thông tin doanh nghiệp cho bên thứ ba vì mục đích thương mại khi chưa có văn bản chấp thuận từ phía doanh nghiệp.</p>\n      ",
+            "created_at": "2026-05-22",
+            "description": "Bảo vệ quyền riêng tư và thông tin doanh nghiệp thành viên là ưu tiên hàng đầu của Hiệp hội HOBA LPG.",
+            "thumbnail_url": "https://lh3.googleusercontent.com/aida-public/AB6AXuDTnDaM8uzQn1_0DhmhC7KmeGLksQoODMcExU4UgxEcKMACoKgUXJW_2llmo7m-ViDB3xt2KW3AffPsNIEWvPC1uYoP833s0_aSIdyHJqgQJ3M7CeBBlXZb6AXaffkH0smJ-ud5Q1xRd87Fq9fBxQkp-UOoxSITgv85D-HFOp0IhgyruXjbG3lsDx9HPlbswwwJyQC1LeI0F7lTCuuNnRSBcWo3UUy-H2FP9vD9KSPm35z6PtDtTWMejNSdqXtYLoWrH28NsiAEQHc"
+          }
+        ]
+      },
+      "updated_at": "2026-06-08T04:22:06.838Z"
+    },
+    {
+      "key": "featured_members",
+      "value": [
+        {
+          "id": "1780886618020",
+          "logo": "/uploads/featured-members/fvwf3jzjigg.png",
+          "name": "lx"
+        },
+        {
+          "id": "1784795609972",
+          "logo": "/uploads/featured-members/pdia619wa5b.png",
+          "name": "Ngọc Gas"
+        },
+        {
+          "id": "1780886594485",
+          "logo": "/uploads/featured-members/bad64jwbx6t.jpg",
+          "name": "gv"
+        },
+        {
+          "id": "1780886598917",
+          "logo": "/uploads/featured-members/tifw94ba2u.jpg",
+          "name": "ha"
+        },
+        {
+          "id": "1780886603012",
+          "logo": "/uploads/featured-members/gvcnpqrf355.png",
+          "name": "u"
+        },
+        {
+          "id": "1780886607380",
+          "logo": "/uploads/featured-members/vxpniue6lbo.png",
+          "name": "vg"
+        }
+      ],
+      "updated_at": "2026-06-05T08:42:30.056Z"
+    },
+    {
+      "key": "events",
+      "value": [
+        {
+          "id": "1780739311579",
+          "day": "25",
+          "slug": "dai-hoi-bat-thuong",
+          "time": "08:00 - 12:00",
+          "month": "Tháng 11",
+          "title": "Đại hội bất thường",
+          "content": "",
+          "location": "Hội trường",
+          "image_url": "/uploads/event-images/mkkc5z4owqa.JPG",
+          "isPriority": true,
+          "isUpcoming": false,
+          "description": "Đại hội bất thường - Hiệp hội kinh doanh khí hóa lỏng tỉnh Bình Dương ( cũ ) - Đổi tên thành HoBa -LPG"
+        }
+      ],
+      "updated_at": "2026-06-05T08:42:30.056Z"
+    },
+    {
+      "key": "library",
+      "value": [],
+      "updated_at": "2026-06-05T08:42:30.056Z"
+    },
+    {
+      "key": "registerpage",
+      "value": {
+        "title": "Đăng Ký Hội Viên",
+        "hotline": "0528 66 99 66",
+        "subtitle": "Gia nhập cộng đồng LPG Việt Nam để nâng cao tiêu chuẩn an toàn và kết nối cơ hội kinh doanh bền vững.",
+        "step1Label": "Doanh nghiệp",
+        "step2Label": "Người đại diện",
+        "step3Label": "Hồ sơ pháp lý",
+        "step4Label": "Xác nhận",
+        "agreementText": "Tôi cam kết các thông tin cung cấp là chính xác và hoàn toàn chịu trách nhiệm trước pháp luật cũng như các quy định của Hội."
+      },
+      "updated_at": "2026-06-05T08:42:30.056Z"
+    },
+    {
+      "key": "hoba_website_committee_ban-kiem-tra",
+      "value": {
+        "term": "NHIỆM KỲ 2025 - 2029",
+        "title": "Ban Kiểm tra Hiệp hội HOBA LPG",
+        "members": [
+          {
+            "name": "Nguyễn Thị Đào",
+            "role": "Ủy viên Ban Kiểm tra",
+            "company": "Đại lý Gas Hoàng Vũ"
+          }
+        ],
+        "chairman": {
+          "name": "Bùi An Bình",
+          "role": "Trưởng Ban Kiểm tra",
+          "company": "Chủ Cửa hàng Gas Thanh Dương",
+          "memberId": "mem-bd-22",
+          "avatarUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256",
+          "isVerified": true
+        },
+        "subtitle": "Giám sát hoạt động của Hiệp hội, kiểm tra việc chấp hành điều lệ và quản lý tài chính công khai, minh bạch.",
+        "showMembers": true,
+        "showChairman": false,
+        "viceChairmen": [
+          {
+            "name": "Nguyễn Thị Minh Phụng",
+            "role": "Ủy viên Ban Kiểm tra",
+            "company": "Chủ Cửa hàng gas Quỳnh Bảo",
+            "memberId": "mem-bd-32",
+            "avatarUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256"
+          }
+        ],
+        "showViceChairmen": false,
+        "memberSectionTitle": "Ủy viên Ban Kiểm tra",
+        "chairmanSectionTitle": "Trưởng ban Kiểm tra",
+        "viceChairmanSectionTitle": "Phó Trưởng ban Kiểm tra"
+      },
+      "updated_at": "2026-06-05T08:42:30.056Z"
+    },
+    {
+      "key": "hoba_website_committee_ban-thuong-vu",
+      "value": {
+        "term": "NHIỆM KỲ 2025 - 2029",
+        "title": "Ban Thường vụ Hiệp hội HOBA LPG",
+        "members": [
+          {
+            "name": "Phạm Trung Kiên",
+            "role": "Ủy viên Thường vụ",
+            "company": "Cổ phần khí hóa lỏng Hoàng Anh",
+            "memberId": "mem-bd-3",
+            "avatarUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256"
+          },
+          {
+            "name": "Đinh Huy Long",
+            "role": "Ủy viên Thường vụ",
+            "company": "công ty cổ phần Ubergas.",
+            "memberId": "0f1faebf-baa4-4a04-9c69-1716ce7ca4fe"
+          },
+          {
+            "name": "Trần Công Anh Tuấn",
+            "role": "Ủy viên Thường vụ",
+            "company": "Giám đốc công ty TNHH Phúc Võ",
+            "memberId": "03802ddb-dd5b-4e1e-82f7-e3626f3e24b0"
+          }
+        ],
+        "chairman": {
+          "name": "Đinh Văn Hiểu",
+          "role": "Chủ tịch Hiệp hội",
+          "company": "Công ty TNHH Long Thuận",
+          "memberId": "ff8f9120-f67e-4941-82f8-1bc536488b7a",
+          "avatarUrl": "/uploads/member-assets/dqckeil7q76.jpeg",
+          "isVerified": true
+        },
+        "subtitle": "Cơ quan thường trực điều hành và triển khai mọi quyết nghị hoạt động của Hiệp hội HOBA LPG.",
+        "showMembers": true,
+        "showChairman": false,
+        "viceChairmen": [
+          {
+            "name": "Trần Đức Nhã",
+            "role": "Phó chủ tịch Hiệp Hội",
+            "company": "Công ty TNHH Phước Thiên",
+            "memberId": "f124e170-ae9f-4a50-9ab3-d38e84434ab8",
+            "avatarUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256"
+          },
+          {
+            "name": "Lê Khắc Huy",
+            "role": "Phó chủ tịch Hiệp Hội",
+            "company": "Công ty TNHH MTV Ga Việt",
+            "memberId": "101c993e-d3a1-43cc-b593-5425e30d4f74",
+            "avatarUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256"
+          },
+          {
+            "name": "Phan Thị Huệ",
+            "role": "Phó chủ tịch Hiệp Hội",
+            "company": "Công ty cổ phần Hoàng Gia Việt Luxen’s Care",
+            "memberId": "e66c5882-a9a2-40ec-aee1-61e9e30107cc",
+            "avatarUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=256"
+          },
+          {
+            "name": "Nguyễn Vĩnh Lộc",
+            "role": "Phó chủ tịch Hiệp Hội",
+            "company": "Công ty TNHH THành Vĩnh Phú",
+            "memberId": "34dc84d9-19b5-4a50-a0c6-469e5d42ac8c",
+            "avatarUrl": ""
+          }
+        ],
+        "showViceChairmen": false,
+        "memberSectionTitle": "Ủy viên Ban Thường vụ",
+        "chairmanSectionTitle": "Chủ tịch Ban Thường vụ",
+        "viceChairmanSectionTitle": "Phó Chủ tịch Ban Thường vụ"
+      },
+      "updated_at": "2026-06-05T08:42:30.056Z"
+    },
+    {
+      "key": "general",
+      "value": {
+        "address": "Số 7, đường Nguyễn Trung Trực, KP. Bình Minh 1, Phường Dĩ An, TP Hồ Chí Minh, Việt Nam",
+        "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuDGqQKdtsfpnEDKd7JAu8yQBX437NF9yre-G8AhC0L2jkhp6KVKASaL_r8TGZh_QRNtxoTKJXj2RXxkHdzbloP5qr9ddoI8OKoucsW0qAAsP4BTZGw_OuSxkWH_7yIFBmg6xnEcQ6TW4JHRFli25nYMjoLZ2HCRMhbnXTVG7sJKa0uboKFQS39PjtPXOEjGCHqrOCfHNMf3fKTvNlIsHiQw4bsKOCnLrOmA4gvrVMw8OI1QXoKnQvFoERk0EIu4ye4Mgt_9-lpAzjg",
+        "copyText": "© 2025 HOBA - Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM. All rights reserved.",
+        "siteName": "HOBA LPG - Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM",
+        "logoTitle": "HOBA LPG",
+        "menuItems": [
+          {
+            "path": "/",
+            "label": "Trang chủ",
+            "children": []
+          },
+          {
+            "path": "/gioi-thieu",
+            "label": "Giới thiệu",
+            "children": [
+              {
+                "path": "/gioi-thieu",
+                "label": "Giới thiệu chung"
+              },
+              {
+                "path": "/ban-chap-hanh",
+                "label": "Ban Chấp hành"
+              },
+              {
+                "path": "/ban-thuong-vu",
+                "label": "Ban Thường vụ"
+              },
+              {
+                "path": "/ban-kiem-tra",
+                "label": "Ban Kiểm tra"
+              }
+            ]
+          },
+          {
+            "path": "/hoi-vien",
+            "label": "Hội viên",
+            "children": [
+              {
+                "path": "/hoi-vien",
+                "label": "Danh sách Hội viên"
+              },
+              {
+                "path": "/chi-hoi",
+                "label": "Danh sách Chi hội"
+              },
+              {
+                "path": "/dang-ky",
+                "label": "Đăng ký Hội viên"
+              }
+            ]
+          },
+          {
+            "path": "/tin-tuc",
+            "label": "Tin tức",
+            "children": []
+          },
+          {
+            "path": "/su-kien",
+            "label": "Sự kiện",
+            "children": []
+          },
+          {
+            "path": "/van-ban",
+            "label": "Văn bản",
+            "children": []
+          },
+          {
+            "path": "/lien-he",
+            "label": "Liên hệ",
+            "children": []
+          }
+        ],
+        "termsPath": "/dieu-khoan",
+        "categories": [
+          {
+            "path": "/tin-tuc?cat=dao-tao",
+            "label": "Đào tạo an toàn"
+          },
+          {
+            "path": "/tin-tuc?cat=phap-ly",
+            "label": "Tư vấn pháp lý"
+          },
+          {
+            "path": "/tin-tuc?cat=thi-truong",
+            "label": "Thị trường gas"
+          },
+          {
+            "path": "/tin-tuc?cat=huong-dan",
+            "label": "Hướng dẫn hội viên"
+          }
+        ],
+        "faviconUrl": "/uploads/site-assets/i2yq7qhbqgh.png",
+        "footerDesc": "Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM - Nơi kết nối, bảo vệ và định hướng phát triển bền vững cho cộng đồng doanh nghiệp LPG phía Nam.",
+        "quickLinks": [
+          {
+            "path": "/gioi-thieu",
+            "label": "Giới thiệu hiệp hội"
+          },
+          {
+            "path": "/hoi-vien",
+            "label": "Danh sách hội viên"
+          },
+          {
+            "path": "/tin-tuc",
+            "label": "Tin tức & Sự kiện"
+          },
+          {
+            "path": "/van-ban",
+            "label": "Văn bản pháp quy"
+          }
+        ],
+        "websiteUrl": "https://hoba.vn",
+        "facebookUrl": "https://facebook.com/hobagroup",
+        "mapEmbedUrl": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d549.6960475706477!2d106.77256229159079!3d10.903742386714837!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d8f79868e02f%3A0xe2b1efce1d9123bf!2zMDcgxJDGsOG7nW5nIE5ndXnhu4VuIFRydW5nIFRy4buxYywgRMSpIEFuLCBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1780996869170!5m2!1svi!2s\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>",
+        "privacyPath": "/chinh-sach",
+        "socialLinks": [
+          {
+            "url": "https://www.facebook.com/profile.php?id=61590877175132",
+            "icon": "facebook"
+          },
+          {
+            "url": "https://zalo.me/0528669966",
+            "icon": "zalo"
+          }
+        ],
+        "contactEmail": "info@hobalpg.vn",
+        "contactPhone": "0528 66 99 66",
+        "logoSubtitle": "HCM LPG Business Association",
+        "workingHours": "Thứ 2 - Thứ 6: 08:00 - 17:00\nThứ 7: 08:00 - 12:00",
+        "maintenanceMode": true,
+        "registrationOpen": true
+      },
+      "updated_at": "2026-06-05T08:42:30.056Z"
+    }
+  ],
+  "news": [
+    {
+      "id": "572d3585-fbc4-47d6-970f-2c3aef4f90b4",
+      "title": "HOBA LPG tham gia Triển lãm & Diễn đàn Công nghệ Hỗ trợ lần thứ 2 năm 2026",
+      "slug": "hoba-lpg-tham-gia-trien-lam-dien-dan-cong-nghe-ho-tro-lan-thu-2-nam-2026",
+      "description": "Trong khuôn khổ Triển lãm & Diễn đàn Công nghệ Hỗ trợ và Hội nghị Kết nối Cung cầu Chuỗi Cung ứng lần thứ 2 năm 2026, Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM (HOBA LPG)",
+      "content": "<p class=\"isSelectedEnd\">Trong khuôn khổ <strong>Triển lãm &amp; Diễn đàn Công nghệ Hỗ trợ và Hội nghị Kết nối Cung cầu Chuỗi Cung ứng lần thứ 2 năm 2026</strong>, <strong>Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM (HOBA LPG)</strong> vinh dự tham gia với mong muốn kết nối cộng đồng doanh nghiệp, chia sẻ các giải pháp năng lượng tiên tiến và góp phần thúc đẩy sự phát triển bền vững của ngành LPG tại Việt Nam.</p><p class=\"isSelectedEnd\"><br></p><p class=\"isSelectedEnd\">Sự kiện là nơi quy tụ các doanh nghiệp, nhà sản xuất, đơn vị cung ứng và đối tác trong nhiều lĩnh vực công nghiệp hỗ trợ, tạo điều kiện để các doanh nghiệp mở rộng hợp tác, cập nhật xu hướng công nghệ và nâng cao năng lực cạnh tranh trong chuỗi cung ứng.</p><p class=\"isSelectedEnd\"><br></p><h2><b>HOBA LPG – Kết nối giá trị, đồng hành phát triển</b></h2><p class=\"isSelectedEnd\">Tại <strong>gian hàng B2</strong>, HOBA LPG giới thiệu đến khách tham quan và các đối tác những giải pháp LPG hiện đại, đáp ứng nhu cầu của doanh nghiệp trong nhiều lĩnh vực sản xuất và thương mại, bao gồm:</p><p class=\"isSelectedEnd\"><ul><li><br></li></ul></p><strong>Giải pháp bồn chứa LPG công nghiệp</strong><span style=\"font-weight: bolder;\">: </span>Tư vấn, thiết kế, thi công và bảo trì hệ thống theo tiêu chuẩn kỹ thuật và an toàn.<strong><br></strong><strong>Hệ thống cấp khí LPG trung tâm sử dụng bình 45kg</strong><span style=\"font-weight: bolder;\">: </span>Giải pháp phù hợp cho nhà hàng, khách sạn, bệnh viện, bếp ăn công nghiệp và các cơ sở dịch vụ.<strong><br></strong><strong>Công nghệ chiết nạp và quản trị an toàn</strong><span style=\"font-weight: bolder;\">: </span>Giới thiệu những xu hướng mới trong quản lý vận hành, kiểm soát chất lượng và nâng cao mức độ an toàn trong kinh doanh LPG.<div><br><p class=\"isSelectedEnd\"><br></p><h2><b>Gắn kết cộng đồng doanh nghiệp LPG</b></h2><p class=\"isSelectedEnd\">Không chỉ là một đơn vị tham gia triển lãm, HOBA LPG còn hướng đến vai trò là cầu nối giữa các doanh nghiệp, các đối tác công nghệ và các đơn vị trong chuỗi cung ứng. Đây là cơ hội để các bên cùng trao đổi kinh nghiệm, tìm kiếm cơ hội hợp tác và phát triển những giải pháp phù hợp với xu hướng chuyển đổi của ngành năng lượng.</p><p class=\"isSelectedEnd\"><br></p><p class=\"isSelectedEnd\">Thông qua các hoạt động kết nối tại sự kiện, HOBA LPG tiếp tục khẳng định định hướng xây dựng một cộng đồng doanh nghiệp LPG chuyên nghiệp, minh bạch và phát triển bền vững.</p><h2>Cam kết vì một hệ sinh thái năng lượng an toàn và bền vững</h2><p class=\"isSelectedEnd\">Với giá trị cốt lõi <strong>\"Kết nối – Chia sẻ – Bảo vệ\"</strong>, HOBA LPG luôn đồng hành cùng các doanh nghiệp hội viên trong việc nâng cao chất lượng dịch vụ, ứng dụng công nghệ mới và lan tỏa các tiêu chuẩn an toàn trong toàn ngành.</p><p class=\"isSelectedEnd\"><br></p><p class=\"isSelectedEnd\">Việc tham gia Triển lãm &amp; Diễn đàn Công nghệ Hỗ trợ lần thứ 2 năm 2026 không chỉ là dịp để giới thiệu các giải pháp LPG tiên tiến mà còn thể hiện cam kết của HOBA LPG trong việc xây dựng một hệ sinh thái năng lượng <strong>An toàn – Hiệu quả – Bền vững</strong>, góp phần thúc đẩy sự phát triển của ngành công nghiệp khí hóa lỏng tại Việt Nam.</p><p class=\"isSelectedEnd\"><br></p><p><strong>HOBA LPG trân trọng cảm ơn Quý doanh nghiệp, Quý đối tác và khách tham quan đã ghé thăm gian hàng B2. Chúng tôi mong muốn tiếp tục đồng hành và hợp tác để cùng tạo dựng những giá trị bền vững cho cộng đồng doanh nghiệp LPG trong thời gian tới.</strong></p></div>",
+      "category": "Hoạt động hiệp hội",
+      "status": "Published",
+      "thumbnail_url": "/uploads/news-images/hickq5buic.jpg",
+      "publish_date": "2026-07-22T17:00:00.000Z",
+      "is_featured": false,
+      "created_at": "2026-07-23T09:41:05.336Z"
+    },
+    {
+      "id": "517e65b8-6666-40aa-b186-f1c883d79bb1",
+      "title": "Phát huy vai trò của Hiệp hội trong bảo vệ thị trường LPG minh bạch và bền vững",
+      "slug": "phat-huy-vai-tro-cua-hiep-hoi-trong-bao-ve-thi-truong-lpg-minh-bach-va-ben-vung",
+      "description": "Ngày 25/11, tại Hội nghị tổng kết công tác chống buôn lậu, gian lận thương mại và hàng giả năm 2025, các đại biểu đã nhấn mạnh vai trò của các hiệp hội ngành nghề trong việc phối hợp cùng cơ quan chức năng ngăn chặn hàng giả, hàng nhái, bảo vệ doanh nghiệp chân chính và xây dựng môi trường kinh doanh minh bạch, lành mạnh.",
+      "content": "<p class=\"isSelectedEnd\" style=\"margin: 0px 0px 1rem; line-height: 1.7; color: rgb(66, 71, 81); font-size: 14px;\">Trong bối cảnh tình trạng hàng giả, hàng nhái, hàng kém chất lượng và các hành vi gian lận thương mại vẫn diễn biến phức tạp trên nhiều lĩnh vực, vai trò của các hiệp hội ngành nghề ngày càng trở nên quan trọng trong việc đồng hành cùng cơ quan quản lý nhà nước, doanh nghiệp và người tiêu dùng nhằm xây dựng môi trường kinh doanh lành mạnh, minh bạch.</p><p class=\"isSelectedEnd\" style=\"margin: 0px 0px 1rem; line-height: 1.7; color: rgb(66, 71, 81); font-size: 14px;\">Đối với ngành khí hóa lỏng (LPG), việc bảo đảm chất lượng sản phẩm, an toàn trong lưu thông và bảo vệ quyền lợi chính đáng của doanh nghiệp chân chính không chỉ là yêu cầu kinh doanh mà còn liên quan trực tiếp đến an toàn xã hội và tính mạng người dân.</p><p class=\"isSelectedEnd\" style=\"margin: 0px 0px 1rem; line-height: 1.7; color: rgb(66, 71, 81); font-size: 14px;\">Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM (HOBA) xác định một trong những nhiệm vụ trọng tâm là tăng cường kết nối giữa các hội viên, cơ quan quản lý nhà nước và các lực lượng chức năng để nâng cao hiệu quả công tác phòng chống hàng giả, hàng nhái, chiếm dụng thương hiệu và các hành vi cạnh tranh không lành mạnh trên thị trường LPG.</p>\n          <p><br></p><div>\n          <p class=\"isSelectedEnd\" style=\"margin: 0px 0px 1rem; line-height: 1.7; color: rgb(66, 71, 81); font-size: 14px;\">Trong thời gian qua, các doanh nghiệp hội viên đã chủ động phối hợp với cơ quan chức năng trong việc cung cấp thông tin, phản ánh các dấu hiệu vi phạm, đồng thời đẩy mạnh tuyên truyền nhằm nâng cao nhận thức của người tiêu dùng về việc sử dụng sản phẩm LPG chính hãng, có nguồn gốc rõ ràng và đáp ứng các tiêu chuẩn an toàn theo quy định.</p><p class=\"isSelectedEnd\" style=\"margin: 0px 0px 1rem; line-height: 1.7; color: rgb(66, 71, 81); font-size: 14px;\">Bên cạnh đó, HOBA tiếp tục phát huy vai trò là cầu nối giữa cộng đồng doanh nghiệp và cơ quan quản lý nhà nước, kịp thời tổng hợp các khó khăn, vướng mắc phát sinh từ thực tiễn hoạt động kinh doanh để đề xuất các giải pháp, cơ chế phù hợp, góp phần hoàn thiện môi trường pháp lý và nâng cao hiệu quả quản lý thị trường.</p><p class=\"isSelectedEnd\" style=\"margin: 0px 0px 1rem; line-height: 1.7; color: rgb(66, 71, 81); font-size: 14px;\">Trong xu thế chuyển đổi số hiện nay, Hiệp hội cũng khuyến khích các doanh nghiệp ứng dụng công nghệ trong quản lý vỏ bình, truy xuất nguồn gốc, nhận diện sản phẩm chính hãng và kiểm soát chuỗi cung ứng. Đây được xem là giải pháp quan trọng giúp tăng tính minh bạch, giảm thiểu rủi ro và nâng cao năng lực cạnh tranh của toàn ngành.</p><p class=\"isSelectedEnd\" style=\"margin: 0px 0px 1rem; line-height: 1.7; color: rgb(66, 71, 81); font-size: 14px;\">Cùng với sự vào cuộc quyết liệt của các cơ quan chức năng, sự hợp tác chặt chẽ giữa doanh nghiệp, hiệp hội và người tiêu dùng sẽ tạo nên sức mạnh tổng hợp trong cuộc đấu tranh chống hàng giả, hàng nhái, bảo vệ thương hiệu doanh nghiệp chân chính và xây dựng thị trường LPG phát triển an toàn, bền vững.</p><p style=\"margin: 0px 0px 1rem; line-height: 1.7; color: rgb(66, 71, 81); font-size: 14px;\">Với phương châm \"Đoàn kết – Vững tiến – Kiến tạo giá trị chung\", HOBA sẽ tiếp tục đồng hành cùng hội viên, phát huy vai trò đại diện tiếng nói của cộng đồng doanh nghiệp LPG, góp phần xây dựng môi trường kinh doanh minh bạch, bảo vệ quyền lợi hợp pháp của doanh nghiệp và người tiêu dùng, hướng tới sự phát triển bền vững của ngành khí hóa lỏng Việt Nam.</p></div>",
+      "category": "Hoạt động hiệp hội",
+      "status": "Published",
+      "thumbnail_url": "/uploads/news-images/2t78ngoml8.JPG",
+      "publish_date": "2026-06-05T17:00:00.000Z",
+      "is_featured": true,
+      "created_at": "2026-06-06T09:34:12.511Z"
+    }
+  ],
+  "documents": [
+    {
+      "id": "f24f3889-cc11-45ba-9f5c-185ad14790a8",
+      "code": "87/2018/NĐ-CP",
+      "title": "Quy định về kinh doanh khí",
+      "category": "Quy chuẩn",
+      "issuer": "Chính Phủ",
+      "file_url": "/uploads/documents/8t6yu0bfmak.pdf",
+      "file_size": "1.7 MB",
+      "publish_date": "2018-06-13T17:00:00.000Z",
+      "created_at": "2026-06-06T09:41:09.146Z",
+      "description": ""
+    },
+    {
+      "id": "f2a7e6e1-bc39-442d-a0f2-e2c29f068ec5",
+      "code": "96/2016/NĐ-CP",
+      "title": "Quy định về ANTT đối với một số ngành nghề KD",
+      "category": "Quy chuẩn",
+      "issuer": "Chính phủ",
+      "file_url": "/uploads/documents/1g3erivh54i.pdf",
+      "file_size": "1.8 MB",
+      "publish_date": "2016-06-29T17:00:00.000Z",
+      "created_at": "2026-06-06T09:41:48.747Z",
+      "description": ""
+    },
+    {
+      "id": "cc803067-9bf7-48ef-9fa3-5d78d8124a31",
+      "code": "14/QD-UBND",
+      "title": "Quyet dinh phe duyet Dieu le HOBA",
+      "category": "Quyết định",
+      "issuer": "UBND TP.HCM",
+      "file_url": "#",
+      "file_size": "1.5 MB",
+      "publish_date": "2025-01-13T17:00:00.000Z",
+      "created_at": "2026-08-19T06:54:48.589Z",
+      "description": "Quyet dinh phe duyet Dieu le hoat dong cua Hiep hoi LPG TP.HCM."
+    },
+    {
+      "id": "33374b2e-9063-4b93-9b04-39d366127caf",
+      "code": "105/2025/NĐ-CP",
+      "title": "Quy dinh ve phong chay chua chay TEST",
+      "category": "Quy chuẩn",
+      "issuer": "Chính Phủ",
+      "file_url": "/uploads/documents/ltidonxba6q.pdf",
+      "file_size": "6.3 MB",
+      "publish_date": "2025-05-12T17:00:00.000Z",
+      "created_at": "2026-06-06T09:42:22.780Z",
+      "description": ""
+    }
+  ],
+  "members": [
+    {
+      "id": "ff8f9120-f67e-4941-82f8-1bc536488b7a",
+      "company_name": "Công ty TNHH Long Thuận",
+      "tax_code": "3701548201",
+      "address": "27/11 ĐT 743, Khu phố Đông Chiêu, Phường Dĩ An, TP Hồ Chí Minh",
+      "phone": "0852 369 369",
+      "email": null,
+      "business_type": "Sản xuất & Chiết nạp",
+      "representative_name": "Đinh Văn Hiểu",
+      "representative_role": "Chủ tịch",
+      "representative_email": null,
+      "representative_phone": "0852 369 369",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.360Z",
+      "chapter_id": null,
+      "association_role": "Chủ tịch Hiệp Hội",
+      "chapter_role": null,
+      "join_date": "2025-03-25T17:00:00.000Z",
+      "logo_url": "/uploads/member-assets/l0y3gsadz3k.png",
+      "representative_avatar_url": "/uploads/member-assets/dqckeil7q76.jpeg"
+    },
+    {
+      "id": "0f1faebf-baa4-4a04-9c69-1716ce7ca4fe",
+      "company_name": "Công ty Cổ phần Ubergas.",
+      "tax_code": "3701548206",
+      "address": "Số 7 Đường Nguyễn Trung Trực Khu Phố Bình Minh 1, Phường Dĩ An, Thành Phố Hồ Chí Minh",
+      "phone": "0988 20 26 79",
+      "email": "contact@ubergas.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Đinh Huy Long",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@ubergas.vn",
+      "representative_phone": "0988 20 26 79",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.360Z",
+      "chapter_id": null,
+      "association_role": "Ủy viên Ban Chấp hành",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "f6581f2d-0ac1-4e66-be0b-bca674c7ad67",
+      "company_name": "Chủ hộ Kinh doanh Phạm Thị Ngát",
+      "tax_code": "3701548207",
+      "address": "Đt749 Ấp Long Hưng, Phường Long Nguyên, Thành Phố Hồ Chí Minh",
+      "phone": "0768 777 099",
+      "email": "contact@chuphamthingat.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Văn Chính",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuphamthingat.vn",
+      "representative_phone": "0768 777 099",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.360Z",
+      "chapter_id": null,
+      "association_role": "Ủy viên Ban Chấp hành",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "e66c5882-a9a2-40ec-aee1-61e9e30107cc",
+      "company_name": "Công ty cổ phần Hoàng Gia Việt Luxen’s Care",
+      "tax_code": "3701548205",
+      "address": "Số 24 Block J4 A Khu Phố Thương Mại Đông Đô Đại Phố, Phường Bình Dương, Thành Phố Hồ Chí Minh",
+      "phone": "0983 183 251",
+      "email": "",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Phan Thị Huệ",
+      "representative_role": "",
+      "representative_email": "",
+      "representative_phone": "0983 183 251",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.360Z",
+      "chapter_id": null,
+      "association_role": "Phó Chủ tịch Hiệp Hội",
+      "chapter_role": null,
+      "join_date": "2025-03-27T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "005b85fe-50b6-4299-ad14-a6f9d758e29c",
+      "company_name": "Chủ Cửa hàng Gas An Thạnh",
+      "tax_code": "3701548208",
+      "address": "25/16a Kp Đông Chiêu, Phường Dĩ An, Thành Phố Hồ Chí Minh",
+      "phone": "0937 850 041",
+      "email": "contact@chu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Xuân Thạnh",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chu.vn",
+      "representative_phone": "0937 850 041",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "ae1a1265-9fa4-46fe-ab28-a1643028a139",
+      "company_name": "Chủ Đại lý Vy Duyên",
+      "tax_code": "3701548209",
+      "address": "891 Đường Lê Hồng Phong, Phường Phú Lợi, Thành Phố Hồ Chí Minh",
+      "phone": "0919 312 640",
+      "email": "contact@chu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Trần Văn Ba",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chu.vn",
+      "representative_phone": "0919 312 640",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "0406a4c2-1024-47ba-9f2c-1ff698cccd56",
+      "company_name": "Chủ Hộ kinh doanh Trần Văn Chi",
+      "tax_code": "3701548210",
+      "address": "23/7 K9, Phường Phú Lợi, Thành Phố Hồ Chí Minh",
+      "phone": "0767 766 599",
+      "email": "contact@chu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Trần Thế Anh",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chu.vn",
+      "representative_phone": "0767 766 599",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "f124e170-ae9f-4a50-9ab3-d38e84434ab8",
+      "company_name": "Công ty TNHH Phước Thiên",
+      "tax_code": "3701548202",
+      "address": "Số 88 đường số 6, Cityland Park Hills, Phường Gò Vấp, Thành phố Hồ Chí Minh",
+      "phone": "0918 114 468",
+      "email": "",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Trần Đức Nhã",
+      "representative_role": "Chủ tịch",
+      "representative_email": "",
+      "representative_phone": "0918 114 468",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.360Z",
+      "chapter_id": null,
+      "association_role": "Phó Chủ tịch Hiệp Hội",
+      "chapter_role": null,
+      "join_date": "2025-03-28T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "3f7f8faf-ab99-4483-b953-63a1d6594474",
+      "company_name": "Chủ Đại Lý Gas Dũng",
+      "tax_code": "3701548212",
+      "address": "Số 62 Ấp Lai Khê, Phường Bến Cát, Thành phố Hồ Chí Minh",
+      "phone": "0919 141 117",
+      "email": "contact@chu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Thanh Tú",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chu.vn",
+      "representative_phone": "0919 141 117",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "5ee69fe9-f4d2-4b4e-8809-583829e97440",
+      "company_name": "Chủ Cửa hàng Điện - Gas Lê Hoàng",
+      "tax_code": "3701548213",
+      "address": "203 Hồ Văn Cống, Phường Chánh Hiệp, Thành phố Hồ Chí Minh",
+      "phone": "0964 686 700",
+      "email": "contact@chu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Thị Bích",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chu.vn",
+      "representative_phone": "0964 686 700",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Ủy viên Ban Chấp hành",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "474038f6-7202-4f6c-8fdf-3965c7e26b8b",
+      "company_name": "Chủ Hộ kinh doanh Gas Tấn Đạt",
+      "tax_code": "3701548214",
+      "address": "311 Ấp Bến Liễu, Phường An Phú, Thành phố Hồ Chí Minh",
+      "phone": "0366 120 130",
+      "email": "contact@chu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Tấn Đạt",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chu.vn",
+      "representative_phone": "0366 120 130",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "86892c36-024f-4567-a058-c8a8d4a4200b",
+      "company_name": "Chủ Cửa hàng Gas Thanh Phong",
+      "tax_code": "3701548215",
+      "address": "B170 Nguyễn Đức Thuận, Phường Phú Lợi, Thành phố Hồ Chí Minh",
+      "phone": "0987 885 139",
+      "email": "contact@chu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Trần Thanh Bằng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chu.vn",
+      "representative_phone": "0987 885 139",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Ủy viên Ban Chấp hành",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "01a42c84-a908-45c5-a008-b3e645248f6c",
+      "company_name": "Chủ Hộ kinh doanh Tùng Loan",
+      "tax_code": "3701548216",
+      "address": "22/01 Tổ 72 Bùi Văn Bình, Phường Phú Lợi, Thành phố Hồ Chí Minh",
+      "phone": "0918 063 428",
+      "email": "contact@chutungloan.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Võ Đình Tùng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chutungloan.vn",
+      "representative_phone": "0918 063 428",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "4581372d-deb3-4862-b338-5b905fa9991e",
+      "company_name": "Chủ Cửa hàng Gas Phương",
+      "tax_code": "3701548218",
+      "address": "110 Đường Đt743c Khu Phố Tân Long, Phường Dĩ An, Thành Phố Hồ Chí Minh",
+      "phone": "0908 583 035",
+      "email": "contact@chu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Văn Hòa",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chu.vn",
+      "representative_phone": "0908 583 035",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "2c2a96e1-ab0f-44f9-a618-f1531c8ccebd",
+      "company_name": "Cty TNHH MTV Gas Nước Khoáng Thanh Tùng",
+      "tax_code": "3701548217",
+      "address": "Số 53 Đường số 19, Khu phố 2, Phường Bình Dương, Thành phố Hồ Chí Minh",
+      "phone": "0919 642854",
+      "email": "contact@giamdocctynuockhoangtung.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Thanh Tùng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@giamdocctynuockhoangtung.vn",
+      "representative_phone": "0919 642854",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Ủy viên Ban Chấp hành",
+      "chapter_role": null,
+      "join_date": "2025-03-29T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "bc835cda-314f-4420-8ee0-ddaa6a2b6d35",
+      "company_name": "Chủ đại lý gas và bếp gas Phong Thái",
+      "tax_code": "3701548242",
+      "address": "255F/2 khu phố 1B, Phường An Phú, Thành phố Hồ Chí Minh",
+      "phone": "0903 723 367",
+      "email": "contact@chuvabepthai.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Tô Văn Dương",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuvabepthai.vn",
+      "representative_phone": "0903 723 367",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Ủy viên Ban Chấp hành",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "e6a26da6-f9a2-4008-9ac4-bc61162604d5",
+      "company_name": "Chủ Hộ kinh doanh Đoàn Văn Tuyên",
+      "tax_code": "3701548211",
+      "address": "454 Đường Lê Hồng Phong, Phường Phú Lợi, Thành Phố Hồ Chí Minh",
+      "phone": "0345 274 107",
+      "email": "contact@chu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Đoàn Văn Tuyên",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chu.vn",
+      "representative_phone": "0345 274 107",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-29T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "6ab493e8-d5f5-476f-ab01-6ddc7bf42e89",
+      "company_name": "Cổ phần khí hóa lỏng Hoàng Anh",
+      "tax_code": "3701548203",
+      "address": "Số 148/1a Đường Tân An, Khu phố Đông An, Phường Dĩ An, Thành phố Hồ Chí Minh",
+      "phone": "0919 698 519",
+      "email": "contact@hoa.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Phạm Trung Kiên",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@hoa.vn",
+      "representative_phone": "0919 698 519",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.360Z",
+      "chapter_id": null,
+      "association_role": "Ủy viên Ban Thường vụ",
+      "chapter_role": null,
+      "join_date": "2025-03-29T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "101c993e-d3a1-43cc-b593-5425e30d4f74",
+      "company_name": "Công ty TNHH MTV Ga Việt",
+      "tax_code": "3701548204",
+      "address": "TĐ 197, BĐ Số 12, Tổ 13, Khu Phố Khánh Hội, Thành phố Hồ Chí Minh",
+      "phone": "0937 44 0 481",
+      "email": "",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Lê Khắc Huy",
+      "representative_role": "Chủ tịch",
+      "representative_email": "",
+      "representative_phone": "0937 44 0 481",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.360Z",
+      "chapter_id": null,
+      "association_role": "Phó Chủ tịch Hiệp Hội",
+      "chapter_role": null,
+      "join_date": "2025-03-28T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "a2fb65a7-67fe-4784-9ae1-d993810fe626",
+      "company_name": "Chủ cửa hàng gas Xuân Cương",
+      "tax_code": "3701548219",
+      "address": "Thửa Đất Số 415 Tờ Bản Đồ Số 8 Ấp 2, Phường Tân Uyên, Thành Phố Hồ Chí Minh",
+      "phone": "0368 244 112",
+      "email": "contact@chuxuancuong.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Trịnh Xuân Cương",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuxuancuong.vn",
+      "representative_phone": "0368 244 112",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "ef74f7ae-2e1f-48a9-bb32-81d916644f9a",
+      "company_name": "Chủ Hộ kinh doanh Anh Thy",
+      "tax_code": "3701548220",
+      "address": "1421 Lê Chí Dân Khu 3, Phường Chánh Hiệp, Thành Phố Hồ Chí Minh",
+      "phone": "0919 163 747",
+      "email": "contact@chuthy.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Khánh Hưng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuthy.vn",
+      "representative_phone": "0919 163 747",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "e430e99e-4a43-4952-99bb-53f55bb22536",
+      "company_name": "Chủ Đại lý gas Hoàng Vũ",
+      "tax_code": "3701548221",
+      "address": "Ô1 Lôb Khu Nhà Ở Tm Đại Ngàn Khu Phố Hòa Lân 2, Phường Thuận Giao, Thành Phố Hồ Chí Minh",
+      "phone": "0365 866 388",
+      "email": "contact@chuvu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Lê Tấn Hoàng Vũ",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuvu.vn",
+      "representative_phone": "0365 866 388",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "bd7df81d-6cc1-478b-9a57-2a1b2c8f3752",
+      "company_name": "Chủ Cửa hàng Gas Thanh Dương",
+      "tax_code": "3701548222",
+      "address": "38 Ngô Thị Nhậm, Phường Dĩ An, Thành Phố Hồ Chí Minh",
+      "phone": "0977521312",
+      "email": "contact@chuduong.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Bùi An Bình",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuduong.vn",
+      "representative_phone": "0977521312",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Ban kiểm tra",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "ca5c8ce9-6aba-44b9-9e6e-3a9889025d0e",
+      "company_name": "Chủ Hộ kinh doanh  Quách Đông Hưng",
+      "tax_code": "3701548224",
+      "address": " 163 Kp Đông Ba, Phường Bình Hòa, Thành Phố Hồ Chí Minh",
+      "phone": "0987 683 883",
+      "email": "contact@chuquachhung.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Quách Đông Hưng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuquachhung.vn",
+      "representative_phone": "0987 683 883",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "76bb5260-1d2d-4869-ac28-9caaf6a4ac7d",
+      "company_name": "Chủ đại lý gas Lửa Việt",
+      "tax_code": "3701548226",
+      "address": " 6/8 Khu Phố Ngãi Thắng, Phường Đông Hòa, Thành Phố Hồ Chí Minh",
+      "phone": "0989 836 562",
+      "email": "contact@chulua.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Chí Phong",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chulua.vn",
+      "representative_phone": "0989 836 562",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "2c9cb975-d6eb-4d68-ac65-d768760430b3",
+      "company_name": "Chủ đại lý hộ kinh doanh Trần Thiện Đạt",
+      "tax_code": "3701548227",
+      "address": "Thửa Đất Số 699 Tờ Bản Đồ Số 38 Ấp Tân Lợi, Xã Bắc Tân Uyên, Thành Phố Hồ Chí Minh",
+      "phone": "0978 872 437",
+      "email": "contact@chuthien.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Trần Chung",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuthien.vn",
+      "representative_phone": "0978 872 437",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "368b8f72-886e-43f5-b161-c7aad46ccd3a",
+      "company_name": "Chủ đại lý Nên Tấn Tài",
+      "tax_code": "3701548228",
+      "address": "Thửa Đất Số 415 Tờ Bản Đồ Số 10 Phú Trung, Phường Bình Dương, Thành Phố Hồ Chí Minh",
+      "phone": "0919 351 737",
+      "email": "contact@chunentai.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Văn Màng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chunentai.vn",
+      "representative_phone": "0919 351 737",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "f34d562a-261d-4258-bdce-9075700b0bfc",
+      "company_name": "Chủ đại lý Gas Minh Trí",
+      "tax_code": "3701548229",
+      "address": "85/5 Quốc Lộ 13 Ấp 3, Phường Hòa Lợi, Thành Phố Hồ Chí Minh",
+      "phone": "0274 224 2008",
+      "email": "contact@chutri.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Lê Hoàng Trọng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chutri.vn",
+      "representative_phone": "0274 224 2008",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "db33efd6-0e28-4915-a227-8f7e2c008a40",
+      "company_name": "Chủ Hộ kinh doanh Duy Tân",
+      "tax_code": "3701548230",
+      "address": "14/28 Hồ Văn Cống Ấp 6, Phường Chánh Hiệp, Thành Phố Hồ Chí Minh",
+      "phone": "0274 3826 585",
+      "email": "contact@chuduy.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Hữu Tấn",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuduy.vn",
+      "representative_phone": "0274 3826 585",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "05404e6d-6a16-46c8-96da-b147d4c88e80",
+      "company_name": "Chủ Đại lý gas Huy Hoàng",
+      "tax_code": "3701548231",
+      "address": "Số 11 Tổ 1 Ấp Suối Tre, Phường Long Nguyên, Thành Phố Hồ Chí Minh",
+      "phone": "02743 590 027",
+      "email": "contact@chuhuy.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Phạm Anh Tuấn",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuhuy.vn",
+      "representative_phone": "02743 590 027",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "ba807746-fc29-4e8e-97d2-399a95d8b0e9",
+      "company_name": "Chủ Cửa hàng gas Quỳnh Bảo",
+      "tax_code": "3701548232",
+      "address": "Thửa Đất Số 190d Tờ Bản Đồ Số 3 Tổ 19a Đông Chiêu, Phường Dĩ An, Thành Phố Hồ Chí Minh",
+      "phone": "0919 223 494",
+      "email": "contact@chuquynh.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Văn Sơn",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuquynh.vn",
+      "representative_phone": "0919 223 494",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Ban kiểm tra",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "5db7bed4-d1d4-4947-a2f0-cac95f5464fc",
+      "company_name": "Chủ Hộ kinh doanh vật liệu xây dựng Hồng Quảng\r\n",
+      "tax_code": "3701548234",
+      "address": "Thửa Đất Số 157 Tờ Bản Đồ Số 36 Ấp Lồ Ồ, Phường Tây Nam, Thành Phố Hồ Chí Minh",
+      "phone": "0933 894 747",
+      "email": "contact@chuvatlieuxayhongquang.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Đào Thị Lê",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuvatlieuxayhongquang.vn",
+      "representative_phone": "0933 894 747",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "553305be-aa59-4cc8-a679-367ba681b9a6",
+      "company_name": "Chủ Hộ kinh doanh Trương Hữu Phùng",
+      "tax_code": "3701548235",
+      "address": " 75/8 Khu Phố Long Thới, Phường Lái Thiêu, Thành Phố Hồ Chí Minh",
+      "phone": "0355 945 545",
+      "email": "contact@chuhuuphung.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Trương Hữu Phùng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuhuuphung.vn",
+      "representative_phone": "0355 945 545",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "3de59857-11d2-451e-9861-951987998c72",
+      "company_name": "Chủ  Hộ kinh doanh Lê Thành Nhân",
+      "tax_code": "3701548236",
+      "address": "44/47 Ấp 5, Phường Chánh Hiệp, Thành Phố Hồ Chí Minh",
+      "phone": "0987 075 587",
+      "email": "contact@chunhan.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Lê Thành Nhân",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chunhan.vn",
+      "representative_phone": "0987 075 587",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "f76724d4-4c91-4556-aff3-1a8f95a30afc",
+      "company_name": "Chủ  Cửa hàng gas Sáu Của",
+      "tax_code": "3701548237",
+      "address": "Khu phố Khánh Long, Phường Tân Khánh, Thành phố Hồ Chí Minh",
+      "phone": "0907 173 721",
+      "email": "contact@chusaucua.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Thị Sáng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chusaucua.vn",
+      "representative_phone": "0907 173 721",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "56d65529-45de-4033-9f46-7072fb7a1e74",
+      "company_name": "Chủ Hộ kinh doanh Đinh Quang Dũng",
+      "tax_code": "3701548238",
+      "address": "17/4B ấp Đông An, Phường Dĩ An, Thành phố Hồ Chí Minh",
+      "phone": "0919 400 615",
+      "email": "contact@chudinhquang.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Đinh Quang Dũng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chudinhquang.vn",
+      "representative_phone": "0919 400 615",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "6c77b48d-b5fa-4e60-bccc-d2bc2285cbb8",
+      "company_name": "Chủ hộ kinh doanh Gas Thành Thái II",
+      "tax_code": "3701548239",
+      "address": "484 A, Hưng Lộc, Phường Thuận An, Thành phố Hồ Chí Minh",
+      "phone": "0274 3720797",
+      "email": "contact@chuthaiii.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Thanh Thành Thái",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuthaiii.vn",
+      "representative_phone": "0274 3720797",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "1839d28f-20f0-4db5-aa03-261be2170767",
+      "company_name": "Chủ Hộ kinh doanh Ngọc Loan",
+      "tax_code": "3701548240",
+      "address": "Thửa Đất Số 821 Tờ Bản Đồ Số 11 Khu Phố An Thành, Phường Tân Khánh, Thành Phố Hồ Chí Minh",
+      "phone": "0919 098 715",
+      "email": "contact@chungoclan.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Thị Ngọc Loan",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chungoclan.vn",
+      "representative_phone": "0919 098 715",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "ea932f12-7a7f-4cd6-9801-48bc09417663",
+      "company_name": "Chủ Đại lý gas Giá Rẻ",
+      "tax_code": "3701548241",
+      "address": "Block B Ô 1 Khu Dân Cư Minh Ngọc Khu Phố Đông Tân, Phường Dĩ An, Thành Phố Hồ Chí Minh",
+      "phone": "0986 192 128",
+      "email": "contact@chure.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Lê Thị Thu Hà",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chure.vn",
+      "representative_phone": "0986 192 128",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "56f455eb-e8e7-49d1-925e-7e60ea51e4b1",
+      "company_name": "Chủ cửa hàng Gas Tiến Thành",
+      "tax_code": "3701548223",
+      "address": "Số Nhà 228 Ấp 4, Xã Thường Tân, Thành phố Hồ Chí Minh",
+      "phone": "0949 177 505",
+      "email": "contact@chutien.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Văn Hải",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chutien.vn",
+      "representative_phone": "0949 177 505",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-29T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "283cdb8a-06e1-49f1-81df-06b26c78da80",
+      "company_name": "Chủ hộ kinh doanh Hải Huyền",
+      "tax_code": "3701548256",
+      "address": "108/8 Cộng Hòa, Quận Tân Phú, TP.HCM",
+      "phone": "0775142258",
+      "email": "info@chu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Phúc Hưng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chu.vn",
+      "representative_phone": "0775142258",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-31T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "8de6702f-cfde-4c63-9f28-0ab82780a00a",
+      "company_name": "Công ty TNHH Dầu khí Tuấn Khang",
+      "tax_code": "3701548259",
+      "address": "Bình Dương",
+      "phone": null,
+      "email": "info@gas.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Đại diện pháp luật",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@gas.vn",
+      "representative_phone": null,
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-08-31T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "67714d3c-67d4-4112-b80b-698b4e331dbf",
+      "company_name": "Hộ kinh doanh gas Việt Thủ Đức",
+      "tax_code": "3701548257",
+      "address": " 8a Đường 12, Phường Long Bình, Thành Phố Hồ Chí Minh",
+      "phone": "0909094089",
+      "email": "contact@gas.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Huỳnh Văn Tâm",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@gas.vn",
+      "representative_phone": "0909094089",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-08-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "c33f5bcf-dd27-413f-a2b9-09ae0c89ca60",
+      "company_name": "Công ty Cổ phần Vận tải Biển Đông",
+      "tax_code": "3701548260",
+      "address": "206  Nguyễn Văn Linh, phường Tân Thuận, thành phố Hồ Chí Minh",
+      "phone": "0987 899 899",
+      "email": "contact@tai.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Đoàn Xuân Hiền ",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@tai.vn",
+      "representative_phone": "0987 899 899",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-10-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "111f048c-958d-4b06-92b6-92586916cfc6",
+      "company_name": "Chủ Đại lý gas Huy Phương",
+      "tax_code": null,
+      "address": "Tổ 4, KP Phước Hải, P Thái Hòa, TP Tân Uyên, Bình Dương",
+      "phone": "0378 523 977",
+      "email": null,
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Tú Phương",
+      "representative_role": null,
+      "representative_email": null,
+      "representative_phone": "0378 523 977",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-09T09:12:05.084Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2026-06-08T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "34dc84d9-19b5-4a50-a0c6-469e5d42ac8c",
+      "company_name": "Công ty TNHH THành Vĩnh Phú",
+      "tax_code": null,
+      "address": "80 - 82 Huỳnh Tịnh Của, Phường Bà Rịa, TP.Hồ Chí Minh",
+      "phone": null,
+      "email": null,
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Vĩnh Lộc",
+      "representative_role": null,
+      "representative_email": null,
+      "representative_phone": null,
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-09T09:24:06.639Z",
+      "chapter_id": null,
+      "association_role": "Phó Chủ tịch Hiệp Hội",
+      "chapter_role": null,
+      "join_date": "2026-06-08T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "cb001993-adb6-4e21-8256-a2738e755d4b",
+      "company_name": "Cong ty TNHH Khi Dot Phuong Nam",
+      "tax_code": "",
+      "address": "",
+      "phone": "",
+      "email": "",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "",
+      "representative_phone": "",
+      "status": "Pending",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-08-19T06:35:04.180Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2026-08-18T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "6f2ba656-5274-45d8-b7bd-5382f56a558a",
+      "company_name": "Chủ Hộ kinh doanh Nguyễn Thanh Tâm",
+      "tax_code": "3701548233",
+      "address": "58/2 Tổ 2, Khu phố Khánh Lợi, Phường Tân Khánh, Thành phố Hồ Chí Minh",
+      "phone": "0908 803036",
+      "email": "contact@chunguyentam.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Thanh Tâm",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chunguyentam.vn",
+      "representative_phone": "0908 803036",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "602cafc2-d0ed-48df-ad78-a4947a50f717",
+      "company_name": "Chủ đại lý gas Nguyễn Thành Hà",
+      "tax_code": "3701548243",
+      "address": " 33/1c Nguyễn Thị Tươi Khu Phố Tân Hiệp, Phường Tân Đông Hiệp, Thành Phố Hồ Chí Minh",
+      "phone": "0363 366 034",
+      "email": "contact@chunguyenha.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Thành Hà",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chunguyenha.vn",
+      "representative_phone": "0363 366 034",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "9a804b46-b56e-4c48-9fe9-01d0bb0d9ba1",
+      "company_name": "Chủ hộ kinh doanh Lê Phú Hải",
+      "tax_code": "3701548244",
+      "address": "62b/3 Khu Phố 2, Phường An Phú, Thành Phố Hồ Chí Minh",
+      "phone": "0908 912 439",
+      "email": "contact@chuphu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Lê Phú Hải",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuphu.vn",
+      "representative_phone": "0908 912 439",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "c0f08e9e-96cb-406d-986e-cff804aae0b0",
+      "company_name": "Chủ hộ kinh doanh Gia Đình Việt",
+      "tax_code": "3701548245",
+      "address": "797 Đt 743b Khu Phố Đông Tân, Phường Dĩ An, Thành Phố Hồ Chí Minh",
+      "phone": "089 690 6673",
+      "email": "contact@chudinh.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Khắc Dương",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chudinh.vn",
+      "representative_phone": "089 690 6673",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "da1c92a1-66b7-497c-9777-6fac1b2b4945",
+      "company_name": "Chủ hộ kinh doanh Nguyễn Văn Dĩ",
+      "tax_code": "3701548246",
+      "address": "Số 259 Đường Đt 741 Khu Phố An Lợi, Phường Hòa Lợi, Thành Phố Hồ Chí Minh",
+      "phone": "0978 246 388",
+      "email": "contact@chunguyendi.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Văn Dĩ",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chunguyendi.vn",
+      "representative_phone": "0978 246 388",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "ea2a0ca0-7b08-4bdc-88e6-f81c04129605",
+      "company_name": "Chủ Hộ kinh doanh Trung Nguyên .TG",
+      "tax_code": "3701548247",
+      "address": "1/dc74/ô 84 Tổ2 Khu Phố Hòa Lân 2, Phường Thuận Giao, Thành Phố Hồ Chí Minh",
+      "phone": "0977 79 2048",
+      "email": "contact@chutrungnguyentg.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Đặng Văn Lưu",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chutrungnguyentg.vn",
+      "representative_phone": "0977 79 2048",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "ce3e7d5d-d939-4fd1-be93-1fd3b732c3c3",
+      "company_name": "Chủ Hộ kinh doanh gas Thiện Nhân",
+      "tax_code": "3701548248",
+      "address": "Số 202 Đường Đt741, Phường Bình Phước, Tỉnh Đồng Nai",
+      "phone": "0938 463 323",
+      "email": "contact@chuthiennhan.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Thiện Nhân",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuthiennhan.vn",
+      "representative_phone": "0938 463 323",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "4314973f-87a3-4c9a-aaf7-f4a576723089",
+      "company_name": "Chủ hộ kinh doanh Phạm Thị Thu Hiền",
+      "tax_code": "3701548249",
+      "address": "Thửa Đất Số 99 Tờ Bản Đồ Số 2 Tổ 4 Ấp Cầu Sắt, Phường Bến Cát, Thành Phố Hồ Chí Minh",
+      "phone": "0974 463 016",
+      "email": "contact@chuphamthihien.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Đinh Quang Dương",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chuphamthihien.vn",
+      "representative_phone": "0974 463 016",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Ủy viên Ban Chấp hành",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "196bc191-ba5a-4754-9ee4-c9da992a689a",
+      "company_name": "Giám đốc công ty TNHH khí hóa lỏng An Trường Phát",
+      "tax_code": "3701548250",
+      "address": "Tân Thắng, Phường Tân Đông Hiệp, Thành Phố Hồ Chí Minh",
+      "phone": "0985 417 772",
+      "email": "contact@giamdochoa.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Nguyễn Văn Vượng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@giamdochoa.vn",
+      "representative_phone": "0985 417 772",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "6b86319c-e61b-49cb-812a-aece655bbbea",
+      "company_name": "Chủ hộ kinh doanh đại lý gas Gia Bảo",
+      "tax_code": "3701548251",
+      "address": "Thửa Đất Số 524 Tờ Bản Đồ Số 33 Tổ 1 Kp 6, Phường Tân Uyên, Thành Phố Hồ Chí Minh",
+      "phone": "0387 616 121",
+      "email": "contact@chu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Trịnh Lâm Hưng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chu.vn",
+      "representative_phone": "0387 616 121",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "dd1d9bd5-09c2-4e5c-94c9-2421396b570c",
+      "company_name": "Chủ hộ kinh doanh Lê Minh",
+      "tax_code": "3701548253",
+      "address": "158 Khu Phố Đông Tư, Phường Lái Thiêu, Thành Phố Hồ Chí Minh",
+      "phone": "0918 556 686",
+      "email": "contact@chu.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Huỳnh Vĩ Hùng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@chu.vn",
+      "representative_phone": "0918 556 686",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "55f70491-4582-4275-8b33-dbe432c84016",
+      "company_name": "Công ty TNHH Tân Hải Việt ",
+      "tax_code": "3701548254",
+      "address": "61/1g/1d Đường Gò Cát, Phường Long Trường, Thành Phố Hồ Chí Minh",
+      "phone": "",
+      "email": "contact@gas.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Mai Văn Bình ",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@gas.vn",
+      "representative_phone": "",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Ủy viên Ban Chấp hành",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "03802ddb-dd5b-4e1e-82f7-e3626f3e24b0",
+      "company_name": "Giám đốc công ty TNHH Phúc Võ",
+      "tax_code": "3701548255",
+      "address": "67/5 Khu Phố Đông Tác, Phường Dĩ An, Thành Phố Hồ Chí Minh",
+      "phone": "0982 612 217",
+      "email": "contact@giamdoc.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Trần Công Anh Tuấn",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@giamdoc.vn",
+      "representative_phone": "0982 612 217",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Ủy viên Ban Chấp hành",
+      "chapter_role": null,
+      "join_date": "2025-03-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "087dc890-da79-4ba8-998c-8cffeb628f56",
+      "company_name": "Chủ hộ kinh doanh Phan Trọng",
+      "tax_code": "3701548252",
+      "address": "Thửa Đất Số 159 Tờ Bản Đồ Số 45 Tổ 16 Khu Phố Thắng Lợi Thị Trấn Đông Phú, Tỉnh Đồng Nai",
+      "phone": "0963 349 534",
+      "email": "",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Phan Trọng",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "",
+      "representative_phone": "0963 349 534",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-03-29T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "1443eeeb-eb83-4373-ab86-07549b97402f",
+      "company_name": "Công ty TNHH TMDV LPG Long Phước",
+      "tax_code": "3701548258",
+      "address": "151/5 Đường Long Phước, Phường Long Phước, Thành Phố Hồ Chí Minh",
+      "phone": "0938079190",
+      "email": "contact@tmdvlpg.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Hà Ngọc Vũ",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@tmdvlpg.vn",
+      "representative_phone": "0938079190",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-08-30T17:00:00.000Z",
+      "logo_url": null,
+      "representative_avatar_url": null
+    },
+    {
+      "id": "f2357a5a-b1a1-4366-9a30-b818347ea634",
+      "company_name": "Công ty Cổ phần MT Gas",
+      "tax_code": "3701548261",
+      "address": "Lô 1 Ấp Thuận Đạo, Xã Bến Lức, Tỉnh Tây Ninh",
+      "phone": "0913928218",
+      "email": "contact@gas.vn",
+      "business_type": "Phân phối & Bán lẻ",
+      "representative_name": "Trương Hữu Phước",
+      "representative_role": "Đại diện pháp luật",
+      "representative_email": "contact@gas.vn",
+      "representative_phone": "0913928218",
+      "status": "Active",
+      "license_file_url": null,
+      "safety_file_url": null,
+      "created_at": "2026-06-03T08:00:56.361Z",
+      "chapter_id": null,
+      "association_role": "Hội viên chính thức",
+      "chapter_role": null,
+      "join_date": "2025-10-27T17:00:00.000Z",
+      "logo_url": "/uploads/member-assets/3048sz6locz.png",
+      "representative_avatar_url": "/uploads/member-assets/arrxbs6eyn.png"
+    }
+  ],
+  "chapters": [],
+  "chapter_leadership": [],
+  "contact_messages": [
+    {
+      "id": "e58ba28a-fa2e-40d9-9f83-01cca550704b",
+      "name": "awer ưe",
+      "email": "luxengasvn@gmail.com",
+      "phone": "123213",
+      "message": "[Đăng ký Sự kiện: 123213 12321 312 312 312 3 123 12 3]\n- Họ và tên: awer ưe\n- Đơn vị/Doanh nghiệp: ư er ưer\n- Email: luxengasvn@gmail.com\n- Số điện thoại: 123213",
+      "is_read": true,
+      "created_at": "2026-06-06T06:25:22.992Z"
+    }
+  ],
+  "admin_users": [
+    {
+      "id": "28f725fc-4b60-4f8a-a083-26dbb5a5b357",
+      "username": "admin",
+      "password_hash": "b78284b74e17b7641aced38d8a66e2533df180cb0cbcbdf3b7a9c357c0aca594",
+      "display_name": "Quản trị tối cao",
+      "role": "super_admin",
+      "status": "Active",
+      "created_at": "2026-06-05T08:42:30.056Z"
+    },
+    {
+      "id": "93645490-f542-4c14-802b-795b4fefb570",
+      "username": "hoba",
+      "password_hash": "9a93480f71f08c01150fdf98aed576087681b35adbf7bb0444be6330d1a5cf5c",
+      "display_name": "HoBa",
+      "role": "editor",
+      "status": "Active",
+      "created_at": "2026-06-06T08:00:29.333Z"
+    },
+    {
+      "id": "98c2f638-f3fa-43b7-8f2e-2cf9e1b2cd6d",
+      "username": "tunglinh",
+      "password_hash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+      "display_name": "Tùng Linh",
+      "role": "super_admin",
+      "status": "Active",
+      "created_at": "2026-08-28T01:06:08.000Z"
+    }
+  ]
+}

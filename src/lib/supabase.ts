@@ -3,11 +3,12 @@ import { compressImage } from './imageCompressor';
 
 // Helper to get absolute API url on server-side, or relative on client-side
 const getApiUrl = (endpoint: string) => {
+  const cleanEndpoint = endpoint.endsWith('/') ? endpoint : `${endpoint}/`;
   if (typeof window !== 'undefined') {
-    return endpoint;
+    return cleanEndpoint;
   }
-  const port = process.env.PORT || '3000';
-  return `http://127.0.0.1:${port}${endpoint}`;
+  const port = process.env.PORT || '3010';
+  return `http://127.0.0.1:${port}${cleanEndpoint}`;
 };
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';

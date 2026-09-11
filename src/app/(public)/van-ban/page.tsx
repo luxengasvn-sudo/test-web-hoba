@@ -6,16 +6,21 @@ export const dynamic = 'force-dynamic';
 
 const getCleanDocUrl = (code: string, fileUrl?: string) => {
   const c = (code || '').trim();
+  // If fileUrl is provided and valid, prioritize it
+  if (fileUrl && fileUrl !== '#' && !fileUrl.includes('hobalpg.vn/uploads/documents/')) {
+    return fileUrl;
+  }
+
+  // Fallback map for official baseline legal documents
   if (c === '105/2025/NĐ-CP') return '/uploads/documents/ND-105-2025-ve-PCCC.pdf';
   if (c === '87/2018/NĐ-CP') return '/uploads/documents/ND-87-ve-Kinh-doanh-khi.pdf';
   if (c === '96/2016/NĐ-CP') return '/uploads/documents/ND-96-quy-dinh-ve-ANTT.pdf';
-  if (c === '14/QĐ-UBND') return '/uploads/documents/14-Quyet-dinh-phe-duyet-dieu-le-HOBA-2025.pdf';
+  if (c === '14/QĐ-UBND' || c === '14/QD-UBND') return '/uploads/documents/14-Quyet-dinh-phe-duyet-dieu-le-HOBA-2025.pdf';
   if (c === '12/QC-HOBA') return '/uploads/documents/12-Quy-che-hoat-dong-noi-bo-2025.pdf';
   
-  if (!fileUrl || fileUrl === '#' || fileUrl.includes('hobalpg.vn/uploads/documents/')) {
-    const match = defaultDocuments.find(def => def.code === c);
-    if (match) return match.fileUrl;
-  }
+  const match = defaultDocuments.find(def => def.code === c);
+  if (match && match.fileUrl) return match.fileUrl;
+
   return fileUrl || '#';
 };
 
@@ -43,10 +48,7 @@ export default async function Page() {
     });
 
     if (data && data.length > 0) {
-      // Filter out test entries
-      const validItems = data.filter((d: any) => !d.title?.toLowerCase().includes('test') && !d.code?.toLowerCase().includes('test'));
-      
-      const mapped: DocumentItem[] = validItems.map((d: any) => ({
+      const mapped: DocumentItem[] = data.map((d: any) => ({
         code: d.code,
         title: d.title,
         category: d.category,
@@ -57,17 +59,25 @@ export default async function Page() {
         fileUrl: getCleanDocUrl(d.code, d.file_url)
       }));
 
-      // Deduplicate by normalized code
+      // Initialize map with default baseline documents
       const docMap = new Map<string, DocumentItem>();
       for (const def of defaultDocuments) {
-        docMap.set(normalizeCode(def.code), def as DocumentItem);
+        docMap.set(normalizeCode(def.code), { ...def } as DocumentItem);
       }
+
+      // Merge DB records over defaults: DB edits take precedence
       for (const m of mapped) {
         const norm = normalizeCode(m.code);
         if (norm) {
           const existing = docMap.get(norm);
-          if (existing && existing.description && (!m.description || m.description.length < existing.description.length)) {
-            continue;
+          if (existing) {
+            // Keep existing baseline description or fileUrl if DB has empty placeholders
+            if (!m.description && existing.description) {
+              m.description = existing.description;
+            }
+            if ((!m.fileUrl || m.fileUrl === '#') && existing.fileUrl && existing.fileUrl !== '#') {
+              m.fileUrl = existing.fileUrl;
+            }
           }
           docMap.set(norm, m);
         }

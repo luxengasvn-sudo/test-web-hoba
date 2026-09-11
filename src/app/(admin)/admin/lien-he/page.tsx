@@ -79,7 +79,7 @@ export default function AdminContact() {
           email: d.email,
           phone: d.phone,
           message: d.message,
-          date: d.created_at ? d.created_at.split('T')[0] : new Date().toISOString().split('T')[0],
+          date: d.created_at ? (typeof d.created_at === 'string' ? d.created_at.split('T')[0] : new Date(d.created_at).toISOString().split('T')[0]) : new Date().toISOString().split('T')[0],
           read: d.is_read
         }));
         setMessages(formatted);

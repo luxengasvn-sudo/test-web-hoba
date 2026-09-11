@@ -54,21 +54,6 @@ export default function Header({ initialConfig }: { initialConfig?: any }) {
   const [contactEmail, setContactEmail] = useState(() => initialConfig?.contactEmail || 'info@hobalpg.vn');
   const [contactPhone, setContactPhone] = useState(() => initialConfig?.contactPhone || '028 3831 66710');
 
-  // Safeguard: Redirect if the server served the public layout for an admin path
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const path = window.location.pathname;
-      if (path === '/admin' || path.startsWith('/admin/')) {
-        let target = path;
-        if (target.endsWith('/')) {
-          target = target + 'index.html';
-        } else if (!target.endsWith('index.html')) {
-          target = target + '/index.html';
-        }
-        window.location.replace(target + window.location.search + window.location.hash);
-      }
-    }
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

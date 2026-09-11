@@ -1,0 +1,427 @@
+{
+  "backupDate": "2026-09-11T06:12:38.831Z",
+  "sourceUrl": "https://hobalpg.vn/",
+  "database": {
+    "website_config": {
+      "count": 12,
+      "file": "website_config.json"
+    },
+    "news": {
+      "count": 2,
+      "file": "news.json"
+    },
+    "documents": {
+      "count": 4,
+      "file": "documents.json"
+    },
+    "members": {
+      "count": 63,
+      "file": "members.json"
+    },
+    "chapters": {
+      "count": 0,
+      "file": "chapters.json"
+    },
+    "chapter_leadership": {
+      "count": 0,
+      "file": "chapter_leadership.json"
+    },
+    "contact_messages": {
+      "count": 1,
+      "file": "contact_messages.json"
+    },
+    "admin_users": {
+      "count": 3,
+      "file": "admin_users.json"
+    },
+    "uploaded_files": {
+      "count": 38,
+      "file": "uploaded_files_metadata.json"
+    }
+  },
+  "mediaFiles": [
+    {
+      "path": "aboutpage/14rfusiea8zj.JPG",
+      "source": "database",
+      "sizeBytes": 111760,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "committees/ban-chap-hanh/4kjj0ava7qq.png",
+      "source": "database",
+      "sizeBytes": 40222,
+      "mimeType": "image/png"
+    },
+    {
+      "path": "committees/ban-chap-hanh/jpi4e4lhid.png",
+      "source": "database",
+      "sizeBytes": 40222,
+      "mimeType": "image/png"
+    },
+    {
+      "path": "committees/ban-chap-hanh/pfmhj47uag.png",
+      "source": "database",
+      "sizeBytes": 40222,
+      "mimeType": "image/png"
+    },
+    {
+      "path": "committees/ban-chap-hanh/w1rljpktmtb.jpeg",
+      "source": "database",
+      "sizeBytes": 25932,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "documents/ozgh78bthf8.pdf",
+      "source": "database",
+      "sizeBytes": 6565982,
+      "mimeType": "application/pdf"
+    },
+    {
+      "path": "documents/rpx8y3xi9q9.pdf",
+      "source": "database",
+      "sizeBytes": 1868185,
+      "mimeType": "application/pdf"
+    },
+    {
+      "path": "documents/vxjot9bvg1a.pdf",
+      "source": "database",
+      "sizeBytes": 1814276,
+      "mimeType": "application/pdf"
+    },
+    {
+      "path": "event-images/i63pxwd85z.webp",
+      "source": "database",
+      "sizeBytes": 38102,
+      "mimeType": "image/webp"
+    },
+    {
+      "path": "featured-members/pdia619wa5b.png",
+      "source": "database",
+      "sizeBytes": 13608,
+      "mimeType": "image/png"
+    },
+    {
+      "path": "homepage/53hvswzddtk.JPG",
+      "source": "database",
+      "sizeBytes": 88038,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "member-assets/fpvjpv8ycl.jpeg",
+      "source": "database",
+      "sizeBytes": 26126,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "member-assets/hj3sjoi2q6n.png",
+      "source": "database",
+      "sizeBytes": 21722,
+      "mimeType": "image/png"
+    },
+    {
+      "path": "memberspage/0nn4ckadwi5l.png",
+      "source": "database",
+      "sizeBytes": 40222,
+      "mimeType": "image/png"
+    },
+    {
+      "path": "homepage/9dud1y1i5cs.jpeg",
+      "source": "database",
+      "sizeBytes": 114980,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "news-images/lg80rdqb2me.JPG",
+      "source": "database",
+      "sizeBytes": 129328,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "news-images/xgh96xtcu5i.JPG",
+      "source": "database",
+      "sizeBytes": 129328,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "news-images/hickq5buic.jpg",
+      "source": "database",
+      "sizeBytes": 107674,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "news-images/nu8ovlb7nd.jpg",
+      "source": "database",
+      "sizeBytes": 120384,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "news-images/b5rllkleic6.jpg",
+      "source": "database",
+      "sizeBytes": 121134,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "news-images/gefcy5rxfuh.jpg",
+      "source": "database",
+      "sizeBytes": 107674,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "news-images/rsnh9avi5ni.jpg",
+      "source": "database",
+      "sizeBytes": 107312,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "news-images/t91imbahs6.jpg",
+      "source": "database",
+      "sizeBytes": 167706,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "homepage/248l113laqaj.JPG",
+      "source": "database",
+      "sizeBytes": 177998,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "featured-members/fvwf3jzjigg.png",
+      "source": "database",
+      "sizeBytes": 11104,
+      "mimeType": "image/png"
+    },
+    {
+      "path": "featured-members/bad64jwbx6t.jpg",
+      "source": "database",
+      "sizeBytes": 5334,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "featured-members/tifw94ba2u.jpg",
+      "source": "database",
+      "sizeBytes": 2642,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "featured-members/gvcnpqrf355.png",
+      "source": "database",
+      "sizeBytes": 5042,
+      "mimeType": "image/png"
+    },
+    {
+      "path": "featured-members/vxpniue6lbo.png",
+      "source": "database",
+      "sizeBytes": 12846,
+      "mimeType": "image/png"
+    },
+    {
+      "path": "news-images/2t78ngoml8.JPG",
+      "source": "database",
+      "sizeBytes": 129328,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "event-images/mkkc5z4owqa.JPG",
+      "source": "database",
+      "sizeBytes": 48828,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "site-assets/i2yq7qhbqgh.png",
+      "source": "database",
+      "sizeBytes": 14966,
+      "mimeType": "image/png"
+    },
+    {
+      "path": "member-assets/smx0t1y441k.jpg",
+      "source": "database",
+      "sizeBytes": 14244,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "aboutpage/nlqcgtq0ujb.JPG",
+      "source": "database",
+      "sizeBytes": 129328,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "aboutpage/uqgujmqt62.JPG",
+      "source": "database",
+      "sizeBytes": 129328,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "aboutpage/kdzi73862y.jpeg",
+      "source": "database",
+      "sizeBytes": 107472,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "committees/ban-chap-hanh/5jvacq8esdh.jpg",
+      "source": "database",
+      "sizeBytes": 29776,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "path": "member-assets/j9z5y6uv21k.png",
+      "source": "database",
+      "sizeBytes": 27530,
+      "mimeType": "image/png"
+    },
+    {
+      "path": "documents/12-Quy-che-hoat-dong-noi-bo-2025.pdf",
+      "source": "local_disk",
+      "sizeBytes": 5946200
+    },
+    {
+      "path": "documents/14-Quyet-dinh-phe-duyet-dieu-le-HOBA-2025.pdf",
+      "source": "local_disk",
+      "sizeBytes": 844586
+    },
+    {
+      "path": "documents/ND-105-2025-ve-PCCC.pdf",
+      "source": "local_disk",
+      "sizeBytes": 6565982
+    },
+    {
+      "path": "documents/ND-87-ve-Kinh-doanh-khi.pdf",
+      "source": "local_disk",
+      "sizeBytes": 1814276
+    },
+    {
+      "path": "documents/ND-96-quy-dinh-ve-ANTT.pdf",
+      "source": "local_disk",
+      "sizeBytes": 1868185
+    }
+  ],
+  "pages": [
+    {
+      "title": "Trang chủ",
+      "url": "https://hobalpg.vn/",
+      "slug": "home",
+      "htmlFile": "pages_html/home.html",
+      "mdFile": "pages_markdown/home.md",
+      "sizeBytes": 63257
+    },
+    {
+      "title": "Giới thiệu chung",
+      "url": "https://hobalpg.vn/gioi-thieu/",
+      "slug": "gioi-thieu",
+      "htmlFile": "pages_html/gioi-thieu.html",
+      "mdFile": "pages_markdown/gioi-thieu.md",
+      "sizeBytes": 51206
+    },
+    {
+      "title": "Ban Chấp hành",
+      "url": "https://hobalpg.vn/ban-chap-hanh/",
+      "slug": "ban-chap-hanh",
+      "htmlFile": "pages_html/ban-chap-hanh.html",
+      "mdFile": "pages_markdown/ban-chap-hanh.md",
+      "sizeBytes": 111435
+    },
+    {
+      "title": "Ban Thường vụ",
+      "url": "https://hobalpg.vn/ban-thuong-vu/",
+      "slug": "ban-thuong-vu",
+      "htmlFile": "pages_html/ban-thuong-vu.html",
+      "mdFile": "pages_markdown/ban-thuong-vu.md",
+      "sizeBytes": 95950
+    },
+    {
+      "title": "Ban Kiểm tra",
+      "url": "https://hobalpg.vn/ban-kiem-tra/",
+      "slug": "ban-kiem-tra",
+      "htmlFile": "pages_html/ban-kiem-tra.html",
+      "mdFile": "pages_markdown/ban-kiem-tra.md",
+      "sizeBytes": 86526
+    },
+    {
+      "title": "Danh sách Hội viên",
+      "url": "https://hobalpg.vn/hoi-vien/",
+      "slug": "hoi-vien",
+      "htmlFile": "pages_html/hoi-vien.html",
+      "mdFile": "pages_markdown/hoi-vien.md",
+      "sizeBytes": 164053
+    },
+    {
+      "title": "Danh sách Chi hội",
+      "url": "https://hobalpg.vn/chi-hoi/",
+      "slug": "chi-hoi",
+      "htmlFile": "pages_html/chi-hoi.html",
+      "mdFile": "pages_markdown/chi-hoi.md",
+      "sizeBytes": 82927
+    },
+    {
+      "title": "Đăng ký Hội viên",
+      "url": "https://hobalpg.vn/dang-ky/",
+      "slug": "dang-ky",
+      "htmlFile": "pages_html/dang-ky.html",
+      "mdFile": "pages_markdown/dang-ky.md",
+      "sizeBytes": 35866
+    },
+    {
+      "title": "Tin tức",
+      "url": "https://hobalpg.vn/tin-tuc",
+      "slug": "tin-tuc",
+      "htmlFile": "pages_html/tin-tuc.html",
+      "mdFile": "pages_markdown/tin-tuc.md",
+      "sizeBytes": 48434
+    },
+    {
+      "title": "HOBA LPG tham gia Triển lãm & Diễn đàn Công nghệ Hỗ trợ",
+      "url": "https://hobalpg.vn/tin-tuc/hoba-lpg-tham-gia-trien-lam-dien-dan-cong-nghe-ho-tro-lan-thu-2-nam-2026",
+      "slug": "tin-tuc--trien-lam-cong-nghe-ho-tro-2026",
+      "htmlFile": "pages_html/tin-tuc--trien-lam-cong-nghe-ho-tro-2026.html",
+      "mdFile": "pages_markdown/tin-tuc--trien-lam-cong-nghe-ho-tro-2026.md",
+      "sizeBytes": 47501
+    },
+    {
+      "title": "Phát huy vai trò của Hiệp hội trong bảo vệ thị trường LPG",
+      "url": "https://hobalpg.vn/tin-tuc/phat-huy-vai-tro-cua-hiep-hoi-trong-bao-ve-thi-truong-lpg-minh-bach-va-ben-vung",
+      "slug": "tin-tuc--phat-huy-vai-tro-hiep-hoi",
+      "htmlFile": "pages_html/tin-tuc--phat-huy-vai-tro-hiep-hoi.html",
+      "mdFile": "pages_markdown/tin-tuc--phat-huy-vai-tro-hiep-hoi.md",
+      "sizeBytes": 47878
+    },
+    {
+      "title": "Sự kiện & Đào tạo",
+      "url": "https://hobalpg.vn/su-kien",
+      "slug": "su-kien",
+      "htmlFile": "pages_html/su-kien.html",
+      "mdFile": "pages_markdown/su-kien.md",
+      "sizeBytes": 33964
+    },
+    {
+      "title": "Đại hội bất thường",
+      "url": "https://hobalpg.vn/su-kien/dai-hoi-bat-thuong",
+      "slug": "su-kien--dai-hoi-bat-thuong",
+      "htmlFile": "pages_html/su-kien--dai-hoi-bat-thuong.html",
+      "mdFile": "pages_markdown/su-kien--dai-hoi-bat-thuong.md",
+      "sizeBytes": 34477
+    },
+    {
+      "title": "Văn bản pháp quy & nội bộ",
+      "url": "https://hobalpg.vn/van-ban/",
+      "slug": "van-ban",
+      "htmlFile": "pages_html/van-ban.html",
+      "mdFile": "pages_markdown/van-ban.md",
+      "sizeBytes": 40284
+    },
+    {
+      "title": "Liên hệ",
+      "url": "https://hobalpg.vn/lien-he/",
+      "slug": "lien-he",
+      "htmlFile": "pages_html/lien-he.html",
+      "mdFile": "pages_markdown/lien-he.md",
+      "sizeBytes": 38116
+    },
+    {
+      "title": "Danh sách Hội viên theo Chi hội",
+      "url": "https://hobalpg.vn/hoi-vien/chi-hoi/?id=b19d5c41-bc75-47e1-8848-038cbe22cf90",
+      "slug": "hoi-vien-chi-hoi-detail",
+      "htmlFile": "pages_html/hoi-vien-chi-hoi-detail.html",
+      "mdFile": "pages_markdown/hoi-vien-chi-hoi-detail.md",
+      "sizeBytes": 30669
+    }
+  ]
+}

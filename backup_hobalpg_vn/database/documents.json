@@ -1,0 +1,50 @@
+[
+  {
+    "id": "f24f3889-cc11-45ba-9f5c-185ad14790a8",
+    "code": "87/2018/NĐ-CP",
+    "title": "Quy định về kinh doanh khí",
+    "category": "Quy chuẩn",
+    "issuer": "Chính Phủ",
+    "file_url": "/uploads/documents/8t6yu0bfmak.pdf",
+    "file_size": "1.7 MB",
+    "publish_date": "2018-06-13T17:00:00.000Z",
+    "created_at": "2026-06-06T09:41:09.146Z",
+    "description": ""
+  },
+  {
+    "id": "f2a7e6e1-bc39-442d-a0f2-e2c29f068ec5",
+    "code": "96/2016/NĐ-CP",
+    "title": "Quy định về ANTT đối với một số ngành nghề KD",
+    "category": "Quy chuẩn",
+    "issuer": "Chính phủ",
+    "file_url": "/uploads/documents/1g3erivh54i.pdf",
+    "file_size": "1.8 MB",
+    "publish_date": "2016-06-29T17:00:00.000Z",
+    "created_at": "2026-06-06T09:41:48.747Z",
+    "description": ""
+  },
+  {
+    "id": "cc803067-9bf7-48ef-9fa3-5d78d8124a31",
+    "code": "14/QD-UBND",
+    "title": "Quyet dinh phe duyet Dieu le HOBA",
+    "category": "Quyết định",
+    "issuer": "UBND TP.HCM",
+    "file_url": "#",
+    "file_size": "1.5 MB",
+    "publish_date": "2025-01-13T17:00:00.000Z",
+    "created_at": "2026-08-19T06:54:48.589Z",
+    "description": "Quyet dinh phe duyet Dieu le hoat dong cua Hiep hoi LPG TP.HCM."
+  },
+  {
+    "id": "33374b2e-9063-4b93-9b04-39d366127caf",
+    "code": "105/2025/NĐ-CP",
+    "title": "Quy dinh ve phong chay chua chay TEST",
+    "category": "Quy chuẩn",
+    "issuer": "Chính Phủ",
+    "file_url": "/uploads/documents/ltidonxba6q.pdf",
+    "file_size": "6.3 MB",
+    "publish_date": "2025-05-12T17:00:00.000Z",
+    "created_at": "2026-06-06T09:42:22.780Z",
+    "description": ""
+  }
+]

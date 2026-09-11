@@ -14,7 +14,8 @@ const MIME_TYPES: { [key: string]: string } = {
   '.gif': 'image/gif',
   '.svg': 'image/svg+xml',
   '.ico': 'image/x-icon',
-  '.webp': 'image/webp'
+  '.webp': 'image/webp',
+  '.pdf': 'application/pdf'
 };
 
 interface RouteParams {

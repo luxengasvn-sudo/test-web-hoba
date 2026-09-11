@@ -23,6 +23,9 @@ function sanitizeParam(table: string, col: string, val: any): any {
   if (table === 'website_config' && col === 'value' && typeof val === 'object' && val !== null) {
     return JSON.stringify(val);
   }
+  if (table === 'members' && col === 'tax_code' && typeof val === 'string' && !val.trim()) {
+    return null;
+  }
   return val;
 }
 

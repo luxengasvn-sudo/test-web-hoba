@@ -16,10 +16,28 @@ export interface CustomPage {
   created_at: string;
 }
 
-function PublicCustomPageContent({ initialData }: { initialData?: any }) {
+interface CustomClientProps {
+  initialData?: any;
+  slugProp?: string;
+}
+
+const matchPage = (p: CustomPage, targetSlug: string) => {
+  if (!p || !targetSlug) return false;
+  const s = targetSlug.toLowerCase().trim();
+  const ps = (p.slug || '').toLowerCase().trim();
+  const pid = (p.id || '').toLowerCase().trim();
+  return (
+    ps === s ||
+    pid === s ||
+    (s === 'dieu-khoan' && ps.includes('dieu-khoan')) ||
+    (s === 'chinh-sach' && ps.includes('chinh-sach'))
+  );
+};
+
+function PublicCustomPageContent({ initialData, slugProp }: CustomClientProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const slug = searchParams.get('slug');
+  const slug = slugProp || searchParams.get('slug') || '';
 
   const [page, setPage] = useState<CustomPage | null>(initialData?.page || null);
   const [loading, setLoading] = useState(!initialData?.page);
@@ -28,7 +46,7 @@ function PublicCustomPageContent({ initialData }: { initialData?: any }) {
   const fallbackBanner = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDTnDaM8uzQn1_0DhmhC7KmeGLksQoODMcExU4UgxEcKMACoKgUXJW_2llmo7m-ViDB3xt2KW3AffPsNIEWvPC1uYoP833s0_aSIdyHJqgQJ3M7CeBBlXZb6AXaffkH0smJ-ud5Q1xRd87Fq9fBxQkp-UOoxSITgv85D-HFOp0IhgyruXjbG3lsDx9HPlbswwwJyQC1LeI0F7lTCuuNnRSBcWo3UUy-H2FP9vD9KSPm35z6PtDtTWMejNSdqXtYLoWrH28NsiAEQHc';
 
   useEffect(() => {
-    if (initialData?.page && initialData.page.slug === slug) {
+    if (initialData?.page && matchPage(initialData.page, slug)) {
       setPage(initialData.page);
       setImgSrc(initialData.page.thumbnail_url || fallbackBanner);
       setLoading(false);
@@ -69,7 +87,7 @@ function PublicCustomPageContent({ initialData }: { initialData?: any }) {
         }
       }
 
-      const found = customPages.find(p => p.slug === slug);
+      const found = customPages.find(p => matchPage(p, slug));
       if (found && found.status === 'Published') {
         setPage(found);
         setImgSrc(found.thumbnail_url || fallbackBanner);
@@ -191,7 +209,7 @@ function PublicCustomPageContent({ initialData }: { initialData?: any }) {
   );
 }
 
-export default function CustomClientPage({ initialData }: { initialData?: any }) {
+export default function CustomClientPage({ initialData, slugProp }: CustomClientProps) {
   return (
     <Suspense fallback={
       <div className="flex-grow pt-32 pb-16 bg-surface flex items-center justify-center min-h-[60vh]">
@@ -201,7 +219,7 @@ export default function CustomClientPage({ initialData }: { initialData?: any })
         </div>
       </div>
     }>
-      <PublicCustomPageContent initialData={initialData} />
+      <PublicCustomPageContent initialData={initialData} slugProp={slugProp} />
     </Suspense>
   );
 }

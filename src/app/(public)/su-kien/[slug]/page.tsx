@@ -1,6 +1,8 @@
 import { supabase } from '@/lib/supabase';
 import EventsPage from '../page';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateStaticParams() {
   if (!supabase) return [{ slug: 'su-kien-hoba' }];
 

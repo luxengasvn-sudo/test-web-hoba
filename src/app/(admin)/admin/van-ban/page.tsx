@@ -49,15 +49,19 @@ export default function AdminDocuments() {
 
   const getCleanDocUrl = (code: string, fileUrl?: string) => {
     const c = (code || '').trim();
+    if (fileUrl && fileUrl !== '#' && !fileUrl.includes('hobalpg.vn/uploads/documents/')) {
+      return fileUrl;
+    }
+
     if (c === '105/2025/NĐ-CP') return '/uploads/documents/ND-105-2025-ve-PCCC.pdf';
     if (c === '87/2018/NĐ-CP') return '/uploads/documents/ND-87-ve-Kinh-doanh-khi.pdf';
     if (c === '96/2016/NĐ-CP') return '/uploads/documents/ND-96-quy-dinh-ve-ANTT.pdf';
-    if (c === '14/QĐ-UBND') return '/uploads/documents/14-Quyet-dinh-phe-duyet-dieu-le-HOBA-2025.pdf';
+    if (c === '14/QĐ-UBND' || c === '14/QD-UBND') return '/uploads/documents/14-Quyet-dinh-phe-duyet-dieu-le-HOBA-2025.pdf';
     if (c === '12/QC-HOBA') return '/uploads/documents/12-Quy-che-hoat-dong-noi-bo-2025.pdf';
-    if (!fileUrl || fileUrl === '#' || fileUrl.includes('hobalpg.vn/uploads/documents/')) {
-      const match = defaultDocs.find(def => def.code === c);
-      if (match) return match.fileUrl || '#';
-    }
+
+    const match = defaultDocs.find(def => def.code === c);
+    if (match && match.fileUrl) return match.fileUrl;
+
     return fileUrl || '#';
   };
 
@@ -94,15 +98,13 @@ export default function AdminDocuments() {
       if (error) throw error;
 
       if (data && data.length > 0) {
-        const validItems = data.filter((d: any) => !d.title?.toLowerCase().includes('test') && !d.code?.toLowerCase().includes('test'));
-
-        const formatted: DocumentAdmin[] = validItems.map((d: any) => ({
+        const formatted: DocumentAdmin[] = data.map((d: any) => ({
           id: d.id,
           code: d.code,
           title: d.title,
           category: d.category,
           issuer: d.issuer,
-          date: d.publish_date,
+          date: d.publish_date ? (d.publish_date instanceof Date ? d.publish_date.toISOString().split('T')[0] : String(d.publish_date).split('T')[0]) : '',
           fileSize: d.file_size || '1.0 MB',
           description: d.description || '',
           fileUrl: getCleanDocUrl(d.code, d.file_url)
@@ -120,14 +122,19 @@ export default function AdminDocuments() {
 
         const docMap = new Map<string, DocumentAdmin>();
         for (const def of defaultDocs) {
-          docMap.set(normalizeCode(def.code), def);
+          docMap.set(normalizeCode(def.code), { ...def });
         }
         for (const m of formatted) {
           const norm = normalizeCode(m.code);
           if (norm) {
             const existing = docMap.get(norm);
-            if (existing && existing.description && (!m.description || m.description.length < existing.description.length)) {
-              continue;
+            if (existing) {
+              if (!m.description && existing.description) {
+                m.description = existing.description;
+              }
+              if ((!m.fileUrl || m.fileUrl === '#') && existing.fileUrl && existing.fileUrl !== '#') {
+                m.fileUrl = existing.fileUrl;
+              }
             }
             docMap.set(norm, m);
           }

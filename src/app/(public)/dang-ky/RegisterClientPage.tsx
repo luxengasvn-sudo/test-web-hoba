@@ -280,10 +280,10 @@ export default function RegisterClientPage({ initialData }: { initialData?: any 
       const { error } = await supabase.from('members').insert([
         {
           company_name: formData.companyName,
-          tax_code: formData.taxCode,
+          tax_code: formData.taxCode && formData.taxCode.trim() ? formData.taxCode.trim() : null,
           address: formData.address,
           phone: formData.phone,
-          email: formData.repEmail,
+          email: formData.repEmail && formData.repEmail.trim() ? formData.repEmail.trim() : null,
           business_type: formData.businessType,
           representative_name: formData.repName,
           representative_role: formData.repRole,

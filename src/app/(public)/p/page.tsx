@@ -24,7 +24,17 @@ export default async function Page({ searchParams }: PageProps) {
 
       if (data?.value?.pages) {
         const pages: CustomPage[] = data.value.pages;
-        const found = pages.find((p) => p.slug === slug);
+        const s = slug.toLowerCase().trim();
+        const found = pages.find((p) => {
+          const ps = (p.slug || '').toLowerCase().trim();
+          const pid = (p.id || '').toLowerCase().trim();
+          return (
+            ps === s ||
+            pid === s ||
+            (s === 'dieu-khoan' && ps.includes('dieu-khoan')) ||
+            (s === 'chinh-sach' && ps.includes('chinh-sach'))
+          );
+        });
         if (found && found.status === 'Published') {
           initialData.page = found;
         }

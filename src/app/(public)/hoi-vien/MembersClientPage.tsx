@@ -366,7 +366,7 @@ export default function MembersPage({ initialData = {} }: MembersClientPageProps
                 chapter_name: d.chapter_id ? (chaptersMap[d.chapter_id] || 'Chi hội liên kết') : undefined,
                 association_role: d.association_role || 'Hội viên chính thức',
                 chapter_role: d.chapter_role,
-                join_date: d.join_date ? d.join_date.split('T')[0] : d.created_at.split('T')[0],
+                join_date: d.join_date ? (typeof d.join_date === 'string' ? d.join_date.split('T')[0] : new Date(d.join_date).toISOString().split('T')[0]) : (d.created_at ? (typeof d.created_at === 'string' ? d.created_at.split('T')[0] : new Date(d.created_at).toISOString().split('T')[0]) : new Date().toISOString().split('T')[0]),
                 logo_url: d.logo_url || d.license_file_url,
                 representative_avatar_url: d.representative_avatar_url || ''
               };
