@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import DataSeeder from "@/components/DataSeeder";
 import { executeDirectQuery } from "@/lib/db-direct";
@@ -74,6 +75,23 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-background text-on-background">
+        {/* Google tag (gtag.js) */}
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-PVN2MM33X0"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+        >
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-PVN2MM33X0');
+          `}
+        </Script>
         <DataSeeder />
         {children}
       </body>

@@ -36,6 +36,7 @@ yarn-error.log*
 # archives and temp
 *.zip
 screen_bch.png
+database_backup_*.json
 
 # vercel
 .vercel
