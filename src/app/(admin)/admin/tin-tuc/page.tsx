@@ -37,6 +37,8 @@ export default function AdminNews() {
   const [formFeatured, setFormFeatured] = useState(false);
   const [formSlug, setFormSlug] = useState('');
   const [isSlugAuto, setIsSlugAuto] = useState(true);
+  const [deleteConfirmNews, setDeleteConfirmNews] = useState<NewsAdmin | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const defaultNews: NewsAdmin[] = [
     {
@@ -126,20 +128,31 @@ export default function AdminNews() {
     fetchNews();
   }, []);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Bạn có chắc chắn muốn xóa bài viết này?')) return;
+  const handleDelete = (newsItem: NewsAdmin) => {
+    setDeleteConfirmNews(newsItem);
+  };
 
-    if (!supabase) {
-      setNews(prev => prev.filter(n => n.id !== id));
-      return;
-    }
+  const handleExecuteDelete = async () => {
+    if (!deleteConfirmNews) return;
+    const id = deleteConfirmNews.id;
+    setDeleting(true);
 
     try {
-      const { error } = await supabase.from('news').delete().eq('id', id);
-      if (error) throw error;
+      if (supabase) {
+        const { error } = await supabase.from('news').delete().eq('id', id);
+        if (error) throw error;
+      }
       setNews(prev => prev.filter(n => n.id !== id));
+      if (editingNewsId === id) {
+        setIsModalOpen(false);
+        resetForm();
+      }
+      setDeleteConfirmNews(null);
+      await fetchNews();
     } catch (err) {
       alert('Không thể xóa bài viết. Lỗi: ' + (err as Error).message);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -430,7 +443,7 @@ export default function AdminNews() {
                             <span className="material-symbols-outlined text-sm">edit</span>
                           </button>
                           <button
-                            onClick={() => handleDelete(n.id)}
+                            onClick={() => handleDelete(n)}
                             className="text-on-surface-variant hover:text-red-500 px-1 py-1 rounded transition-colors"
                             title="Xóa bài viết"
                           >
@@ -609,33 +622,103 @@ export default function AdminNews() {
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-outline-variant/30">
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="px-5 py-2.5 rounded-lg border border-outline-variant font-bold hover:bg-surface-container transition-colors"
-                >
-                  Hủy bỏ
-                </button>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="px-6 py-2.5 rounded-lg bg-primary text-white font-bold hover:bg-primary-container transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
-                >
-                  {submitting ? (
-                    <>
-                      <span className="animate-spin inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full"></span>
-                      {editingNewsId ? 'Đang lưu...' : 'Đang đăng...'}
-                    </>
-                  ) : (
-                    <>
-                      <span className="material-symbols-outlined text-sm">{editingNewsId ? 'save' : 'send'}</span>
-                      {editingNewsId ? 'Lưu thay đổi' : 'Đăng bài viết'}
-                    </>
-                  )}
-                </button>
+              <div className="flex items-center justify-between gap-3 pt-4 border-t border-outline-variant/30">
+                {editingNewsId ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const current = news.find(n => n.id === editingNewsId);
+                      if (current) setDeleteConfirmNews(current);
+                    }}
+                    className="px-4 py-2.5 rounded-lg border border-red-200 text-red-600 font-bold hover:bg-red-50 hover:border-red-300 transition-colors flex items-center gap-1.5 text-xs active:scale-95"
+                  >
+                    <span className="material-symbols-outlined text-sm">delete</span>
+                    Xóa bài viết này
+                  </button>
+                ) : (
+                  <div></div>
+                )}
+
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(false)}
+                    className="px-5 py-2.5 rounded-lg border border-outline-variant font-bold hover:bg-surface-container transition-colors"
+                  >
+                    Hủy bỏ
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="px-6 py-2.5 rounded-lg bg-primary text-white font-bold hover:bg-primary-container transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
+                  >
+                    {submitting ? (
+                      <>
+                        <span className="animate-spin inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full"></span>
+                        {editingNewsId ? 'Đang lưu...' : 'Đang đăng...'}
+                      </>
+                    ) : (
+                      <>
+                        <span className="material-symbols-outlined text-sm">{editingNewsId ? 'save' : 'send'}</span>
+                        {editingNewsId ? 'Lưu thay đổi' : 'Đăng bài viết'}
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* Delete Confirmation Modal */}
+      {deleteConfirmNews && (
+        <div className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="bg-white rounded-2xl shadow-2xl border border-outline-variant/60 w-full max-w-md p-6 flex flex-col gap-4">
+            <div className="flex items-center gap-3 text-red-600">
+              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-xl">delete_forever</span>
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-on-surface">Xác nhận xóa bài viết?</h3>
+                <p className="text-xs text-on-surface-variant mt-0.5">Thao tác này không thể hoàn tác.</p>
+              </div>
+            </div>
+
+            <div className="bg-surface-container-low p-3.5 rounded-xl border border-outline-variant/40">
+              <span className="text-[10px] font-bold text-outline uppercase tracking-wider block mb-1">
+                Bài viết sẽ bị xóa:
+              </span>
+              <p className="text-xs font-bold text-primary line-clamp-2">{deleteConfirmNews.title}</p>
+            </div>
+
+            <div className="flex justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setDeleteConfirmNews(null)}
+                disabled={deleting}
+                className="px-4 py-2 rounded-lg border border-outline-variant hover:bg-surface-container font-bold text-on-surface text-xs transition-colors"
+              >
+                Hủy bỏ
+              </button>
+              <button
+                type="button"
+                onClick={handleExecuteDelete}
+                disabled={deleting}
+                className="px-5 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-all shadow-xs flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
+              >
+                {deleting ? (
+                  <>
+                    <span className="animate-spin inline-block w-3 h-3 border-2 border-white border-t-transparent rounded-full"></span>
+                    Đang xóa...
+                  </>
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined text-sm">delete</span>
+                    Xác nhận xóa
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}

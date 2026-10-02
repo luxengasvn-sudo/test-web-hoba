@@ -44,6 +44,17 @@ async function runAudit() {
     console.log('Cleaned title and description for 105/2025/NĐ-CP in DB.');
   }
 
+  // Update doc 14 if file_url is '#'
+  const doc14 = docs.rows.find(d => (d.code === '14/QD-UBND' || d.code === '14/QĐ-UBND') && d.file_url === '#');
+  if (doc14) {
+    await client.query(`
+      UPDATE documents 
+      SET file_url = '/uploads/documents/14-Quyet-dinh-phe-duyet-dieu-le-HOBA-2025.pdf'
+      WHERE id = $1
+    `, [doc14.id]);
+    console.log('Updated document 14 file_url to valid PDF path.');
+  }
+
   // 3. Verify total members and statuses
   const memberCounts = await client.query(`
     SELECT status, count(*) as count 

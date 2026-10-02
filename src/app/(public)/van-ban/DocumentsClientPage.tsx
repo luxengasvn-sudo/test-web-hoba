@@ -71,7 +71,7 @@ export default function DocumentsClientPage({ initialData }: { initialData?: any
             if (c === '105/2025/NĐ-CP') return '/uploads/documents/ND-105-2025-ve-PCCC.pdf';
             if (c === '87/2018/NĐ-CP') return '/uploads/documents/ND-87-ve-Kinh-doanh-khi.pdf';
             if (c === '96/2016/NĐ-CP') return '/uploads/documents/ND-96-quy-dinh-ve-ANTT.pdf';
-            if (c === '14/QĐ-UBND') return '/uploads/documents/14-Quyet-dinh-phe-duyet-dieu-le-HOBA-2025.pdf';
+            if (c === '14/QĐ-UBND' || c === '14/QD-UBND') return '/uploads/documents/14-Quyet-dinh-phe-duyet-dieu-le-HOBA-2025.pdf';
             if (c === '12/QC-HOBA') return '/uploads/documents/12-Quy-che-hoat-dong-noi-bo-2025.pdf';
             if (!fileUrl || fileUrl === '#' || fileUrl.includes('hobalpg.vn/uploads/documents/')) {
               const match = (defaultDocs as DocumentItem[]).find(def => def.code === c);

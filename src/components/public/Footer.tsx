@@ -52,8 +52,8 @@ export default function Footer({ initialConfig }: { initialConfig?: any }) {
   const [logoTitle, setLogoTitle] = useState(() => initialConfig?.logoTitle || 'HOBA LPG');
   const [logoSubtitle, setLogoSubtitle] = useState(() => initialConfig?.logoSubtitle || 'HCMC LPG Business Association');
   const [websiteUrl, setWebsiteUrl] = useState(() => initialConfig?.websiteUrl || 'https://hoba.vn');
-  const [termsPath, setTermsPath] = useState(() => initialConfig?.termsPath || '/p/?slug=dieu-khoan');
-  const [privacyPath, setPrivacyPath] = useState(() => initialConfig?.privacyPath || '/p/?slug=chinh-sach');
+  const [termsPath, setTermsPath] = useState(() => initialConfig?.termsPath || '/dieu-khoan');
+  const [privacyPath, setPrivacyPath] = useState(() => initialConfig?.privacyPath || '/chinh-sach');
   const [socialLinks, setSocialLinks] = useState<{ icon: string; url: string }[]>(() => {
     if (initialConfig?.socialLinks && Array.isArray(initialConfig.socialLinks)) {
       return initialConfig.socialLinks;

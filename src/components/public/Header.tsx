@@ -42,7 +42,7 @@ export default function Header({ initialConfig }: { initialConfig?: any }) {
           { label: 'Đăng ký Hội viên', path: '/dang-ky' }
         ]
       },
-      { label: 'Tin tức', path: '/tin-tuc/', children: [] },
+      { label: 'Tin tức', path: '/tin-tuc', children: [] },
       { label: 'Sự kiện', path: '/su-kien', children: [] },
       { label: 'Văn bản', path: '/van-ban', children: [] },
       { label: 'Liên hệ', path: '/lien-he', children: [] },
