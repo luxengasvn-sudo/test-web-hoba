@@ -390,14 +390,6 @@ export function NewsDetailPage({ id, slug, initialData }: { id?: string; slug?: 
                 </div>
               </div>
 
-              <div className="rounded-xl overflow-hidden shadow-sm aspect-video relative">
-                <img
-                  alt={article.title}
-                  className="w-full h-full object-cover"
-                  src={article.img}
-                />
-              </div>
-
               <p className="text-sm md:text-base font-bold text-on-background leading-relaxed border-l-4 border-secondary pl-4">
                 {article.desc}
               </p>

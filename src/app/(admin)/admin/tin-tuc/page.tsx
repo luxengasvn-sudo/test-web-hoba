@@ -554,9 +554,12 @@ export default function AdminNews() {
                 </div>
               </div>
 
-              {/* Upload Image Section (New feature!) */}
+              {/* Upload Image Section */}
               <div className="flex flex-col gap-2">
-                <label className="font-bold text-on-surface-variant">Ảnh đại diện (Ảnh bìa)</label>
+                <label className="font-bold text-on-surface-variant flex items-center justify-between">
+                  <span>Ảnh đại diện (Thumbnail / Ảnh bìa mạng xã hội)</span>
+                  <span className="text-[10px] font-normal text-outline">Chỉ hiện ở bìa, danh sách & social</span>
+                </label>
                 <div className="flex items-center gap-4">
                   {formThumbnail && (
                     <div className="w-20 h-16 rounded overflow-hidden border border-outline-variant/30 flex-shrink-0 bg-surface-container-low">
@@ -584,7 +587,9 @@ export default function AdminNews() {
                         />
                       </label>
                     </div>
-                    <p className="text-[10px] text-on-surface-variant">Hỗ trợ định dạng JPG, PNG, WEBP (Tối đa 5MB).</p>
+                    <p className="text-[10px] text-on-surface-variant leading-relaxed">
+                      💡 <strong>Lưu ý:</strong> Ảnh này chỉ dùng làm ảnh đại diện trên trang chủ, trang danh sách và khi chia sẻ lên Zalo/Facebook (không tự động hiển thị trong nội dung bài viết). Để chèn ảnh vào bài, hãy dùng nút <strong>"Chèn hình ảnh"</strong> ở thanh công cụ soạn thảo bên dưới.
+                    </p>
                   </div>
                 </div>
               </div>

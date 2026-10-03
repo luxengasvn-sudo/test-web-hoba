@@ -127,6 +127,84 @@ export default function RichEditor({ value, onChange, onImageUpload }: RichEdito
     }
   };
 
+  // Paste handler: Clean external inline styles (Google Docs, Word, etc.) to keep website typography
+  const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const html = e.clipboardData.getData('text/html');
+    const text = e.clipboardData.getData('text/plain');
+
+    if (html) {
+      try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // 1. Remove Google Docs / Word inline font family, redundant colors & backgrounds
+        const allElements = doc.body.querySelectorAll('*');
+        allElements.forEach((el) => {
+          if (el instanceof HTMLElement) {
+            el.style.fontFamily = '';
+            // Remove hardcoded black colors from pasted documents
+            if (
+              el.style.color === 'rgb(0, 0, 0)' ||
+              el.style.color === '#000000' ||
+              el.style.color === '#000'
+            ) {
+              el.style.color = '';
+            }
+            // Remove hardcoded white or transparent backgrounds
+            if (
+              el.style.backgroundColor === 'transparent' ||
+              el.style.backgroundColor === 'rgb(255, 255, 255)' ||
+              el.style.backgroundColor === '#ffffff' ||
+              el.style.backgroundColor === '#fff'
+            ) {
+              el.style.backgroundColor = '';
+            }
+            if (el.style.lineHeight === '1.38') {
+              el.style.lineHeight = '';
+            }
+            if (el.style.whiteSpace === 'pre-wrap') {
+              el.style.whiteSpace = '';
+            }
+            // If style attribute is empty, remove it
+            if (!el.getAttribute('style')?.trim()) {
+              el.removeAttribute('style');
+            }
+          }
+        });
+
+        // 2. Unwrap redundant span tags that have no meaningful style or attributes
+        const spans = Array.from(doc.body.querySelectorAll('span'));
+        spans.forEach((span) => {
+          if (span.id?.startsWith('docs-internal-guid')) {
+            span.removeAttribute('id');
+          }
+          if (!span.getAttribute('style') && !span.className && !span.id) {
+            span.replaceWith(...Array.from(span.childNodes));
+          }
+        });
+
+        const cleanedHtml = doc.body.innerHTML;
+        document.execCommand('insertHTML', false, cleanedHtml);
+      } catch (err) {
+        console.error('Lỗi khi lọc nội dung dán:', err);
+        document.execCommand('insertText', false, text);
+      }
+    } else if (text) {
+      const escaped = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      const formatted = escaped
+        .split(/\r?\n\r?\n/)
+        .map((p) => `<p>${p.replace(/\r?\n/g, '<br>')}</p>`)
+        .join('');
+      document.execCommand('insertHTML', false, formatted);
+    }
+
+    handleInput();
+  };
+
   // Font Size Handler
   const handleFontSizeChange = (size: string) => {
     if (!size || size === 'default') return;
@@ -498,6 +576,7 @@ export default function RichEditor({ value, onChange, onImageUpload }: RichEdito
         contentEditable
         onInput={handleInput}
         onKeyDown={handleKeyDown}
+        onPaste={handlePaste}
         className="rich-editor-canvas min-h-[300px] p-4 outline-none text-xs font-medium leading-relaxed overflow-y-auto max-h-[500px]"
         data-placeholder="Bắt đầu viết bài viết mới của bạn tại đây..."
       />

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { executeDirectQuery } from '@/lib/db-direct';
 import { supabase } from '@/lib/supabase';
 import NewsClientPage, { NewsDetailPage } from '../NewsClientPage';
@@ -60,6 +61,64 @@ interface PageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  if (!slug || slug === 'tin-tuc' || slug === 'index') {
+    return {
+      title: 'Tin tức & Hoạt động | HOBA LPG',
+      description: 'Cập nhật tin tức, sự kiện và bản tin chuyên ngành khí hóa lỏng từ Hiệp hội HOBA LPG.',
+    };
+  }
+
+  try {
+    const newsDb = await executeDirectQuery({
+      method: 'SELECT',
+      table: 'news',
+      filters: [{ col: 'status', val: 'Published' }],
+    });
+
+    if (newsDb && newsDb.length > 0) {
+      const article = newsDb.find((n: any) => n.slug === slug || toSlug(n.title) === slug);
+      if (article) {
+        const title = `${article.title} | HOBA LPG`;
+        const description = article.description || 'Tin tức từ Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM (HOBA LPG)';
+        const imageUrl = article.thumbnail_url || 'https://images.unsplash.com/photo-1542282088-fe8426682b8f';
+
+        return {
+          title,
+          description,
+          openGraph: {
+            title: article.title,
+            description,
+            type: 'article',
+            images: [
+              {
+                url: imageUrl,
+                width: 1200,
+                height: 630,
+                alt: article.title,
+              },
+            ],
+          },
+          twitter: {
+            card: 'summary_large_image',
+            title: article.title,
+            description,
+            images: [imageUrl],
+          },
+        };
+      }
+    }
+  } catch (error) {
+    console.error('Failed to generate metadata for news slug:', error);
+  }
+
+  return {
+    title: 'Tin tức | HOBA LPG',
+    description: 'Cổng thông tin Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM (HOBA LPG)',
+  };
 }
 
 export default async function NewsSlugPage({ params }: PageProps) {

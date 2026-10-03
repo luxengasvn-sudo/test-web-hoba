@@ -37,6 +37,7 @@ yarn-error.log*
 *.zip
 screen_bch.png
 database_backup_*.json
+scripts/clean_existing_news.js
 
 # vercel
 .vercel
