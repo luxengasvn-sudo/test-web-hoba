@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { executeDirectQuery } from '@/lib/db-direct';
 import LpgCpClientPage from './LpgCpClientPage';
 import defaultLpgPrices from '@/lib/defaultLpgPrices.json';
@@ -17,7 +18,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Page() {
+interface PageProps {
+  searchParams?: Promise<{ preview?: string }>;
+}
+
+export default async function Page({ searchParams }: PageProps) {
   let initialConfig: LpgCpConfig = defaultLpgPrices as LpgCpConfig;
 
   try {
@@ -38,5 +43,13 @@ export default async function Page() {
     console.warn('[LPG CP] Fallback to defaultLpgPrices.json due to query failure:', err);
   }
 
-  return <LpgCpClientPage initialConfig={initialConfig} />;
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const isPreview = resolvedSearchParams?.preview === 'true';
+
+  // Check if disabled/hidden
+  if (initialConfig.enabled === false && !isPreview) {
+    redirect('/');
+  }
+
+  return <LpgCpClientPage initialConfig={initialConfig} isPreview={isPreview} />;
 }

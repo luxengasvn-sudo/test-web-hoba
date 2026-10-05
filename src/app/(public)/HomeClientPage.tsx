@@ -49,6 +49,9 @@ export default function HomeClientPage({
   }, []);
 
   const lpgHeroData = useMemo(() => {
+    // If hidden/disabled by admin, return null
+    if (lpgConfig.enabled === false) return null;
+
     const recs = [...(lpgConfig.records || [])].sort((a, b) => a.month.localeCompare(b.month));
     const published = recs.filter((r) => !r.isPending && r.propane !== null && r.butane !== null);
     if (published.length === 0) return null;
@@ -461,7 +464,7 @@ export default function HomeClientPage({
       <div className="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-gutter w-full">
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-end">
           {/* Left Column: Heading, Subtext, Buttons */}
-          <div className="lg:col-span-7 xl:col-span-7 space-y-6">
+          <div className={`${lpgHeroData ? 'lg:col-span-7 xl:col-span-7' : 'lg:col-span-12 xl:col-span-12 max-w-4xl'} space-y-6`}>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-card border-white/20 text-white text-[10px] font-bold uppercase tracking-[0.15em] mb-2">
               <span className="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse"></span>
               Tiên phong kiến tạo ngành khí hóa lỏng TP.HCM

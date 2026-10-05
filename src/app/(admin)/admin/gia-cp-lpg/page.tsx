@@ -7,6 +7,9 @@ import { supabase } from '@/lib/supabase';
 import {
   LpgCpConfig,
   LpgCpRecord,
+  LpgCpContentConfig,
+  LpgCpFaqItem,
+  DEFAULT_LPG_CP_CONTENT,
   getAverageCp,
   formatMonthLabel,
   formatDiff,
@@ -19,6 +22,42 @@ export default function AdminGiaCpLpgPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  // Active Tab: 'data' | 'content'
+  const [activeTab, setActiveTab] = useState<'data' | 'content'>('data');
+
+  // Content form state
+  const [contentForm, setContentForm] = useState<Required<LpgCpContentConfig>>({
+    heroBadge: DEFAULT_LPG_CP_CONTENT.heroBadge,
+    heroTitle: DEFAULT_LPG_CP_CONTENT.heroTitle,
+    heroDescription: DEFAULT_LPG_CP_CONTENT.heroDescription,
+    pendingTitle: DEFAULT_LPG_CP_CONTENT.pendingTitle,
+    pendingDescription: DEFAULT_LPG_CP_CONTENT.pendingDescription,
+    calculatorNote: DEFAULT_LPG_CP_CONTENT.calculatorNote,
+    faqs: DEFAULT_LPG_CP_CONTENT.faqs,
+    sourceNote: DEFAULT_LPG_CP_CONTENT.sourceNote,
+    disclaimerNote: DEFAULT_LPG_CP_CONTENT.disclaimerNote,
+  });
+
+  // Sync contentForm when config loads
+  useEffect(() => {
+    if (config.content) {
+      setContentForm({
+        heroBadge: config.content.heroBadge || DEFAULT_LPG_CP_CONTENT.heroBadge,
+        heroTitle: config.content.heroTitle || DEFAULT_LPG_CP_CONTENT.heroTitle,
+        heroDescription: config.content.heroDescription || DEFAULT_LPG_CP_CONTENT.heroDescription,
+        pendingTitle: config.content.pendingTitle || DEFAULT_LPG_CP_CONTENT.pendingTitle,
+        pendingDescription: config.content.pendingDescription || DEFAULT_LPG_CP_CONTENT.pendingDescription,
+        calculatorNote: config.content.calculatorNote || DEFAULT_LPG_CP_CONTENT.calculatorNote,
+        faqs:
+          config.content.faqs && config.content.faqs.length > 0
+            ? config.content.faqs
+            : DEFAULT_LPG_CP_CONTENT.faqs,
+        sourceNote: config.content.sourceNote || DEFAULT_LPG_CP_CONTENT.sourceNote,
+        disclaimerNote: config.content.disclaimerNote || DEFAULT_LPG_CP_CONTENT.disclaimerNote,
+      });
+    }
+  }, [config.content]);
 
   // Search & Filter
   const [searchYear, setSearchYear] = useState<string>('all');
@@ -364,6 +403,89 @@ export default function AdminGiaCpLpgPage() {
     }
   };
 
+  // Visibility Handlers
+  const isPageEnabled = config.enabled !== false;
+  const handleToggleEnabled = () => {
+    const nextVal = !isPageEnabled;
+    const newConfig: LpgCpConfig = {
+      ...config,
+      enabled: nextVal,
+      updatedAt: new Date().toISOString(),
+    };
+    saveConfig(newConfig);
+    showToast(
+      'success',
+      nextVal
+        ? 'Đã BẬT hiển thị trang Giá CP LPG công khai!'
+        : 'Đã ẨN trang Giá CP LPG và widget trang chủ đối với công chúng!'
+    );
+  };
+
+  // Content Handlers
+  const handleSaveContent = () => {
+    const newConfig: LpgCpConfig = {
+      ...config,
+      content: contentForm,
+      updatedAt: new Date().toISOString(),
+    };
+    saveConfig(newConfig);
+    showToast('success', 'Đã lưu thành công nội dung trang Giá CP LPG!');
+  };
+
+  const handleResetContent = () => {
+    if (confirm('Bạn có chắc chắn muốn khôi phục toàn bộ nội dung về mặc định ban đầu?')) {
+      setContentForm(DEFAULT_LPG_CP_CONTENT);
+      const newConfig: LpgCpConfig = {
+        ...config,
+        content: DEFAULT_LPG_CP_CONTENT,
+        updatedAt: new Date().toISOString(),
+      };
+      saveConfig(newConfig);
+      showToast('success', 'Đã khôi phục nội dung tĩnh mặc định!');
+    }
+  };
+
+  const handleAddFaq = () => {
+    setContentForm((prev) => ({
+      ...prev,
+      faqs: [
+        ...prev.faqs,
+        {
+          id: `faq-${Date.now()}`,
+          question: '',
+          answer: '',
+        },
+      ],
+    }));
+  };
+
+  const handleUpdateFaq = (index: number, field: 'question' | 'answer', val: string) => {
+    setContentForm((prev) => {
+      const updated = [...prev.faqs];
+      updated[index] = { ...updated[index], [field]: val };
+      return { ...prev, faqs: updated };
+    });
+  };
+
+  const handleDeleteFaq = (index: number) => {
+    setContentForm((prev) => ({
+      ...prev,
+      faqs: prev.faqs.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleMoveFaq = (index: number, direction: 'up' | 'down') => {
+    setContentForm((prev) => {
+      const targetIdx = direction === 'up' ? index - 1 : index + 1;
+      if (targetIdx < 0 || targetIdx >= prev.faqs.length) return prev;
+      const updated = [...prev.faqs];
+      const temp = updated[index];
+      updated[index] = updated[targetIdx];
+      updated[targetIdx] = temp;
+      return { ...prev, faqs: updated };
+    });
+  };
+
   if (loading) {
     return (
       <div className="p-8 flex items-center justify-center min-h-[400px]">
@@ -415,28 +537,117 @@ export default function AdminGiaCpLpgPage() {
 
         {/* Action Group */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          {/* Quick Visibility Toggle Switch */}
+          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 shadow-2xs">
+            <span
+              className={`material-symbols-outlined text-lg ${
+                isPageEnabled
+                  ? 'text-emerald-600 dark:text-emerald-400'
+                  : 'text-slate-400 dark:text-slate-500'
+              }`}
+            >
+              {isPageEnabled ? 'visibility' : 'visibility_off'}
+            </span>
+            <div className="flex flex-col text-left">
+              <span className="text-[11px] font-bold text-slate-700 dark:text-slate-200 leading-tight">
+                {isPageEnabled ? 'Hiển thị công khai' : 'Đang ẩn với công chúng'}
+              </span>
+              <span className="text-[9px] text-slate-400 leading-tight">
+                {isPageEnabled ? 'Trang & widget hoạt động' : 'Tự chuyển hướng về trang chủ'}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={handleToggleEnabled}
+              disabled={saving}
+              title={isPageEnabled ? 'Bấm để ẩn trang với công chúng' : 'Bấm để bật trang công khai'}
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden disabled:opacity-50 ${
+                isPageEnabled ? 'bg-emerald-600' : 'bg-slate-300 dark:bg-slate-700'
+              }`}
+            >
+              <span
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                  isPageEnabled ? 'translate-x-5' : 'translate-x-0'
+                }`}
+              />
+            </button>
+          </div>
+
           <Link
-            href="/gia-cp-lpg"
+            href={isPageEnabled ? '/gia-cp-lpg' : '/gia-cp-lpg?preview=true'}
             target="_blank"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-colors ${
+              isPageEnabled
+                ? 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700'
+                : 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 hover:bg-amber-100'
+            }`}
           >
-            <span className="material-symbols-outlined text-sm">open_in_new</span>
-            Xem trang ngoài
+            <span className="material-symbols-outlined text-sm">
+              {isPageEnabled ? 'open_in_new' : 'preview'}
+            </span>
+            <span>{isPageEnabled ? 'Xem trang ngoài' : 'Xem trước (Preview)'}</span>
           </Link>
 
-          <button
-            type="button"
-            onClick={handleOpenAdd}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors"
-          >
-            <span className="material-symbols-outlined text-sm">add_circle</span>
-            Thêm tháng mới
-          </button>
+          {activeTab === 'data' ? (
+            <button
+              type="button"
+              onClick={handleOpenAdd}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-sm">add_circle</span>
+              Thêm tháng mới
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={handleSaveContent}
+              disabled={saving}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+            >
+              <span className="material-symbols-outlined text-sm">save</span>
+              <span>{saving ? 'Đang lưu...' : 'Lưu nội dung'}</span>
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Stats & Quick Settings Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Tab Switcher */}
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-px">
+        <button
+          type="button"
+          onClick={() => setActiveTab('data')}
+          className={`inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+            activeTab === 'data'
+              ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-t-xl'
+              : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+          }`}
+        >
+          <span className="material-symbols-outlined text-lg">calendar_month</span>
+          <span>Dữ liệu giá hàng tháng</span>
+          <span className="ml-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+            {sortedRecords.length}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab('content')}
+          className={`inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+            activeTab === 'content'
+              ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-t-xl'
+              : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+          }`}
+        >
+          <span className="material-symbols-outlined text-lg">tune</span>
+          <span>Nội dung & Cấu hình trang</span>
+        </button>
+      </div>
+
+      {/* TAB 1: DATA VIEW */}
+      {activeTab === 'data' && (
+        <div className="space-y-6">
+          {/* Stats & Quick Settings Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Stat 1: Total records */}
         <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
           <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Tổng số tháng</span>
@@ -673,6 +884,278 @@ export default function AdminGiaCpLpgPage() {
           </table>
         </div>
       </div>
+    </div>
+  )}
+
+      {/* TAB 2: CONTENT & CONFIGURATION */}
+      {activeTab === 'content' && (
+        <div className="space-y-6">
+          {/* Action Bar for Content */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-xl">tune</span>
+              <div>
+                <h2 className="text-base font-bold text-slate-900 dark:text-white">Cấu hình nội dung trang công khai</h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Chỉnh sửa toàn bộ văn bản tĩnh, tiêu đề, FAQ và thông báo hiển thị trên /gia-cp-lpg</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <button
+                type="button"
+                onClick={handleResetContent}
+                className="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
+              >
+                Khôi phục mặc định
+              </button>
+              <button
+                type="button"
+                onClick={handleSaveContent}
+                disabled={saving}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+              >
+                <span className="material-symbols-outlined text-sm">save</span>
+                <span>{saving ? 'Đang lưu...' : 'Lưu nội dung'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Section 1: Hero Banner */}
+          <div className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+            <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+              <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400">web</span>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">1. Phần đầu trang (Hero Banner)</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+                  Nhãn tag nhỏ (Badge):
+                </label>
+                <input
+                  type="text"
+                  value={contentForm.heroBadge}
+                  onChange={(e) => setContentForm((prev) => ({ ...prev, heroBadge: e.target.value }))}
+                  placeholder="HOBA LPG • Dữ liệu Năng lượng"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+                  Tiêu đề chính trang (H1):
+                </label>
+                <input
+                  type="text"
+                  value={contentForm.heroTitle}
+                  onChange={(e) => setContentForm((prev) => ({ ...prev, heroTitle: e.target.value }))}
+                  placeholder="Giá CP LPG thế giới Saudi Aramco"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm font-bold focus:ring-2 focus:ring-emerald-500"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+                Đoạn văn giới thiệu tổng quan:
+              </label>
+              <textarea
+                rows={3}
+                value={contentForm.heroDescription}
+                onChange={(e) => setContentForm((prev) => ({ ...prev, heroDescription: e.target.value }))}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500"
+                placeholder="Mô tả ý nghĩa của giá CP Saudi Aramco đối với thị trường..."
+              />
+            </div>
+          </div>
+
+          {/* Section 2: Pending Notice */}
+          <div className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+            <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+              <span className="material-symbols-outlined text-amber-500">schedule</span>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">2. Khung thông báo chờ công bố giá (Pending Notice)</h3>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+                Tiêu đề thông báo:
+              </label>
+              <input
+                type="text"
+                value={contentForm.pendingTitle}
+                onChange={(e) => setContentForm((prev) => ({ ...prev, pendingTitle: e.target.value }))}
+                placeholder="Đang chờ công bố giá chính thức"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm font-semibold focus:ring-2 focus:ring-emerald-500"
+              />
+              <p className="text-[11px] text-slate-400 mt-1">Hệ thống sẽ tự động ghép tên tháng phía trước, ví dụ: "Tháng 10/2026: Đang chờ công bố giá chính thức"</p>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+                Nội dung chi tiết thông báo:
+              </label>
+              <textarea
+                rows={2}
+                value={contentForm.pendingDescription}
+                onChange={(e) => setContentForm((prev) => ({ ...prev, pendingDescription: e.target.value }))}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500"
+              />
+            </div>
+          </div>
+
+          {/* Section 3: Calculator note */}
+          <div className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+            <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+              <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400">calculate</span>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">3. Ghi chú & Công thức ước tính bình 12kg</h3>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+                Ghi chú dưới công cụ tính (Công thức, điều kiện tham khảo):
+              </label>
+              <textarea
+                rows={3}
+                value={contentForm.calculatorNote}
+                onChange={(e) => setContentForm((prev) => ({ ...prev, calculatorNote: e.target.value }))}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500"
+              />
+            </div>
+          </div>
+
+          {/* Section 4: FAQ Accordion Editor */}
+          <div className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400">help_outline</span>
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">4. Danh sách Câu hỏi thường gặp (FAQ)</h3>
+              </div>
+              <button
+                type="button"
+                onClick={handleAddFaq}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition-colors cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-sm">add</span>
+                Thêm câu hỏi mới
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {contentForm.faqs.map((faq, index) => (
+                <div
+                  key={faq.id || index}
+                  className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40 space-y-3 relative group"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
+                      <span className="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 flex items-center justify-center text-[11px] font-black">
+                        {index + 1}
+                      </span>
+                      Câu hỏi #{index + 1}
+                    </span>
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        disabled={index === 0}
+                        onClick={() => handleMoveFaq(index, 'up')}
+                        className="p-1 rounded text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                        title="Di chuyển lên"
+                      >
+                        <span className="material-symbols-outlined text-lg">arrow_upward</span>
+                      </button>
+                      <button
+                        type="button"
+                        disabled={index === contentForm.faqs.length - 1}
+                        onClick={() => handleMoveFaq(index, 'down')}
+                        className="p-1 rounded text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                        title="Di chuyển xuống"
+                      >
+                        <span className="material-symbols-outlined text-lg">arrow_downward</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteFaq(index)}
+                        className="p-1 rounded text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
+                        title="Xóa câu hỏi này"
+                      >
+                        <span className="material-symbols-outlined text-lg">delete</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <input
+                      type="text"
+                      value={faq.question}
+                      onChange={(e) => handleUpdateFaq(index, 'question', e.target.value)}
+                      placeholder="Nhập tiêu đề câu hỏi..."
+                      className="w-full px-3.5 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm font-semibold focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+
+                  <div>
+                    <textarea
+                      rows={3}
+                      value={faq.answer}
+                      onChange={(e) => handleUpdateFaq(index, 'answer', e.target.value)}
+                      placeholder="Nhập nội dung giải đáp chi tiết..."
+                      className="w-full px-3.5 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 5: Footer Notes */}
+          <div className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+            <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+              <span className="material-symbols-outlined text-slate-500">article</span>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">5. Nguồn số liệu & Miễn trừ trách nhiệm (Chân trang)</h3>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+                Ghi chú nguồn dữ liệu:
+              </label>
+              <input
+                type="text"
+                value={contentForm.sourceNote}
+                onChange={(e) => setContentForm((prev) => ({ ...prev, sourceNote: e.target.value }))}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+                Cảnh báo miễn trừ trách nhiệm pháp lý:
+              </label>
+              <textarea
+                rows={2}
+                value={contentForm.disclaimerNote}
+                onChange={(e) => setContentForm((prev) => ({ ...prev, disclaimerNote: e.target.value }))}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500"
+              />
+            </div>
+          </div>
+
+          {/* Bottom Sticky Save Bar */}
+          <div className="sticky bottom-4 z-20 flex items-center justify-between gap-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl">
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+              Đừng quên nhấn <strong className="text-emerald-600 dark:text-emerald-400">Lưu nội dung</strong> để áp dụng các thay đổi lên trang người dùng.
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleResetContent}
+                className="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
+              >
+                Khôi phục gốc
+              </button>
+              <button
+                type="button"
+                onClick={handleSaveContent}
+                disabled={saving}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition-colors cursor-pointer disabled:opacity-50"
+              >
+                <span className="material-symbols-outlined text-base">save</span>
+                <span>{saving ? 'Đang lưu...' : 'Lưu toàn bộ nội dung'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Add / Edit Modal */}
       {modalOpen && (

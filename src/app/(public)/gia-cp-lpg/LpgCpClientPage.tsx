@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import {
   LpgCpConfig,
   LpgCpRecord,
+  DEFAULT_LPG_CP_CONTENT,
   getAverageCp,
   formatMonthLabel,
   formatDiff,
@@ -14,9 +16,10 @@ import {
 
 interface Props {
   initialConfig: LpgCpConfig;
+  isPreview?: boolean;
 }
 
-export default function LpgCpClientPage({ initialConfig }: Props) {
+export default function LpgCpClientPage({ initialConfig, isPreview = false }: Props) {
   const [config, setConfig] = useState<LpgCpConfig>(initialConfig);
 
   // Sync with localStorage if updated in admin offline
@@ -37,6 +40,24 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
   const records = useMemo(() => {
     return [...(config.records || [])].sort((a, b) => a.month.localeCompare(b.month));
   }, [config.records]);
+
+  // Dynamic content configuration with fallback to defaults
+  const content = useMemo(() => {
+    return {
+      heroBadge: config.content?.heroBadge || DEFAULT_LPG_CP_CONTENT.heroBadge,
+      heroTitle: config.content?.heroTitle || DEFAULT_LPG_CP_CONTENT.heroTitle,
+      heroDescription: config.content?.heroDescription || DEFAULT_LPG_CP_CONTENT.heroDescription,
+      pendingTitle: config.content?.pendingTitle || DEFAULT_LPG_CP_CONTENT.pendingTitle,
+      pendingDescription: config.content?.pendingDescription || DEFAULT_LPG_CP_CONTENT.pendingDescription,
+      calculatorNote: config.content?.calculatorNote || DEFAULT_LPG_CP_CONTENT.calculatorNote,
+      faqs:
+        config.content?.faqs && config.content.faqs.length > 0
+          ? config.content.faqs
+          : DEFAULT_LPG_CP_CONTENT.faqs,
+      sourceNote: config.content?.sourceNote || DEFAULT_LPG_CP_CONTENT.sourceNote,
+      disclaimerNote: config.content?.disclaimerNote || DEFAULT_LPG_CP_CONTENT.disclaimerNote,
+    };
+  }, [config.content]);
 
   // Extract available years
   const availableYears = useMemo(() => {
@@ -181,19 +202,37 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans pb-16">
+      {/* Admin Preview Notice Bar */}
+      {isPreview && config.enabled === false && (
+        <div className="bg-amber-400 dark:bg-amber-500 text-slate-950 px-4 py-2.5 shadow-md sticky top-0 z-50">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 max-w-5xl mx-auto w-full text-xs sm:text-sm font-bold">
+            <span className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-lg shrink-0">visibility_off</span>
+              <span>Chế độ Xem trước (Admin Preview): Trang hiện đang ẨN với công chúng. Khách truy cập bên ngoài sẽ tự động được chuyển hướng về Trang chủ.</span>
+            </span>
+            <Link
+              href="/admin/gia-cp-lpg"
+              className="px-3 py-1 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold shrink-0 transition-colors inline-flex items-center gap-1 w-fit shadow-xs"
+            >
+              <span className="material-symbols-outlined text-sm">settings</span>
+              <span>Vào Quản trị để Bật</span>
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="bg-gradient-to-b from-emerald-900 to-slate-900 text-white pt-10 pb-16 px-4 sm:px-6 lg:px-8 border-b border-emerald-800/40">
         <div className="max-w-5xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-semibold uppercase tracking-wider mb-4">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            HOBA LPG • Dữ liệu Năng lượng
+            {content.heroBadge}
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-3">
-            Giá CP LPG thế giới Saudi Aramco
+            {content.heroTitle}
           </h1>
-          <p className="text-slate-300 text-base sm:text-lg max-w-3xl leading-relaxed">
-            Giá hợp đồng propane và butane do tập đoàn năng lượng Saudi Aramco công bố hàng tháng, đóng vai trò là mốc
-            tham chiếu quốc tế chính để định giá LPG nhập khẩu vào thị trường Việt Nam.
+          <p className="text-slate-300 text-base sm:text-lg max-w-3xl leading-relaxed whitespace-pre-line">
+            {content.heroDescription}
           </p>
         </div>
       </section>
@@ -285,12 +324,12 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
               <div className="bg-white dark:bg-slate-900 rounded-xl p-2.5 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:shadow-md transition-all flex flex-col justify-between">
                 <div className="absolute top-0 left-0 w-1 sm:w-1.5 h-full bg-indigo-600" />
                 <div>
-                  <div className="flex items-center justify-between mb-1 pl-1 sm:pl-1.5">
+                  <div className="flex items-center justify-between mb-1 pl-1 sm:pl-1.5 gap-1.5">
                     <span className="text-[11px] sm:text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-tight truncate" title="CP Trung bình (C3+C4)/2">
-                      <span className="hidden sm:inline">CP Trung bình (C3+C4)/2</span>
+                      <span className="hidden sm:inline">CP Trung bình</span>
                       <span className="sm:hidden">CP T.Bình</span>
                     </span>
-                    <span className="hidden sm:inline-block text-xs px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 font-medium">
+                    <span className="hidden sm:inline-block text-xs px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 font-medium shrink-0">
                       {formatMonthLabel(latestPublished.month)}
                     </span>
                   </div>
@@ -324,11 +363,10 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
             </span>
             <div>
               <p className="font-semibold text-amber-900 dark:text-amber-200 text-sm sm:text-base">
-                {formatMonthLabel(latestOverall.month)}: Đang chờ công bố giá chính thức
+                {formatMonthLabel(latestOverall.month)}: {content.pendingTitle}
               </p>
-              <p className="text-amber-700 dark:text-amber-300/80 text-xs sm:text-sm mt-0.5">
-                Saudi Aramco thường công bố giá vào ngày cuối cùng của tháng hoặc ngày đầu tháng mới. HOBA LPG sẽ cập
-                nhật ngay sau khi có số liệu xác nhận.
+              <p className="text-amber-700 dark:text-amber-300/80 text-xs sm:text-sm mt-0.5 whitespace-pre-line">
+                {content.pendingDescription}
               </p>
             </div>
           </div>
@@ -502,9 +540,10 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
                     x2={getX(hoverIndex)}
                     y1={T}
                     y2={H - B + 5}
-                    stroke="#0284c7"
+                    stroke="#94a3b8"
                     strokeWidth="1.5"
-                    strokeDasharray="4 4"
+                    strokeDasharray="3 3"
+                    className="opacity-75"
                   />
                 )}
               </svg>
@@ -624,6 +663,8 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
                     <div className={`text-xs font-bold flex items-center gap-1 ${getDiffClass(delta)}`}>
                       {delta === null ? (
                         <span className="text-slate-400 font-normal">Chưa có mốc so sánh</span>
+                      ) : delta === 0 ? (
+                        <span className="text-slate-500 font-medium">±0 USD/tấn</span>
                       ) : (
                         <span>
                           {getDiffArrow(delta)}
@@ -730,6 +771,8 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
                       <td className={`py-3 px-4 text-right font-semibold ${getDiffClass(delta)}`}>
                         {delta === null ? (
                           <span className="text-slate-400 font-normal">–</span>
+                        ) : delta === 0 ? (
+                          <span className="text-slate-400 font-normal">±0 USD/tấn</span>
                         ) : (
                           <span>
                             {getDiffArrow(delta)}
@@ -820,10 +863,8 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
             </div>
           </div>
 
-          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-3 leading-relaxed">
-            * Công thức tham khảo tiêu chuẩn: <code className="font-mono font-semibold">thay đổi CP × 1,05 × 1,10 × tỷ giá / 1000 × 12</code>.
-            Mức ước tính chưa bao gồm chi phí premium, cước vận chuyển, chiết nạp, chi phí kho bãi và chính sách giá
-            riêng của từng doanh nghiệp phân phối.
+          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-3 leading-relaxed whitespace-pre-line">
+            {content.calculatorNote}
           </p>
         </section>
 
@@ -835,73 +876,27 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
           </h2>
 
           <div className="divide-y divide-slate-100 dark:divide-slate-800">
-            <details className="py-3.5 group" open>
-              <summary className="font-semibold text-sm sm:text-base cursor-pointer text-slate-800 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 flex items-center justify-between list-none">
-                <span>CP là gì?</span>
-                <span className="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">
-                  expand_more
-                </span>
-              </summary>
-              <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed pl-2 border-l-2 border-emerald-500">
-                CP (Contract Price) là giá hợp đồng LPG do tập đoàn dầu khí quốc gia Saudi Aramco công bố hàng tháng cho
-                propane (C3) và butane (C4), áp dụng cho các lô hàng bốc từ các cảng tại Ả Rập Xê Út. Toàn bộ thị trường
-                châu Á và Việt Nam sử dụng mức này làm cơ sở định giá nhập khẩu.
-              </p>
-            </details>
-
-            <details className="py-3.5 group">
-              <summary className="font-semibold text-sm sm:text-base cursor-pointer text-slate-800 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 flex items-center justify-between list-none">
-                <span>CP trung bình được tính như thế nào?</span>
-                <span className="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">
-                  expand_more
-                </span>
-              </summary>
-              <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed pl-2 border-l-2 border-emerald-500">
-                LPG dân dụng và công nghiệp thường được phối trộn theo tỷ lệ propane và butane (phổ biến là 50:50). Do
-                đó, giá CP trung bình được tính bằng công thức: <code className="font-mono">(Giá Propane + Giá Butane) / 2</code> để
-                làm mốc theo dõi biến động chung giữa các tháng.
-              </p>
-            </details>
-
-            <details className="py-3.5 group">
-              <summary className="font-semibold text-sm sm:text-base cursor-pointer text-slate-800 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 flex items-center justify-between list-none">
-                <span>Vì sao giá gas bán lẻ trong nước không thay đổi đúng bằng mức CP?</span>
-                <span className="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">
-                  expand_more
-                </span>
-              </summary>
-              <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed pl-2 border-l-2 border-emerald-500">
-                Giá bán lẻ bình gas tới tay người tiêu dùng phụ thuộc vào nhiều yếu tố cấu thành khác: phụ phí hợp đồng
-                (premium), tỷ giá USD/VND tại thời điểm thanh toán, thuế nhập khẩu, cước vận tải biển, chi phí chiết
-                nạp, kiểm định an toàn vỏ bình, chi phí lưu kho phân phối và chính sách kinh doanh của từng thương nhân.
-                CP thế giới là cấu phần có biên độ dao động mạnh nhất.
-              </p>
-            </details>
-
-            <details className="py-3.5 group">
-              <summary className="font-semibold text-sm sm:text-base cursor-pointer text-slate-800 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 flex items-center justify-between list-none">
-                <span>Khi nào Saudi Aramco công bố số liệu tháng mới?</span>
-                <span className="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">
-                  expand_more
-                </span>
-              </summary>
-              <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed pl-2 border-l-2 border-emerald-500">
-                Saudi Aramco thường chốt và công bố giá CP vào chiều tối ngày cuối cùng của tháng hiện tại (hoặc sáng
-                sớm ngày đầu tiên của tháng mới theo giờ Việt Nam). HOBA LPG lập tức cập nhật dữ liệu khi có xác nhận từ
-                các nguồn tin cậy.
-              </p>
-            </details>
+            {content.faqs.map((faq, idx) => (
+              <details key={faq.id || idx} className="py-3.5 group" open={idx === 0}>
+                <summary className="font-semibold text-sm sm:text-base cursor-pointer text-slate-800 dark:text-slate-200 hover:text-emerald-700 dark:hover:text-emerald-400 flex items-center justify-between list-none">
+                  <span>{faq.question}</span>
+                  <span className="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">
+                    expand_more
+                  </span>
+                </summary>
+                <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed pl-2 border-l-2 border-emerald-500 whitespace-pre-line">
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
           </div>
         </section>
 
         {/* Source Footer Note */}
         <div className="text-center text-xs text-slate-500 dark:text-slate-400 pt-2 pb-6 border-t border-slate-200 dark:border-slate-800/80">
-          <p>
-            Nguồn số liệu: Saudi Aramco, tổng hợp từ bảng CP của TotalEnergies Việt Nam và bản tin OPIS.
-          </p>
+          <p>{content.sourceNote}</p>
           <p className="mt-1 text-[11px] text-slate-400 dark:text-slate-500">
-            Số liệu mang tính chất tham khảo cho hội viên và cộng đồng doanh nghiệp ngành LPG, không cấu thành tư vấn
-            giá hay cam kết thương mại.
+            {content.disclaimerNote}
           </p>
         </div>
       </main>
