@@ -571,7 +571,102 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
             </span>
           </div>
 
-          <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-800">
+          {/* Mobile View: Clean Card List (hiển thị trọn vẹn 100% không bị cắt tràn) */}
+          <div className="md:hidden space-y-3">
+            {[...filteredRecords].reverse().map((r) => {
+              const globalIdx = records.findIndex((item) => item.month === r.month);
+              const prev = globalIdx > 0 ? records[globalIdx - 1] : null;
+
+              if (r.isPending || r.propane === null || r.butane === null) {
+                return (
+                  <div
+                    key={`m-${r.month}`}
+                    className="p-3.5 rounded-xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60"
+                  >
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="font-bold text-sm text-slate-800 dark:text-slate-200">
+                        {formatMonthLabel(r.month)}
+                      </span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-200/80 dark:bg-amber-900 text-amber-900 dark:text-amber-200 font-bold flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                        Chờ công bố
+                      </span>
+                    </div>
+                    <p className="text-xs text-amber-800 dark:text-amber-300 italic">
+                      Đang chờ công bố chính thức từ Saudi Aramco
+                    </p>
+                  </div>
+                );
+              }
+
+              const avgVal = getAverageCp(r);
+              const prevAvgVal = prev && !prev.isPending && prev.propane !== null ? getAverageCp(prev) : null;
+              const delta = avgVal !== null && prevAvgVal !== null ? avgVal - prevAvgVal : null;
+
+              return (
+                <div
+                  key={`m-${r.month}`}
+                  className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
+                >
+                  {/* Card Header: Month + MoM Diff */}
+                  <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-200/70 dark:border-slate-700/60">
+                    <span className="font-bold text-sm text-slate-900 dark:text-white">
+                      {formatMonthLabel(r.month)}
+                    </span>
+                    <div className={`text-xs font-bold flex items-center gap-1 ${getDiffClass(delta)}`}>
+                      {delta === null ? (
+                        <span className="text-slate-400 font-normal">Chưa có mốc so sánh</span>
+                      ) : (
+                        <span>
+                          {getDiffArrow(delta)}
+                          {formatDiff(delta)} USD/tấn
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* 3 Metric Columns */}
+                  <div className="grid grid-cols-3 gap-2 text-center">
+                    {/* C3 */}
+                    <div className="bg-white dark:bg-slate-900/80 p-2 rounded-lg border border-slate-200/60 dark:border-slate-800">
+                      <div className="text-[10px] font-bold text-[#0e6b5c] dark:text-emerald-400 uppercase tracking-tight">
+                        Propane (C3)
+                      </div>
+                      <div className="text-base font-black text-[#0e6b5c] dark:text-emerald-400 font-mono mt-0.5">
+                        {r.propane.toLocaleString('vi-VN')}
+                      </div>
+                      <div className="text-[9px] text-slate-400 font-medium">USD/tấn</div>
+                    </div>
+
+                    {/* C4 */}
+                    <div className="bg-white dark:bg-slate-900/80 p-2 rounded-lg border border-slate-200/60 dark:border-slate-800">
+                      <div className="text-[10px] font-bold text-[#b4540f] dark:text-amber-500 uppercase tracking-tight">
+                        Butane (C4)
+                      </div>
+                      <div className="text-base font-black text-[#b4540f] dark:text-amber-500 font-mono mt-0.5">
+                        {r.butane.toLocaleString('vi-VN')}
+                      </div>
+                      <div className="text-[9px] text-slate-400 font-medium">USD/tấn</div>
+                    </div>
+
+                    {/* CP TB */}
+                    <div className="bg-white dark:bg-slate-900/80 p-2 rounded-lg border border-slate-200/60 dark:border-slate-800">
+                      <div className="text-[10px] font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-tight">
+                        CP Trung bình
+                      </div>
+                      <div className="text-base font-black text-slate-900 dark:text-white font-mono mt-0.5">
+                        {avgVal?.toLocaleString('vi-VN', { maximumFractionDigits: 1 })}
+                      </div>
+                      <div className="text-[9px] text-slate-400 font-medium">USD/tấn</div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop View: Full Table */}
+          <div className="hidden md:block overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-800">
             <table className="w-full min-w-[580px] text-sm text-left border-collapse">
               <thead className="bg-slate-50 dark:bg-slate-800/60 text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
                 <tr>
