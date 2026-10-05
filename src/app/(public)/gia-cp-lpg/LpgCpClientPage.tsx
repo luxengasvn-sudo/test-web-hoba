@@ -202,76 +202,115 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
         {/* Top 3 Summary Cards */}
         {latestPublished && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            {/* Card 1: Propane (C3) */}
-            <div className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-[#0e6b5c]" />
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-                  Propane (C3)
-                </span>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 font-medium">
-                  {formatMonthLabel(latestPublished.month)}
+          <div className="mb-6">
+            {/* Mobile Header: Kỳ công bố & Đơn vị */}
+            <div className="sm:hidden flex items-center justify-between mb-2 px-0.5">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 dark:bg-slate-800/80 backdrop-blur-md border border-white/20 dark:border-slate-700 text-white shadow-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs font-bold tracking-tight">
+                  Kỳ công bố: {formatMonthLabel(latestPublished.month)}
                 </span>
               </div>
-              <div className="flex items-baseline gap-1.5 my-2">
-                <span className="text-3xl sm:text-4xl font-black text-[#0e6b5c] dark:text-emerald-400">
-                  {latestC3.toLocaleString('vi-VN')}
-                </span>
-                <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">USD/tấn</span>
-              </div>
-              <div className={`text-xs font-semibold flex items-center gap-1 ${getDiffClass(diffC3)}`}>
-                <span>{getDiffArrow(diffC3)}</span>
-                <span>{formatDiff(diffC3)} USD/tấn</span>
-                <span className="text-slate-500 dark:text-slate-400 font-normal">so với tháng trước</span>
-              </div>
+              <span className="text-[11px] text-slate-300 font-medium">
+                Đơn vị: USD/tấn
+              </span>
             </div>
 
-            {/* Card 2: Butane (C4) */}
-            <div className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-[#b4540f]" />
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-                  Butane (C4)
-                </span>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-medium">
-                  {formatMonthLabel(latestPublished.month)}
-                </span>
+            <div className="grid grid-cols-3 gap-2 sm:gap-4">
+              {/* Card 1: Propane (C3) */}
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-2.5 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:shadow-md transition-all flex flex-col justify-between">
+                <div className="absolute top-0 left-0 w-1 sm:w-1.5 h-full bg-[#0e6b5c]" />
+                <div>
+                  <div className="flex items-center justify-between mb-1 pl-1 sm:pl-1.5">
+                    <span className="text-[11px] sm:text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-tight truncate">
+                      <span className="hidden sm:inline">Propane (C3)</span>
+                      <span className="sm:hidden">Propane C3</span>
+                    </span>
+                    <span className="hidden sm:inline-block text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 font-medium">
+                      {formatMonthLabel(latestPublished.month)}
+                    </span>
+                  </div>
+                  <div className="flex items-baseline gap-1 my-1 sm:my-2 pl-1 sm:pl-1.5">
+                    <span className="text-lg sm:text-3xl lg:text-4xl font-black text-[#0e6b5c] dark:text-emerald-400 font-mono tracking-tight leading-tight">
+                      {latestC3.toLocaleString('vi-VN')}
+                    </span>
+                    <span className="text-[10px] sm:text-sm font-semibold text-slate-400 dark:text-slate-500">
+                      <span className="sm:hidden">USD</span>
+                      <span className="hidden sm:inline">USD/tấn</span>
+                    </span>
+                  </div>
+                </div>
+                <div className={`text-[10px] sm:text-xs font-semibold flex items-center gap-0.5 sm:gap-1 pl-1 sm:pl-1.5 ${getDiffClass(diffC3)}`}>
+                  <span className="text-xs sm:text-sm">{getDiffArrow(diffC3)}</span>
+                  <span className="font-mono">{formatDiff(diffC3)}</span>
+                  <span className="sm:hidden font-medium">USD/t</span>
+                  <span className="hidden sm:inline">USD/tấn</span>
+                  <span className="hidden lg:inline text-slate-500 dark:text-slate-400 font-normal">so với tháng trước</span>
+                </div>
               </div>
-              <div className="flex items-baseline gap-1.5 my-2">
-                <span className="text-3xl sm:text-4xl font-black text-[#b4540f] dark:text-amber-500">
-                  {latestC4.toLocaleString('vi-VN')}
-                </span>
-                <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">USD/tấn</span>
-              </div>
-              <div className={`text-xs font-semibold flex items-center gap-1 ${getDiffClass(diffC4)}`}>
-                <span>{getDiffArrow(diffC4)}</span>
-                <span>{formatDiff(diffC4)} USD/tấn</span>
-                <span className="text-slate-500 dark:text-slate-400 font-normal">so với tháng trước</span>
-              </div>
-            </div>
 
-            {/* Card 3: CP Trung bình */}
-            <div className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:shadow-md transition-all">
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-indigo-600" />
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-                  CP Trung bình (C3+C4)/2
-                </span>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 font-medium">
-                  {formatMonthLabel(latestPublished.month)}
-                </span>
+              {/* Card 2: Butane (C4) */}
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-2.5 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:shadow-md transition-all flex flex-col justify-between">
+                <div className="absolute top-0 left-0 w-1 sm:w-1.5 h-full bg-[#b4540f]" />
+                <div>
+                  <div className="flex items-center justify-between mb-1 pl-1 sm:pl-1.5">
+                    <span className="text-[11px] sm:text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-tight truncate">
+                      <span className="hidden sm:inline">Butane (C4)</span>
+                      <span className="sm:hidden">Butane C4</span>
+                    </span>
+                    <span className="hidden sm:inline-block text-xs px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-medium">
+                      {formatMonthLabel(latestPublished.month)}
+                    </span>
+                  </div>
+                  <div className="flex items-baseline gap-1 my-1 sm:my-2 pl-1 sm:pl-1.5">
+                    <span className="text-lg sm:text-3xl lg:text-4xl font-black text-[#b4540f] dark:text-amber-500 font-mono tracking-tight leading-tight">
+                      {latestC4.toLocaleString('vi-VN')}
+                    </span>
+                    <span className="text-[10px] sm:text-sm font-semibold text-slate-400 dark:text-slate-500">
+                      <span className="sm:hidden">USD</span>
+                      <span className="hidden sm:inline">USD/tấn</span>
+                    </span>
+                  </div>
+                </div>
+                <div className={`text-[10px] sm:text-xs font-semibold flex items-center gap-0.5 sm:gap-1 pl-1 sm:pl-1.5 ${getDiffClass(diffC4)}`}>
+                  <span className="text-xs sm:text-sm">{getDiffArrow(diffC4)}</span>
+                  <span className="font-mono">{formatDiff(diffC4)}</span>
+                  <span className="sm:hidden font-medium">USD/t</span>
+                  <span className="hidden sm:inline">USD/tấn</span>
+                  <span className="hidden lg:inline text-slate-500 dark:text-slate-400 font-normal">so với tháng trước</span>
+                </div>
               </div>
-              <div className="flex items-baseline gap-1.5 my-2">
-                <span className="text-3xl sm:text-4xl font-black text-indigo-700 dark:text-indigo-400">
-                  {latestAvg.toLocaleString('vi-VN', { maximumFractionDigits: 1 })}
-                </span>
-                <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">USD/tấn</span>
-              </div>
-              <div className={`text-xs font-semibold flex items-center gap-1 ${getDiffClass(diffAvg)}`}>
-                <span>{getDiffArrow(diffAvg)}</span>
-                <span>{formatDiff(diffAvg)} USD/tấn</span>
-                <span className="text-slate-500 dark:text-slate-400 font-normal">so với tháng trước</span>
+
+              {/* Card 3: CP Trung bình */}
+              <div className="bg-white dark:bg-slate-900 rounded-xl p-2.5 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group hover:shadow-md transition-all flex flex-col justify-between">
+                <div className="absolute top-0 left-0 w-1 sm:w-1.5 h-full bg-indigo-600" />
+                <div>
+                  <div className="flex items-center justify-between mb-1 pl-1 sm:pl-1.5">
+                    <span className="text-[11px] sm:text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-tight truncate" title="CP Trung bình (C3+C4)/2">
+                      <span className="hidden sm:inline">CP Trung bình (C3+C4)/2</span>
+                      <span className="sm:hidden">CP T.Bình</span>
+                    </span>
+                    <span className="hidden sm:inline-block text-xs px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 font-medium">
+                      {formatMonthLabel(latestPublished.month)}
+                    </span>
+                  </div>
+                  <div className="flex items-baseline gap-1 my-1 sm:my-2 pl-1 sm:pl-1.5">
+                    <span className="text-lg sm:text-3xl lg:text-4xl font-black text-indigo-700 dark:text-indigo-400 font-mono tracking-tight leading-tight">
+                      {latestAvg.toLocaleString('vi-VN', { maximumFractionDigits: 1 })}
+                    </span>
+                    <span className="text-[10px] sm:text-sm font-semibold text-slate-400 dark:text-slate-500">
+                      <span className="sm:hidden">USD</span>
+                      <span className="hidden sm:inline">USD/tấn</span>
+                    </span>
+                  </div>
+                </div>
+                <div className={`text-[10px] sm:text-xs font-semibold flex items-center gap-0.5 sm:gap-1 pl-1 sm:pl-1.5 ${getDiffClass(diffAvg)}`}>
+                  <span className="text-xs sm:text-sm">{getDiffArrow(diffAvg)}</span>
+                  <span className="font-mono">{formatDiff(diffAvg)}</span>
+                  <span className="sm:hidden font-medium">USD/t</span>
+                  <span className="hidden sm:inline">USD/tấn</span>
+                  <span className="hidden lg:inline text-slate-500 dark:text-slate-400 font-normal">so với tháng trước</span>
+                </div>
               </div>
             </div>
           </div>
