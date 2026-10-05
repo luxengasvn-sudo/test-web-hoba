@@ -49,8 +49,8 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
   }, [records]);
 
   // Year / Time range filter
-  // Options: 'all' | '12m' | '24m' | YYYY (e.g. '2026', '2025')
-  const [selectedFilter, setSelectedFilter] = useState<string>('all');
+  // Options: '12m' (default) | '24m' | 'all' | YYYY (e.g. '2026', '2025')
+  const [selectedFilter, setSelectedFilter] = useState<string>('12m');
 
   // Filtered records for chart and table
   const filteredRecords = useMemo(() => {
@@ -295,66 +295,43 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
           </div>
         )}
 
-        {/* Filter Controls (Year & Range Selector) */}
-        <div className="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-800 shadow-xs mb-6 flex flex-wrap items-center justify-between gap-3">
+        {/* Filter Controls: Elegant Dropdown */}
+        <div className="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-800 shadow-xs mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-xl">
               calendar_month
             </span>
-            <span className="text-sm font-bold text-slate-700 dark:text-slate-200">Khoảng thời gian:</span>
+            <span className="text-sm font-bold text-slate-800 dark:text-slate-100">Khoảng thời gian hiển thị:</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <button
-              type="button"
-              onClick={() => setSelectedFilter('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
-                selectedFilter === 'all'
-                  ? 'bg-emerald-700 text-white shadow-xs'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-              }`}
-            >
-              Tất cả các năm
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setSelectedFilter('12m')}
-              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
-                selectedFilter === '12m'
-                  ? 'bg-emerald-700 text-white shadow-xs'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-              }`}
-            >
-              12 tháng gần nhất
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setSelectedFilter('24m')}
-              className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
-                selectedFilter === '24m'
-                  ? 'bg-emerald-700 text-white shadow-xs'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-              }`}
-            >
-              24 tháng gần nhất
-            </button>
-
-            {availableYears.map((yr) => (
-              <button
-                key={yr}
-                type="button"
-                onClick={() => setSelectedFilter(yr)}
-                className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
-                  selectedFilter === yr
-                    ? 'bg-emerald-700 text-white shadow-xs'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                }`}
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-slate-500 dark:text-slate-400 hidden sm:inline font-medium">
+              Đang chọn:
+            </span>
+            <div className="relative w-full sm:w-auto min-w-[240px]">
+              <select
+                id="time-range-filter"
+                value={selectedFilter}
+                onChange={(e) => setSelectedFilter(e.target.value)}
+                className="w-full appearance-none pl-3.5 pr-10 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs sm:text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500 shadow-2xs cursor-pointer transition-colors hover:border-slate-400 dark:hover:border-slate-600"
               >
-                Năm {yr}
-              </button>
-            ))}
+                <optgroup label="Khung thời gian phổ biến">
+                  <option value="12m">12 tháng gần nhất (Mặc định)</option>
+                  <option value="24m">24 tháng gần nhất</option>
+                  <option value="all">Tất cả các năm ({records.length} tháng)</option>
+                </optgroup>
+                <optgroup label="Xem theo từng năm">
+                  {availableYears.map((yr) => (
+                    <option key={yr} value={yr}>
+                      Năm {yr}
+                    </option>
+                  ))}
+                </optgroup>
+              </select>
+              <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-lg">
+                unfold_more
+              </span>
+            </div>
           </div>
         </div>
 
