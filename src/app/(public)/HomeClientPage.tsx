@@ -495,23 +495,23 @@ export default function HomeClientPage({
           {/* Right Column (Desktop) & Below Buttons (Mobile): LPG CP Price Frosted Glass Widget */}
           {lpgHeroData && (
             <div className="lg:col-span-5 xl:col-span-5 w-full mt-4 lg:mt-0">
-              <div className="bg-slate-950/65 backdrop-blur-md border border-white/15 rounded-2xl p-4 sm:p-5 shadow-2xl transition-all duration-300 hover:border-white/30 hover:bg-slate-950/75">
+              <div className="bg-white/92 backdrop-blur-md border border-white/70 rounded-2xl p-4 sm:p-5 shadow-2xl transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.25)] hover:bg-white/96">
                 {/* Header */}
-                <div className="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-white/10">
+                <div className="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-200/80">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span className="text-xs sm:text-sm font-bold tracking-tight text-white uppercase flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-base text-emerald-400">trending_up</span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span className="text-xs sm:text-sm font-extrabold tracking-tight text-slate-900 uppercase flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-base text-emerald-700">trending_up</span>
                       Giá CP LPG Aramco
                     </span>
-                    <span className="text-[11px] px-2 py-0.5 rounded-full bg-white/15 text-slate-200 font-semibold border border-white/10">
+                    <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 font-bold border border-emerald-200/70">
                       {lpgHeroData.monthLabel}
                     </span>
                   </div>
 
                   <Link
                     href="/gia-cp-lpg"
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold text-white bg-white/15 hover:bg-white/25 hover:text-emerald-300 border border-white/20 transition-all shrink-0 group"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 shadow-xs hover:shadow-md transition-all shrink-0 group"
                     title="Xem biểu đồ và bảng giá chi tiết"
                   >
                     <span>Chi tiết</span>
@@ -524,21 +524,21 @@ export default function HomeClientPage({
                 {/* 3 Metric Columns */}
                 <div className="grid grid-cols-3 gap-2 sm:gap-3 text-center">
                   {/* Propane (C3) */}
-                  <div className="bg-white/5 hover:bg-white/10 rounded-xl p-2 sm:p-2.5 border border-white/10 transition-colors">
-                    <div className="text-[10px] sm:text-[11px] font-bold text-emerald-300/90 uppercase tracking-wider mb-1">
+                  <div className="bg-slate-50/90 hover:bg-white rounded-xl p-2.5 sm:p-3 border border-slate-200/80 shadow-xs transition-all">
+                    <div className="text-[10px] sm:text-[11px] font-bold text-[#0e6b5c] uppercase tracking-wider mb-1">
                       Propane (C3)
                     </div>
-                    <div className="text-lg sm:text-2xl lg:text-2xl xl:text-3xl font-black text-emerald-400 font-mono leading-none my-1">
+                    <div className="text-xl sm:text-2xl lg:text-3xl font-black text-[#0e6b5c] font-mono leading-none my-1">
                       {lpgHeroData.c3.toLocaleString('vi-VN')}
                     </div>
-                    <div className="text-[9px] sm:text-[10px] text-slate-300 font-medium">USD/tấn</div>
+                    <div className="text-[10px] text-slate-500 font-medium">USD/tấn</div>
                     <div
                       className={`text-[10px] sm:text-[11px] font-bold mt-1.5 flex items-center justify-center gap-0.5 ${
                         lpgHeroData.diffC3 > 0
-                          ? 'text-rose-400'
+                          ? 'text-rose-600'
                           : lpgHeroData.diffC3 < 0
-                          ? 'text-emerald-400'
-                          : 'text-slate-400'
+                          ? 'text-emerald-700'
+                          : 'text-slate-500'
                       }`}
                     >
                       <span>{getDiffArrow(lpgHeroData.diffC3)}</span>
@@ -547,21 +547,21 @@ export default function HomeClientPage({
                   </div>
 
                   {/* Butane (C4) */}
-                  <div className="bg-white/5 hover:bg-white/10 rounded-xl p-2 sm:p-2.5 border border-white/10 transition-colors">
-                    <div className="text-[10px] sm:text-[11px] font-bold text-amber-300/90 uppercase tracking-wider mb-1">
+                  <div className="bg-slate-50/90 hover:bg-white rounded-xl p-2.5 sm:p-3 border border-slate-200/80 shadow-xs transition-all">
+                    <div className="text-[10px] sm:text-[11px] font-bold text-[#b4540f] uppercase tracking-wider mb-1">
                       Butane (C4)
                     </div>
-                    <div className="text-lg sm:text-2xl lg:text-2xl xl:text-3xl font-black text-amber-400 font-mono leading-none my-1">
+                    <div className="text-xl sm:text-2xl lg:text-3xl font-black text-[#b4540f] font-mono leading-none my-1">
                       {lpgHeroData.c4.toLocaleString('vi-VN')}
                     </div>
-                    <div className="text-[9px] sm:text-[10px] text-slate-300 font-medium">USD/tấn</div>
+                    <div className="text-[10px] text-slate-500 font-medium">USD/tấn</div>
                     <div
                       className={`text-[10px] sm:text-[11px] font-bold mt-1.5 flex items-center justify-center gap-0.5 ${
                         lpgHeroData.diffC4 > 0
-                          ? 'text-rose-400'
+                          ? 'text-rose-600'
                           : lpgHeroData.diffC4 < 0
-                          ? 'text-emerald-400'
-                          : 'text-slate-400'
+                          ? 'text-emerald-700'
+                          : 'text-slate-500'
                       }`}
                     >
                       <span>{getDiffArrow(lpgHeroData.diffC4)}</span>
@@ -570,21 +570,21 @@ export default function HomeClientPage({
                   </div>
 
                   {/* CP Trung bình */}
-                  <div className="bg-white/5 hover:bg-white/10 rounded-xl p-2 sm:p-2.5 border border-white/10 transition-colors">
-                    <div className="text-[10px] sm:text-[11px] font-bold text-indigo-300/90 uppercase tracking-wider mb-1">
+                  <div className="bg-slate-50/90 hover:bg-white rounded-xl p-2.5 sm:p-3 border border-slate-200/80 shadow-xs transition-all">
+                    <div className="text-[10px] sm:text-[11px] font-bold text-indigo-700 uppercase tracking-wider mb-1">
                       CP Trung bình
                     </div>
-                    <div className="text-lg sm:text-2xl lg:text-2xl xl:text-3xl font-black text-indigo-300 font-mono leading-none my-1">
+                    <div className="text-xl sm:text-2xl lg:text-3xl font-black text-indigo-700 font-mono leading-none my-1">
                       {lpgHeroData.avg.toLocaleString('vi-VN', { maximumFractionDigits: 1 })}
                     </div>
-                    <div className="text-[9px] sm:text-[10px] text-slate-300 font-medium">USD/tấn</div>
+                    <div className="text-[10px] text-slate-500 font-medium">USD/tấn</div>
                     <div
                       className={`text-[10px] sm:text-[11px] font-bold mt-1.5 flex items-center justify-center gap-0.5 ${
                         lpgHeroData.diffAvg > 0
-                          ? 'text-rose-400'
+                          ? 'text-rose-600'
                           : lpgHeroData.diffAvg < 0
-                          ? 'text-emerald-400'
-                          : 'text-slate-400'
+                          ? 'text-emerald-700'
+                          : 'text-slate-500'
                       }`}
                     >
                       <span>{getDiffArrow(lpgHeroData.diffAvg)}</span>
@@ -595,12 +595,12 @@ export default function HomeClientPage({
 
                 {/* Subtle pending status line if applicable */}
                 {lpgHeroData.hasPendingNext && (
-                  <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-amber-300/90">
+                  <div className="mt-3 pt-2.5 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-amber-800 font-semibold">
                     <span className="flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                      <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
                       <span>{lpgHeroData.pendingMonthLabel}: Đang chờ công bố</span>
                     </span>
-                    <span className="text-[10px] text-slate-400">Tham chiếu Aramco</span>
+                    <span className="text-[10px] text-slate-400 font-normal">Tham chiếu Aramco</span>
                   </div>
                 )}
               </div>
