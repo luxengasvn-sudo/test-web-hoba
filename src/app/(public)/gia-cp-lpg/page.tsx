@@ -46,8 +46,9 @@ export default async function Page({ searchParams }: PageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const isPreview = resolvedSearchParams?.preview === 'true';
 
-  // Check if disabled/hidden
-  if (initialConfig.enabled === false && !isPreview) {
+  // Check if disabled/hidden (Strict fail-safe: only visible when explicitly enabled: true)
+  const isEnabled = initialConfig.enabled === true;
+  if (!isEnabled && !isPreview) {
     redirect('/');
   }
 

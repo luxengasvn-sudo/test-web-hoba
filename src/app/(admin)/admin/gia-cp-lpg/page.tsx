@@ -403,8 +403,8 @@ export default function AdminGiaCpLpgPage() {
     }
   };
 
-  // Visibility Handlers
-  const isPageEnabled = config.enabled !== false;
+  // Visibility Handlers (Strictly hidden by default until explicitly enabled)
+  const isPageEnabled = config.enabled === true;
   const handleToggleEnabled = () => {
     const nextVal = !isPageEnabled;
     const newConfig: LpgCpConfig = {

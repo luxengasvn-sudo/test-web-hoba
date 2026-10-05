@@ -49,8 +49,8 @@ export default function HomeClientPage({
   }, []);
 
   const lpgHeroData = useMemo(() => {
-    // If hidden/disabled by admin, return null
-    if (lpgConfig.enabled === false) return null;
+    // If not explicitly enabled by admin, return null (strictly hidden by default)
+    if (lpgConfig.enabled !== true) return null;
 
     const recs = [...(lpgConfig.records || [])].sort((a, b) => a.month.localeCompare(b.month));
     const published = recs.filter((r) => !r.isPending && r.propane !== null && r.butane !== null);
