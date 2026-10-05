@@ -101,6 +101,7 @@ export default function Sidebar() {
 
   const primaryNav = [
     { label: 'Dashboard', path: '/admin/', icon: 'dashboard' },
+    { label: 'Giá CP LPG', path: '/admin/gia-cp-lpg/', icon: 'trending_up' },
     { label: 'Hội viên (Danh sách)', path: '/admin/hoi-vien/', icon: 'group' },
     { label: 'Văn bản pháp lý', path: '/admin/van-ban/', icon: 'description' },
     { label: 'Tin tức & Bài viết', path: '/admin/tin-tuc/', icon: 'newspaper' },
