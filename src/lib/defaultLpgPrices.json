@@ -1,0 +1,28 @@
+{
+  "defaultFxRate": 26300,
+  "updatedAt": "2026-10-01T00:00:00.000Z",
+  "records": [
+    { "month": "2025-01", "propane": 625, "butane": 615, "isPending": false },
+    { "month": "2025-02", "propane": 635, "butane": 625, "isPending": false },
+    { "month": "2025-03", "propane": 615, "butane": 605, "isPending": false },
+    { "month": "2025-04", "propane": 615, "butane": 605, "isPending": false },
+    { "month": "2025-05", "propane": 610, "butane": 590, "isPending": false },
+    { "month": "2025-06", "propane": 600, "butane": 570, "isPending": false },
+    { "month": "2025-07", "propane": 575, "butane": 545, "isPending": false },
+    { "month": "2025-08", "propane": 520, "butane": 490, "isPending": false },
+    { "month": "2025-09", "propane": 520, "butane": 490, "isPending": false },
+    { "month": "2025-10", "propane": 495, "butane": 475, "isPending": false },
+    { "month": "2025-11", "propane": 475, "butane": 460, "isPending": false },
+    { "month": "2025-12", "propane": 495, "butane": 485, "isPending": false },
+    { "month": "2026-01", "propane": 525, "butane": 520, "isPending": false },
+    { "month": "2026-02", "propane": 545, "butane": 540, "isPending": false },
+    { "month": "2026-03", "propane": 545, "butane": 540, "isPending": false },
+    { "month": "2026-04", "propane": 750, "butane": 800, "isPending": false },
+    { "month": "2026-05", "propane": 750, "butane": 800, "isPending": false },
+    { "month": "2026-06", "propane": 760, "butane": 820, "isPending": false },
+    { "month": "2026-07", "propane": 580, "butane": 600, "isPending": false },
+    { "month": "2026-08", "propane": 620, "butane": 640, "isPending": false },
+    { "month": "2026-09", "propane": 625, "butane": 660, "isPending": false },
+    { "month": "2026-10", "propane": null, "butane": null, "isPending": true }
+  ]
+}
