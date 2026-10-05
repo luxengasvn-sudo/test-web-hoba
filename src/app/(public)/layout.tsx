@@ -31,13 +31,37 @@ export default async function PublicLayout({
         );
       }
     }
+
+    let lpgCpEnabled = false;
+    try {
+      const lpgConfigData = await executeDirectQuery({
+        method: "SELECT",
+        table: "website_config",
+        filters: [{ col: "key", val: "lpg_cp_data" }],
+        isSingle: true,
+      });
+      if (lpgConfigData && lpgConfigData.value) {
+        const parsedLpg = typeof lpgConfigData.value === 'string' ? JSON.parse(lpgConfigData.value) : lpgConfigData.value;
+        lpgCpEnabled = parsedLpg?.enabled === true;
+      }
+    } catch (e) {
+      console.error("Error fetching lpg config in layout:", e);
+    }
+
+    return (
+      <>
+        <Header initialConfig={generalConfig} initialLpgCpEnabled={lpgCpEnabled} />
+        <main className="flex-grow flex flex-col">{children}</main>
+        <Footer initialConfig={generalConfig} />
+      </>
+    );
   } catch (error) {
     console.error("Error fetching general config in layout:", error);
   }
 
   return (
     <>
-      <Header initialConfig={generalConfig} />
+      <Header initialConfig={generalConfig} initialLpgCpEnabled={false} />
       <main className="flex-grow flex flex-col">{children}</main>
       <Footer initialConfig={generalConfig} />
     </>

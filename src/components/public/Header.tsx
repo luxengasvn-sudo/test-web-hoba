@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
@@ -11,7 +11,33 @@ interface HeaderMenuItem {
   children?: HeaderMenuItem[];
 }
 
-export default function Header({ initialConfig }: { initialConfig?: any }) {
+function ensureLpgSubmenu(items: HeaderMenuItem[]): HeaderMenuItem[] {
+  return items.map((item) => {
+    if (item.path === '/tin-tuc' || item.label === 'Tin tức') {
+      const existingChildren = item.children || [];
+      const hasLpg = existingChildren.some((c) => c.path === '/gia-cp-lpg');
+      if (!hasLpg) {
+        const children = existingChildren.length > 0
+          ? [...existingChildren]
+          : [{ label: 'Tin tức & Hoạt động', path: '/tin-tuc' }];
+        children.push({ label: 'Giá CP LPG Saudi Aramco', path: '/gia-cp-lpg' });
+        return {
+          ...item,
+          children,
+        };
+      }
+    }
+    return item;
+  });
+}
+
+export default function Header({
+  initialConfig,
+  initialLpgCpEnabled = false,
+}: {
+  initialConfig?: any;
+  initialLpgCpEnabled?: boolean;
+}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
@@ -19,7 +45,7 @@ export default function Header({ initialConfig }: { initialConfig?: any }) {
   
   const [navItems, setNavItems] = useState<HeaderMenuItem[]>(() => {
     if (initialConfig?.menuItems && Array.isArray(initialConfig.menuItems) && initialConfig.menuItems.length > 0) {
-      return initialConfig.menuItems;
+      return ensureLpgSubmenu(initialConfig.menuItems);
     }
     return [
       { label: 'Trang chủ', path: '/', children: [] },
@@ -42,7 +68,14 @@ export default function Header({ initialConfig }: { initialConfig?: any }) {
           { label: 'Đăng ký Hội viên', path: '/dang-ky' }
         ]
       },
-      { label: 'Tin tức', path: '/tin-tuc', children: [] },
+      {
+        label: 'Tin tức',
+        path: '/tin-tuc',
+        children: [
+          { label: 'Tin tức & Hoạt động', path: '/tin-tuc' },
+          { label: 'Giá CP LPG Saudi Aramco', path: '/gia-cp-lpg' }
+        ]
+      },
       { label: 'Sự kiện', path: '/su-kien', children: [] },
       { label: 'Văn bản', path: '/van-ban', children: [] },
       { label: 'Liên hệ', path: '/lien-he', children: [] },
@@ -54,6 +87,10 @@ export default function Header({ initialConfig }: { initialConfig?: any }) {
   const [contactEmail, setContactEmail] = useState(() => initialConfig?.contactEmail || 'info@hobalpg.vn');
   const [contactPhone, setContactPhone] = useState(() => initialConfig?.contactPhone || '028 3831 66710');
 
+  // LPG CP Feature Visibility State (Hidden by default unless explicitly enabled)
+  const [lpgCpEnabled, setLpgCpEnabled] = useState<boolean>(() => {
+    return initialLpgCpEnabled === true;
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,6 +105,48 @@ export default function Header({ initialConfig }: { initialConfig?: any }) {
   }, []);
 
   useEffect(() => {
+    const handleLpgStatus = () => {
+      try {
+        const saved = localStorage.getItem('hoba_website_config_lpg_cp_data');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && typeof parsed.enabled === 'boolean') {
+            setLpgCpEnabled(parsed.enabled);
+            return;
+          }
+        }
+      } catch (_) {}
+    };
+
+    handleLpgStatus();
+
+    async function checkRemoteLpgStatus() {
+      if (!supabase) return;
+      try {
+        const { data, error } = await supabase
+          .from('website_config')
+          .select('value')
+          .eq('key', 'lpg_cp_data')
+          .single();
+        if (!error && data?.value) {
+          const parsed = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+          if (parsed && typeof parsed.enabled === 'boolean') {
+            setLpgCpEnabled(parsed.enabled);
+          }
+        }
+      } catch (_) {}
+    }
+    checkRemoteLpgStatus();
+
+    window.addEventListener('storage', handleLpgStatus);
+    window.addEventListener('hoba_lpg_cp_updated', handleLpgStatus);
+    return () => {
+      window.removeEventListener('storage', handleLpgStatus);
+      window.removeEventListener('hoba_lpg_cp_updated', handleLpgStatus);
+    };
+  }, []);
+
+  useEffect(() => {
     if (initialConfig) return;
     async function loadMenu() {
       if (!supabase) {
@@ -76,7 +155,7 @@ export default function Header({ initialConfig }: { initialConfig?: any }) {
           try {
             const val = JSON.parse(saved);
             if (val.menuItems && Array.isArray(val.menuItems) && val.menuItems.length > 0) {
-              setNavItems(val.menuItems);
+              setNavItems(ensureLpgSubmenu(val.menuItems));
             }
             if (val.logoUrl) {
               setLogoUrl(val.logoUrl);
@@ -107,7 +186,7 @@ export default function Header({ initialConfig }: { initialConfig?: any }) {
 
         if (!error && data?.value) {
           if (data.value.menuItems && Array.isArray(data.value.menuItems) && data.value.menuItems.length > 0) {
-            setNavItems(data.value.menuItems);
+            setNavItems(ensureLpgSubmenu(data.value.menuItems));
           }
           if (data.value.logoUrl) {
             setLogoUrl(data.value.logoUrl);
@@ -131,6 +210,36 @@ export default function Header({ initialConfig }: { initialConfig?: any }) {
     }
     loadMenu();
   }, []);
+
+  const displayNavItems = useMemo(() => {
+    return navItems.map((item) => {
+      if (!item.children || item.children.length === 0) {
+        return item;
+      }
+
+      // Filter children: if lpgCpEnabled is false, hide /gia-cp-lpg
+      const filteredChildren = item.children.filter((sub) => {
+        if (sub.path === '/gia-cp-lpg' && !lpgCpEnabled) {
+          return false;
+        }
+        return true;
+      });
+
+      // Special rule: If only 1 child remains and its path matches the parent (or points to the parent page like /tin-tuc),
+      // collapse it so it renders as a clean single link rather than a redundant 1-item dropdown!
+      if (filteredChildren.length === 1 && filteredChildren[0].path === item.path) {
+        return {
+          ...item,
+          children: [],
+        };
+      }
+
+      return {
+        ...item,
+        children: filteredChildren,
+      };
+    });
+  }, [navItems, lpgCpEnabled]);
 
   const isActive = (path: string) => {
     if (path === '/') {
@@ -174,7 +283,7 @@ export default function Header({ initialConfig }: { initialConfig?: any }) {
 
           {/* Desktop Navigation */}
           <nav className="hidden xl:flex items-center gap-6 h-full">
-            {navItems.map((item) => {
+            {displayNavItems.map((item) => {
               const hasChildren = item.children && item.children.length > 0;
               if (hasChildren) {
                 return (
@@ -307,7 +416,7 @@ export default function Header({ initialConfig }: { initialConfig?: any }) {
             </div>
 
             <nav className="flex flex-col gap-2.5 flex-1 overflow-y-auto no-scrollbar">
-              {navItems.map((item) => {
+              {displayNavItems.map((item) => {
                 const hasChildren = item.children && item.children.length > 0;
                 const isExpanded = expandedItems.includes(item.label);
                 
