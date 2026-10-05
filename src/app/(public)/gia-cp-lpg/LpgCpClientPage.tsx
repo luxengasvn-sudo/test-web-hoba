@@ -334,49 +334,9 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
           </div>
         )}
 
-        {/* Filter Controls: Elegant Dropdown */}
-        <div className="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-800 shadow-xs mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-xl">
-              calendar_month
-            </span>
-            <span className="text-sm font-bold text-slate-800 dark:text-slate-100">Khoảng thời gian hiển thị:</span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-slate-500 dark:text-slate-400 hidden sm:inline font-medium">
-              Đang chọn:
-            </span>
-            <div className="relative w-full sm:w-auto min-w-[240px]">
-              <select
-                id="time-range-filter"
-                value={selectedFilter}
-                onChange={(e) => setSelectedFilter(e.target.value)}
-                className="w-full appearance-none pl-3.5 pr-10 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs sm:text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500 shadow-2xs cursor-pointer transition-colors hover:border-slate-400 dark:hover:border-slate-600"
-              >
-                <optgroup label="Khung thời gian phổ biến">
-                  <option value="12m">12 tháng gần nhất (Mặc định)</option>
-                  <option value="24m">24 tháng gần nhất</option>
-                  <option value="all">Tất cả các năm ({records.length} tháng)</option>
-                </optgroup>
-                <optgroup label="Xem theo từng năm">
-                  {availableYears.map((yr) => (
-                    <option key={yr} value={yr}>
-                      Năm {yr}
-                    </option>
-                  ))}
-                </optgroup>
-              </select>
-              <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-lg">
-                unfold_more
-              </span>
-            </div>
-          </div>
-        </div>
-
         {/* Section: Interactive Chart */}
-        <section className="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-xs mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 gap-3">
+        <section className="bg-white dark:bg-slate-900 rounded-xl p-4 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-xs mb-8">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 gap-3 sm:gap-4">
             <div>
               <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400">query_stats</span>
@@ -387,16 +347,48 @@ export default function LpgCpClientPage({ initialConfig }: Props) {
               </p>
             </div>
 
-            {/* Legend */}
-            <div className="flex items-center gap-4 text-xs font-semibold">
-              <span className="inline-flex items-center gap-1.5">
-                <span className="w-3.5 h-1.5 rounded-full bg-[#0e6b5c]"></span>
-                Propane (C3)
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <span className="w-3.5 h-1.5 rounded-full bg-[#b4540f]"></span>
-                Butane (C4)
-              </span>
+            {/* Actions: Legend & Time Range Dropdown */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+              {/* Legend */}
+              <div className="flex items-center gap-4 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="w-3.5 h-1.5 rounded-full bg-[#0e6b5c]"></span>
+                  Propane (C3)
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="w-3.5 h-1.5 rounded-full bg-[#b4540f]"></span>
+                  Butane (C4)
+                </span>
+              </div>
+
+              {/* Time Range Dropdown */}
+              <div className="relative w-full sm:w-auto min-w-[220px]">
+                <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-emerald-600 dark:text-emerald-400 text-lg">
+                  calendar_month
+                </span>
+                <select
+                  id="time-range-filter"
+                  value={selectedFilter}
+                  onChange={(e) => setSelectedFilter(e.target.value)}
+                  className="w-full appearance-none pl-9 pr-9 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs sm:text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500 shadow-2xs cursor-pointer transition-colors hover:border-slate-400 dark:hover:border-slate-600"
+                >
+                  <optgroup label="Khung thời gian phổ biến">
+                    <option value="12m">12 tháng gần nhất (Mặc định)</option>
+                    <option value="24m">24 tháng gần nhất</option>
+                    <option value="all">Tất cả các năm ({records.length} tháng)</option>
+                  </optgroup>
+                  <optgroup label="Xem theo từng năm">
+                    {availableYears.map((yr) => (
+                      <option key={yr} value={yr}>
+                        Năm {yr}
+                      </option>
+                    ))}
+                  </optgroup>
+                </select>
+                <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-base">
+                  unfold_more
+                </span>
+              </div>
             </div>
           </div>
 
