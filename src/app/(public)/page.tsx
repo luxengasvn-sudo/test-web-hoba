@@ -1,6 +1,7 @@
 import { executeDirectQuery } from '@/lib/db-direct';
 import HomeClientPage from './HomeClientPage';
 import defaultHomePage from '@/lib/defaultHomePage.json';
+import defaultLpgPrices from '@/lib/defaultLpgPrices.json';
 import { DEFAULT_HOBA_LOGO } from '@/lib/constants';
 import fs from 'fs';
 import path from 'path';
@@ -163,8 +164,27 @@ export default async function Page() {
       });
     }
 
+    // 7. Fetch LPG CP price data
+    let lpgConfig = defaultLpgPrices;
+    try {
+      const lpgData = await executeDirectQuery({
+        method: 'SELECT',
+        table: 'website_config',
+        filters: [{ col: 'key', val: 'lpg_cp_data' }],
+        isSingle: true
+      });
+      if (lpgData?.value) {
+        const parsed = typeof lpgData.value === 'string' ? JSON.parse(lpgData.value) : lpgData.value;
+        if (parsed && Array.isArray(parsed.records)) {
+          lpgConfig = parsed;
+        }
+      }
+    } catch (_) {}
+    initialData.lpgCpConfig = lpgConfig;
+
   } catch (error) {
     console.error('[Home SSR] Failed to pre-fetch database config:', error);
+    initialData.lpgCpConfig = defaultLpgPrices;
   }
 
   return <HomeClientPage initialData={initialData} />;

@@ -4,6 +4,14 @@ import { useState, useEffect, Fragment, useMemo } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import defaultHomePage from '@/lib/defaultHomePage.json';
+import defaultLpgPrices from '@/lib/defaultLpgPrices.json';
+import {
+  LpgCpConfig,
+  getAverageCp,
+  formatMonthLabel,
+  formatDiff,
+  getDiffArrow,
+} from '@/types/lpgCp';
 
 export default function HomeClientPage({
   initialData = {}
@@ -13,6 +21,68 @@ export default function HomeClientPage({
   const [stats, setStats] = useState(initialData.stats || defaultHomePage.stats);
   const [coreServices, setCoreServices] = useState(initialData.coreServices || defaultHomePage.coreServices);
   const [heroImage, setHeroImage] = useState(initialData.heroImage || defaultHomePage.heroImage);
+
+  // LPG CP Prices State & Live Sync
+  const [lpgConfig, setLpgConfig] = useState<LpgCpConfig>(
+    initialData.lpgCpConfig || (defaultLpgPrices as LpgCpConfig)
+  );
+
+  useEffect(() => {
+    const handleLpgStorage = () => {
+      try {
+        const saved = localStorage.getItem('hoba_website_config_lpg_cp_data');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && Array.isArray(parsed.records)) {
+            setLpgConfig(parsed);
+          }
+        }
+      } catch (_) {}
+    };
+    handleLpgStorage();
+    window.addEventListener('storage', handleLpgStorage);
+    window.addEventListener('hoba_lpg_cp_updated', handleLpgStorage);
+    return () => {
+      window.removeEventListener('storage', handleLpgStorage);
+      window.removeEventListener('hoba_lpg_cp_updated', handleLpgStorage);
+    };
+  }, []);
+
+  const lpgHeroData = useMemo(() => {
+    const recs = [...(lpgConfig.records || [])].sort((a, b) => a.month.localeCompare(b.month));
+    const published = recs.filter((r) => !r.isPending && r.propane !== null && r.butane !== null);
+    if (published.length === 0) return null;
+
+    const latestPub = published[published.length - 1];
+    const prevPub = published.length > 1 ? published[published.length - 2] : null;
+
+    const latestOverall = recs[recs.length - 1];
+    const hasPendingNext = !!(latestOverall && latestOverall.month !== latestPub.month && latestOverall.isPending);
+
+    const c3 = latestPub.propane ?? 0;
+    const c4 = latestPub.butane ?? 0;
+    const avg = getAverageCp(latestPub) ?? 0;
+
+    const prevC3 = prevPub?.propane ?? c3;
+    const prevC4 = prevPub?.butane ?? c4;
+    const prevAvg = prevPub ? getAverageCp(prevPub) ?? avg : avg;
+
+    const diffC3 = c3 - prevC3;
+    const diffC4 = c4 - prevC4;
+    const diffAvg = avg - prevAvg;
+
+    return {
+      monthLabel: formatMonthLabel(latestPub.month),
+      c3,
+      c4,
+      avg,
+      diffC3,
+      diffC4,
+      diffAvg,
+      hasPendingNext,
+      pendingMonthLabel: hasPendingNext ? formatMonthLabel(latestOverall.month) : null,
+    };
+  }, [lpgConfig]);
 
   const mockActiveMembers = [
     { name: 'Saigon Petro', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCUSaADTHuO0LeW68laxKr1qy5yC1GTS_ZMkN3B3Bk8_GdXGeqGYbF0o9npgtS7B1SN9Q0rltt5aXIffVkM3BlPgVVzI8pArb-gKVO2tSlefjfbDUAlMaVWSsY4Eljq9-h-vBmck0v3SrFG9Mj-3v4ZjvKBtgZ4PzNjThhlqmt5XcMsoe9i24a1cqq-o4NItX0xwJ7eNBvZxigXmSDVsR6oQw5flyk3MYT4qmWEVd79cVskyyUgh0YrEvLEPsqb26TSmnVlXMPCh3I' },
@@ -389,35 +459,153 @@ export default function HomeClientPage({
         <div className="absolute inset-0 hero-overlay"></div>
       </div>
       <div className="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-gutter w-full">
-        <div className="max-w-3xl space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-card border-white/20 text-white text-[10px] font-bold uppercase tracking-[0.15em] mb-2">
-            <span className="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse"></span>
-            Tiên phong kiến tạo ngành khí hóa lỏng TP.HCM
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-end">
+          {/* Left Column: Heading, Subtext, Buttons */}
+          <div className="lg:col-span-7 xl:col-span-7 space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-card border-white/20 text-white text-[10px] font-bold uppercase tracking-[0.15em] mb-2">
+              <span className="w-1.5 h-1.5 bg-secondary rounded-full animate-pulse"></span>
+              Tiên phong kiến tạo ngành khí hóa lỏng TP.HCM
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight whitespace-pre-line">
+              {headline}
+            </h1>
+            <p className="text-base md:text-lg text-white/80 max-w-xl leading-relaxed font-medium">
+              {subtext}
+            </p>
+            <div className="flex flex-wrap gap-4 pt-4">
+              {heroBtn1Show && (
+                <Link
+                  href={heroBtn1Url}
+                  className="bg-secondary text-white px-8 py-4 rounded-full font-bold text-base hover:shadow-[0_0_30px_rgba(187,0,19,0.3)] hover:-translate-y-0.5 transition-all flex items-center gap-2"
+                >
+                  {heroBtn1Text} <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                </Link>
+              )}
+              {heroBtn2Show && (
+                <Link
+                  href={heroBtn2Url}
+                  className="px-8 py-4 rounded-full font-bold text-base text-white border-2 border-white/40 hover:bg-white/10 transition-all backdrop-blur-sm"
+                >
+                  {heroBtn2Text}
+                </Link>
+              )}
+            </div>
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight whitespace-pre-line">
-            {headline}
-          </h1>
-          <p className="text-base md:text-lg text-white/80 max-w-xl leading-relaxed font-medium">
-            {subtext}
-          </p>
-          <div className="flex flex-wrap gap-4 pt-4">
-            {heroBtn1Show && (
-              <Link
-                href={heroBtn1Url}
-                className="bg-secondary text-white px-8 py-4 rounded-full font-bold text-base hover:shadow-[0_0_30px_rgba(187,0,19,0.3)] hover:-translate-y-0.5 transition-all flex items-center gap-2"
-              >
-                {heroBtn1Text} <span className="material-symbols-outlined text-xl">arrow_forward</span>
-              </Link>
-            )}
-            {heroBtn2Show && (
-              <Link
-                href={heroBtn2Url}
-                className="px-8 py-4 rounded-full font-bold text-base text-white border-2 border-white/40 hover:bg-white/10 transition-all backdrop-blur-sm"
-              >
-                {heroBtn2Text}
-              </Link>
-            )}
-          </div>
+
+          {/* Right Column (Desktop) & Below Buttons (Mobile): LPG CP Price Frosted Glass Widget */}
+          {lpgHeroData && (
+            <div className="lg:col-span-5 xl:col-span-5 w-full mt-4 lg:mt-0">
+              <div className="bg-slate-950/65 backdrop-blur-md border border-white/15 rounded-2xl p-4 sm:p-5 shadow-2xl transition-all duration-300 hover:border-white/30 hover:bg-slate-950/75">
+                {/* Header */}
+                <div className="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-white/10">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span className="text-xs sm:text-sm font-bold tracking-tight text-white uppercase flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-base text-emerald-400">trending_up</span>
+                      Giá CP LPG Aramco
+                    </span>
+                    <span className="text-[11px] px-2 py-0.5 rounded-full bg-white/15 text-slate-200 font-semibold border border-white/10">
+                      {lpgHeroData.monthLabel}
+                    </span>
+                  </div>
+
+                  <Link
+                    href="/gia-cp-lpg"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold text-white bg-white/15 hover:bg-white/25 hover:text-emerald-300 border border-white/20 transition-all shrink-0 group"
+                    title="Xem biểu đồ và bảng giá chi tiết"
+                  >
+                    <span>Chi tiết</span>
+                    <span className="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">
+                      arrow_forward
+                    </span>
+                  </Link>
+                </div>
+
+                {/* 3 Metric Columns */}
+                <div className="grid grid-cols-3 gap-2 sm:gap-3 text-center">
+                  {/* Propane (C3) */}
+                  <div className="bg-white/5 hover:bg-white/10 rounded-xl p-2 sm:p-2.5 border border-white/10 transition-colors">
+                    <div className="text-[10px] sm:text-[11px] font-bold text-emerald-300/90 uppercase tracking-wider mb-1">
+                      Propane (C3)
+                    </div>
+                    <div className="text-lg sm:text-2xl lg:text-2xl xl:text-3xl font-black text-emerald-400 font-mono leading-none my-1">
+                      {lpgHeroData.c3.toLocaleString('vi-VN')}
+                    </div>
+                    <div className="text-[9px] sm:text-[10px] text-slate-300 font-medium">USD/tấn</div>
+                    <div
+                      className={`text-[10px] sm:text-[11px] font-bold mt-1.5 flex items-center justify-center gap-0.5 ${
+                        lpgHeroData.diffC3 > 0
+                          ? 'text-rose-400'
+                          : lpgHeroData.diffC3 < 0
+                          ? 'text-emerald-400'
+                          : 'text-slate-400'
+                      }`}
+                    >
+                      <span>{getDiffArrow(lpgHeroData.diffC3)}</span>
+                      <span>{formatDiff(lpgHeroData.diffC3)} $</span>
+                    </div>
+                  </div>
+
+                  {/* Butane (C4) */}
+                  <div className="bg-white/5 hover:bg-white/10 rounded-xl p-2 sm:p-2.5 border border-white/10 transition-colors">
+                    <div className="text-[10px] sm:text-[11px] font-bold text-amber-300/90 uppercase tracking-wider mb-1">
+                      Butane (C4)
+                    </div>
+                    <div className="text-lg sm:text-2xl lg:text-2xl xl:text-3xl font-black text-amber-400 font-mono leading-none my-1">
+                      {lpgHeroData.c4.toLocaleString('vi-VN')}
+                    </div>
+                    <div className="text-[9px] sm:text-[10px] text-slate-300 font-medium">USD/tấn</div>
+                    <div
+                      className={`text-[10px] sm:text-[11px] font-bold mt-1.5 flex items-center justify-center gap-0.5 ${
+                        lpgHeroData.diffC4 > 0
+                          ? 'text-rose-400'
+                          : lpgHeroData.diffC4 < 0
+                          ? 'text-emerald-400'
+                          : 'text-slate-400'
+                      }`}
+                    >
+                      <span>{getDiffArrow(lpgHeroData.diffC4)}</span>
+                      <span>{formatDiff(lpgHeroData.diffC4)} $</span>
+                    </div>
+                  </div>
+
+                  {/* CP Trung bình */}
+                  <div className="bg-white/5 hover:bg-white/10 rounded-xl p-2 sm:p-2.5 border border-white/10 transition-colors">
+                    <div className="text-[10px] sm:text-[11px] font-bold text-indigo-300/90 uppercase tracking-wider mb-1">
+                      CP Trung bình
+                    </div>
+                    <div className="text-lg sm:text-2xl lg:text-2xl xl:text-3xl font-black text-indigo-300 font-mono leading-none my-1">
+                      {lpgHeroData.avg.toLocaleString('vi-VN', { maximumFractionDigits: 1 })}
+                    </div>
+                    <div className="text-[9px] sm:text-[10px] text-slate-300 font-medium">USD/tấn</div>
+                    <div
+                      className={`text-[10px] sm:text-[11px] font-bold mt-1.5 flex items-center justify-center gap-0.5 ${
+                        lpgHeroData.diffAvg > 0
+                          ? 'text-rose-400'
+                          : lpgHeroData.diffAvg < 0
+                          ? 'text-emerald-400'
+                          : 'text-slate-400'
+                      }`}
+                    >
+                      <span>{getDiffArrow(lpgHeroData.diffAvg)}</span>
+                      <span>{formatDiff(lpgHeroData.diffAvg)} $</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Subtle pending status line if applicable */}
+                {lpgHeroData.hasPendingNext && (
+                  <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-amber-300/90">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                      <span>{lpgHeroData.pendingMonthLabel}: Đang chờ công bố</span>
+                    </span>
+                    <span className="text-[10px] text-slate-400">Tham chiếu Aramco</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
       {/* Visual Element */}
