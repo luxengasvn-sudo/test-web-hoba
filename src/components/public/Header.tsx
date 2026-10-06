@@ -248,6 +248,18 @@ export default function Header({
     return pathname.startsWith(path);
   };
 
+  const handleNavClick = (targetPath: string, e: React.MouseEvent) => {
+    if (pathname === '/tin-tuc' && targetPath.startsWith('/tin-tuc')) {
+      const currentSearch = typeof window !== 'undefined' ? window.location.search : '';
+      if (currentSearch.includes('id=') || currentSearch.includes('slug=')) {
+        return;
+      }
+      e.preventDefault();
+      window.history.replaceState(null, '', targetPath);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
+  };
+
   return (
     <>
       <header
@@ -288,62 +300,39 @@ export default function Header({
               if (hasChildren) {
                 return (
                   <div key={item.label} className="relative group flex items-center h-full cursor-pointer py-1">
-                    <button
-                      type="button"
-                      className="flex items-center gap-0.5 transition-colors font-semibold text-xs uppercase tracking-wide border-b-2 border-transparent text-white/80 group-hover:text-secondary-fixed-dim"
+                    <Link
+                      href={item.path}
+                      onClick={(e) => handleNavClick(item.path, e)}
+                      className={`flex items-center gap-0.5 transition-colors font-semibold text-xs uppercase tracking-wide py-1 border-b-2 hover:text-secondary-fixed-dim ${
+                        isActive(item.path)
+                          ? 'border-secondary-container text-white'
+                          : 'border-transparent text-white/80'
+                      }`}
                     >
                       {item.label}
                       <span className="material-symbols-outlined text-[14px] transition-transform group-hover:rotate-180">expand_more</span>
-                    </button>
+                    </Link>
                     {/* Dropdown panel */}
                     <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-52 bg-[#00244f] border border-white/10 rounded-lg shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                      {item.children?.map((subItem) => {
-                        const isBypass = subItem.path.startsWith('/tin-tuc') || subItem.path.startsWith('/su-kien');
-                        if (isBypass) {
-                          return (
-                            <a
-                              key={subItem.path}
-                              href={subItem.path}
-                              className="block px-4 py-2.5 text-xs font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-colors"
-                            >
-                              {subItem.label}
-                            </a>
-                          );
-                        }
-                        return (
-                          <Link
-                            key={subItem.path}
-                            href={subItem.path}
-                            className="block px-4 py-2.5 text-xs font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-colors"
-                          >
-                            {subItem.label}
-                          </Link>
-                        );
-                      })}
+                      {item.children?.map((subItem) => (
+                        <Link
+                          key={subItem.path}
+                          href={subItem.path}
+                          onClick={(e) => handleNavClick(subItem.path, e)}
+                          className="block px-4 py-2.5 text-xs font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                          {subItem.label}
+                        </Link>
+                      ))}
                     </div>
                   </div>
-                );
-              }
-              const isBypass = item.path.startsWith('/tin-tuc') || item.path.startsWith('/su-kien');
-              if (isBypass) {
-                return (
-                  <a
-                    key={item.path}
-                    href={item.path}
-                    className={`transition-colors font-semibold text-xs uppercase tracking-wide py-1 border-b-2 hover:text-secondary-fixed-dim ${
-                      isActive(item.path)
-                        ? 'border-secondary-container text-white'
-                        : 'border-transparent text-white/80'
-                    }`}
-                  >
-                    {item.label}
-                  </a>
                 );
               }
               return (
                 <Link
                   key={item.path}
                   href={item.path}
+                  onClick={(e) => handleNavClick(item.path, e)}
                   className={`transition-colors font-semibold text-xs uppercase tracking-wide py-1 border-b-2 hover:text-secondary-fixed-dim ${
                     isActive(item.path)
                       ? 'border-secondary-container text-white'
@@ -431,70 +420,49 @@ export default function Header({
                 if (hasChildren) {
                   return (
                     <div key={item.label} className="flex flex-col">
-                      <button
-                        type="button"
-                        onClick={toggleExpand}
-                        className="flex items-center justify-between text-base font-medium py-2.5 px-3 rounded-lg hover:bg-white/10 text-white/80 w-full text-left"
-                      >
-                        <span>{item.label}</span>
-                        <span className={`material-symbols-outlined transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>expand_more</span>
-                      </button>
+                      <div className="flex items-center justify-between py-1">
+                        <Link
+                          href={item.path}
+                          onClick={(e) => {
+                            setIsMobileMenuOpen(false);
+                            handleNavClick(item.path, e);
+                          }}
+                          className={`text-base font-medium py-1.5 px-3 rounded-lg flex-1 ${
+                            isActive(item.path) ? 'text-white font-bold' : 'text-white/80'
+                          }`}
+                        >
+                          {item.label}
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={toggleExpand}
+                          className="p-2 text-white/80 hover:text-white"
+                        >
+                          <span className={`material-symbols-outlined transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>expand_more</span>
+                        </button>
+                      </div>
                       {isExpanded && (
                         <div className="pl-4 flex flex-col gap-2.5 mt-1.5 border-l border-white/10 ml-3.5">
-                          {item.children?.map((subItem) => {
-                            const isBypass = subItem.path.startsWith('/tin-tuc') || subItem.path.startsWith('/su-kien');
-                            if (isBypass) {
-                              return (
-                                <a
-                                  key={subItem.path}
-                                  href={subItem.path}
-                                  onClick={() => setIsMobileMenuOpen(false)}
-                                  className={`text-sm font-medium py-2 px-3 rounded-md transition-colors ${
-                                    isActive(subItem.path)
-                                      ? 'bg-secondary text-white font-bold'
-                                      : 'hover:bg-white/5 text-white/70'
-                                  }`}
-                                >
-                                  {subItem.label}
-                                </a>
-                              );
-                            }
-                            return (
-                              <Link
-                                key={subItem.path}
-                                href={subItem.path}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className={`text-sm font-medium py-2 px-3 rounded-md transition-colors ${
-                                  isActive(subItem.path)
-                                    ? 'bg-secondary text-white font-bold'
-                                    : 'hover:bg-white/5 text-white/70'
-                                }`}
-                              >
-                                {subItem.label}
-                              </Link>
-                            );
-                          })}
+                          {item.children?.map((subItem) => (
+                            <Link
+                              key={subItem.path}
+                              href={subItem.path}
+                              onClick={(e) => {
+                                setIsMobileMenuOpen(false);
+                                handleNavClick(subItem.path, e);
+                              }}
+                              className={`text-sm font-medium py-2 px-3 rounded-md transition-colors ${
+                                isActive(subItem.path)
+                                  ? 'bg-secondary text-white font-bold'
+                                  : 'hover:bg-white/5 text-white/70'
+                              }`}
+                            >
+                              {subItem.label}
+                            </Link>
+                          ))}
                         </div>
                       )}
                     </div>
-                  );
-                }
-
-                const isBypass = item.path.startsWith('/tin-tuc') || item.path.startsWith('/su-kien');
-                if (isBypass) {
-                  return (
-                    <a
-                      key={item.path}
-                      href={item.path}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`text-base font-medium py-2.5 px-3 rounded-lg transition-colors ${
-                        isActive(item.path)
-                          ? 'bg-secondary text-white font-bold'
-                          : 'hover:bg-white/10 text-white/80'
-                      }`}
-                    >
-                      {item.label}
-                    </a>
                   );
                 }
 
@@ -502,7 +470,10 @@ export default function Header({
                   <Link
                     key={item.path}
                     href={item.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(e) => {
+                      setIsMobileMenuOpen(false);
+                      handleNavClick(item.path, e);
+                    }}
                     className={`text-base font-medium py-2.5 px-3 rounded-lg transition-colors ${
                       isActive(item.path)
                         ? 'bg-secondary text-white font-bold'

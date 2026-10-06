@@ -473,12 +473,12 @@ export function NewsDetailPage({ id, slug, initialData }: { id?: string; slug?: 
 }
 
 export function NewsListPage({ initialData }: { initialData?: any }) {
-  const [selectedCategory, setSelectedCategory] = useState<string>('Tất cả');
-  const [newsList, setNewsList] = useState<NewsItem[]>(initialData?.newsList || []);
-  const [sidebarDocs, setSidebarDocs] = useState<SidebarDoc[]>(initialData?.sidebarDocs || []);
-  const [loading, setLoading] = useState(!initialData?.newsList);
-  const [error, setError] = useState<string | null>(null);
-  const [fetchKey, setFetchKey] = useState(0);
+  const [categoriesSource, setCategoriesSource] = useState<any[]>(() => {
+    if (initialData?.categories && initialData.categories.length > 0) {
+      return initialData.categories;
+    }
+    return DEFAULT_NEWS_CATEGORIES;
+  });
 
   const [categoriesList, setCategoriesList] = useState<string[]>(() => {
     if (initialData?.categories && initialData.categories.length > 0) {
@@ -490,14 +490,78 @@ export function NewsListPage({ initialData }: { initialData?: any }) {
   const searchParams = useSearchParams();
   const catParam = searchParams.get('cat');
 
-  useEffect(() => {
+  const [selectedCategory, setSelectedCategory] = useState<string>(() => {
     if (catParam) {
-      const found = categoriesList.find(c => c.toLowerCase() === catParam.toLowerCase() || toSlug(c) === catParam.toLowerCase());
-      if (found) {
-        setSelectedCategory(found);
-      }
+      const lower = catParam.toLowerCase();
+      const initialSource = initialData?.categories && initialData.categories.length > 0
+        ? initialData.categories
+        : DEFAULT_NEWS_CATEGORIES;
+      const foundInSource = initialSource.find((c: any) =>
+        c.slug?.toLowerCase() === lower ||
+        c.name?.toLowerCase() === lower ||
+        toSlug(c.name) === lower
+      );
+      if (foundInSource) return foundInSource.name;
     }
-  }, [catParam, categoriesList]);
+    return 'Tất cả';
+  });
+
+  const [newsList, setNewsList] = useState<NewsItem[]>(initialData?.newsList || []);
+  const [sidebarDocs, setSidebarDocs] = useState<SidebarDoc[]>(initialData?.sidebarDocs || []);
+  const [loading, setLoading] = useState(!initialData?.newsList);
+  const [error, setError] = useState<string | null>(null);
+  const [fetchKey, setFetchKey] = useState(0);
+
+  const getCategorySlug = (catName: string) => {
+    if (catName === 'Tất cả') return '';
+    const found = categoriesSource.find((c: any) => c.name === catName);
+    return found?.slug || toSlug(catName);
+  };
+
+  const handleCategoryChange = (cat: string) => {
+    setSelectedCategory(cat);
+    if (cat === 'Tất cả') {
+      window.history.replaceState(null, '', '/tin-tuc');
+    } else {
+      const slug = getCategorySlug(cat);
+      window.history.replaceState(null, '', `/tin-tuc?cat=${slug}`);
+    }
+  };
+
+  useEffect(() => {
+    const syncCategoryFromUrl = (slugOrName?: string | null) => {
+      if (!slugOrName) {
+        setSelectedCategory('Tất cả');
+        return;
+      }
+      const lower = slugOrName.toLowerCase();
+      const foundInSource = categoriesSource.find((c: any) =>
+        c.slug?.toLowerCase() === lower ||
+        c.name?.toLowerCase() === lower ||
+        toSlug(c.name) === lower
+      );
+      if (foundInSource) {
+        setSelectedCategory(foundInSource.name);
+        return;
+      }
+      const foundInList = categoriesList.find(c => c.toLowerCase() === lower || toSlug(c) === lower);
+      if (foundInList) {
+        setSelectedCategory(foundInList);
+        return;
+      }
+      setSelectedCategory('Tất cả');
+    };
+
+    syncCategoryFromUrl(catParam);
+
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      syncCategoryFromUrl(params.get('cat'));
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [catParam, categoriesList, categoriesSource]);
 
   const defaultSidebarDocs: SidebarDoc[] = [
     { title: 'Quy chuẩn an toàn LPG 2026', date: '20/04/2026' },
@@ -602,6 +666,7 @@ export function NewsListPage({ initialData }: { initialData?: any }) {
           try {
             const cats = await getNewsCategories();
             if (!cancelled && cats && cats.length > 0) {
+              setCategoriesSource(cats);
               setCategoriesList(['Tất cả', ...cats.map(c => c.name)]);
             }
           } catch (_) {}
@@ -660,10 +725,10 @@ export function NewsListPage({ initialData }: { initialData?: any }) {
           {categoriesList.map((cat, idx) => (
             <button
               key={idx}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-5 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-colors ${
+              onClick={() => handleCategoryChange(cat)}
+              className={`px-5 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
                 selectedCategory === cat
-                  ? 'bg-primary text-white'
+                  ? 'bg-primary text-white shadow-xs'
                   : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high'
               }`}
             >
