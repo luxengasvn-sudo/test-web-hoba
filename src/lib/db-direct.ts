@@ -7,6 +7,7 @@ const WHITELIST_TABLES = [
   'members',
   'contact_messages',
   'news',
+  'news_categories',
   'documents',
   'website_config'
 ];
