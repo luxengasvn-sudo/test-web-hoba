@@ -8,6 +8,7 @@ interface PageProps {
   searchParams: Promise<{
     id?: string;
     slug?: string;
+    cat?: string;
   }>;
 }
 
@@ -24,6 +25,15 @@ export default async function Page({ searchParams }: PageProps) {
       orderCol: 'publish_date',
       orderAscending: false
     });
+
+    // 2. Fetch categories
+    const categoriesDb = await executeDirectQuery({
+      method: 'SELECT',
+      table: 'news_categories',
+      orderCol: 'display_order',
+      orderAscending: true
+    });
+    initialData.categories = categoriesDb || [];
 
     let formattedNews: any[] = [];
     if (newsDb && newsDb.length > 0) {

@@ -5,13 +5,14 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { toSlug } from '@/lib/slug';
+import { DEFAULT_NEWS_CATEGORIES, getNewsCategories } from '@/lib/categories';
 
 export interface NewsItem {
   id: string;
   title: string;
   desc: string;
   content?: string;
-  category: 'Hoạt động hiệp hội' | 'Bản tin chuyên ngành' | 'Kỹ thuật - An toàn';
+  category: string;
   date: string;
   img: string;
   isFeatured?: boolean;
@@ -479,7 +480,24 @@ export function NewsListPage({ initialData }: { initialData?: any }) {
   const [error, setError] = useState<string | null>(null);
   const [fetchKey, setFetchKey] = useState(0);
 
-  const categories = ['Tất cả', 'Hoạt động hiệp hội', 'Bản tin chuyên ngành', 'Kỹ thuật - An toàn'];
+  const [categoriesList, setCategoriesList] = useState<string[]>(() => {
+    if (initialData?.categories && initialData.categories.length > 0) {
+      return ['Tất cả', ...initialData.categories.map((c: any) => c.name)];
+    }
+    return ['Tất cả', ...DEFAULT_NEWS_CATEGORIES.map(c => c.name)];
+  });
+
+  const searchParams = useSearchParams();
+  const catParam = searchParams.get('cat');
+
+  useEffect(() => {
+    if (catParam) {
+      const found = categoriesList.find(c => c.toLowerCase() === catParam.toLowerCase() || toSlug(c) === catParam.toLowerCase());
+      if (found) {
+        setSelectedCategory(found);
+      }
+    }
+  }, [catParam, categoriesList]);
 
   const defaultSidebarDocs: SidebarDoc[] = [
     { title: 'Quy chuẩn an toàn LPG 2026', date: '20/04/2026' },
@@ -579,6 +597,15 @@ export function NewsListPage({ initialData }: { initialData?: any }) {
         } catch (docErr) {
           if (!cancelled) setSidebarDocs(defaultSidebarDocs);
         }
+
+        if (!initialData?.categories) {
+          try {
+            const cats = await getNewsCategories();
+            if (!cancelled && cats && cats.length > 0) {
+              setCategoriesList(['Tất cả', ...cats.map(c => c.name)]);
+            }
+          } catch (_) {}
+        }
       } catch (err) {
         console.error(`Lỗi tải tin tức từ Supabase (lần thử ${retryCount + 1}):`, err);
         if (retryCount < 2 && !cancelled) {
@@ -630,7 +657,7 @@ export function NewsListPage({ initialData }: { initialData?: any }) {
  
       <section className="bg-white border-b border-outline-variant/30 py-4">
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter flex gap-3 overflow-x-auto no-scrollbar">
-          {categories.map((cat, idx) => (
+          {categoriesList.map((cat, idx) => (
             <button
               key={idx}
               onClick={() => setSelectedCategory(cat)}
