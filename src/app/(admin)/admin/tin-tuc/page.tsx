@@ -4,6 +4,14 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import RichEditor from '@/components/admin/RichEditor';
 import { toSlug, getUniqueNewsSlug } from '@/lib/slug';
+import {
+  NewsCategory,
+  getNewsCategories,
+  createNewsCategory,
+  updateNewsCategory,
+  deleteNewsCategory,
+  DEFAULT_NEWS_CATEGORIES
+} from '@/lib/categories';
 
 interface NewsAdmin {
   id: string;
@@ -25,6 +33,18 @@ export default function AdminNews() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [editingNewsId, setEditingNewsId] = useState<string | null>(null);
+
+  // Category States
+  const [categories, setCategories] = useState<NewsCategory[]>(DEFAULT_NEWS_CATEGORIES);
+  const [loadingCategories, setLoadingCategories] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [catFormName, setCatFormName] = useState('');
+  const [catFormSlug, setCatFormSlug] = useState('');
+  const [isCatSlugAuto, setIsCatSlugAuto] = useState(true);
+  const [catFormOrder, setCatFormOrder] = useState<number>(1);
+  const [editingCatId, setEditingCatId] = useState<string | null>(null);
+  const [editingCatOldName, setEditingCatOldName] = useState<string>('');
+  const [catSubmitting, setCatSubmitting] = useState(false);
 
   // Upload States
   const [coverUploading, setCoverUploading] = useState(false);
@@ -124,9 +144,102 @@ export default function AdminNews() {
     }
   };
 
+  const fetchCategories = async () => {
+    setLoadingCategories(true);
+    try {
+      const cats = await getNewsCategories();
+      setCategories(cats);
+    } catch (err) {
+      console.error('Lỗi khi tải danh mục bài viết:', err);
+    } finally {
+      setLoadingCategories(false);
+    }
+  };
+
   useEffect(() => {
     fetchNews();
+    fetchCategories();
   }, []);
+
+  const resetCatForm = () => {
+    setEditingCatId(null);
+    setEditingCatOldName('');
+    setCatFormName('');
+    setCatFormSlug('');
+    setIsCatSlugAuto(true);
+    const maxOrder = categories.length > 0 ? Math.max(...categories.map(c => c.display_order || 0)) : 0;
+    setCatFormOrder(maxOrder + 1);
+  };
+
+  const handleEditCategory = (cat: NewsCategory) => {
+    setEditingCatId(cat.id);
+    setEditingCatOldName(cat.name);
+    setCatFormName(cat.name);
+    setCatFormSlug(cat.slug);
+    setIsCatSlugAuto(false);
+    setCatFormOrder(cat.display_order || 1);
+  };
+
+  const handleCategorySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!catFormName.trim()) {
+      alert('Vui lòng nhập tên chuyên mục.');
+      return;
+    }
+    const finalSlug = catFormSlug.trim() || toSlug(catFormName);
+    setCatSubmitting(true);
+    try {
+      if (editingCatId) {
+        await updateNewsCategory(editingCatId, editingCatOldName, {
+          name: catFormName.trim(),
+          slug: finalSlug,
+          display_order: Number(catFormOrder) || 1
+        });
+      } else {
+        await createNewsCategory({
+          name: catFormName.trim(),
+          slug: finalSlug,
+          display_order: Number(catFormOrder) || 1
+        });
+      }
+      await fetchCategories();
+      await fetchNews();
+      resetCatForm();
+    } catch (err: any) {
+      alert('Lỗi khi lưu chuyên mục: ' + (err.message || err));
+    } finally {
+      setCatSubmitting(false);
+    }
+  };
+
+  const handleDeleteCategory = async (cat: NewsCategory) => {
+    const articleCount = news.filter(n => n.category === cat.name).length;
+    if (articleCount > 0) {
+      alert(`Không thể xóa chuyên mục "${cat.name}" vì đang có ${articleCount} bài viết. Vui lòng chuyển các bài viết sang chuyên mục khác trước khi xóa.`);
+      return;
+    }
+
+    if (!confirm(`Bạn có chắc chắn muốn xóa chuyên mục "${cat.name}" không?`)) {
+      return;
+    }
+
+    setCatSubmitting(true);
+    try {
+      const res = await deleteNewsCategory(cat.id, cat.name);
+      if (!res.success) {
+        alert(res.error || 'Không thể xóa chuyên mục.');
+      } else {
+        await fetchCategories();
+        if (editingCatId === cat.id) {
+          resetCatForm();
+        }
+      }
+    } catch (err: any) {
+      alert('Lỗi khi xóa: ' + (err.message || err));
+    } finally {
+      setCatSubmitting(false);
+    }
+  };
 
   const handleDelete = (newsItem: NewsAdmin) => {
     setDeleteConfirmNews(newsItem);
@@ -334,7 +447,7 @@ export default function AdminNews() {
     setFormTitle('');
     setFormSlug('');
     setIsSlugAuto(true);
-    setFormCategory('Hoạt động hiệp hội');
+    setFormCategory(categories.length > 0 ? categories[0].name : 'Hoạt động hiệp hội');
     setFormStatus('Draft');
     setFormDesc('');
     setFormContent('');
@@ -354,15 +467,26 @@ export default function AdminNews() {
           <h2 className="text-xl md:text-2xl font-bold text-primary">Quản lý Bài viết & Tin tức</h2>
           <p className="text-xs text-on-surface-variant mt-1">Đăng tải thông tin hoạt động và bài viết chuyên ngành cho hiệp hội HOBA.</p>
         </div>
-        <button
-          onClick={() => {
-            resetForm();
-            setIsModalOpen(true);
-          }}
-          className="bg-primary text-white text-xs px-4 py-2.5 rounded-lg font-bold hover:bg-primary-container transition-all active:scale-95 flex items-center gap-1.5"
-        >
-          <span className="material-symbols-outlined text-sm">edit_note</span> Viết bài mới
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => {
+              resetCatForm();
+              setIsCategoryModalOpen(true);
+            }}
+            className="border border-primary text-primary hover:bg-primary/5 text-xs px-3.5 py-2.5 rounded-lg font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-xs"
+          >
+            <span className="material-symbols-outlined text-sm">category</span> Quản lý chuyên mục
+          </button>
+          <button
+            onClick={() => {
+              resetForm();
+              setIsModalOpen(true);
+            }}
+            className="bg-primary text-white text-xs px-4 py-2.5 rounded-lg font-bold hover:bg-primary-container transition-all active:scale-95 flex items-center gap-1.5 shadow-xs"
+          >
+            <span className="material-symbols-outlined text-sm">edit_note</span> Viết bài mới
+          </button>
+        </div>
       </div>
 
       {/* Filter and Search */}
@@ -530,15 +654,32 @@ export default function AdminNews() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
-                  <label className="font-bold text-on-surface-variant">Chuyên mục</label>
+                  <div className="flex items-center justify-between">
+                    <label className="font-bold text-on-surface-variant">Chuyên mục</label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        resetCatForm();
+                        setIsCategoryModalOpen(true);
+                      }}
+                      className="text-[10px] text-primary hover:underline flex items-center gap-0.5"
+                    >
+                      <span className="material-symbols-outlined text-[12px]">tune</span> Quản lý chuyên mục
+                    </button>
+                  </div>
                   <select
                     value={formCategory}
                     onChange={(e) => setFormCategory(e.target.value)}
                     className="h-10 border border-outline-variant rounded-lg px-4 bg-white text-on-surface text-xs focus:border-primary focus:ring-1 focus:ring-primary outline-none"
                   >
-                    <option value="Hoạt động hiệp hội">Hoạt động hiệp hội</option>
-                    <option value="Bản tin chuyên ngành">Bản tin chuyên ngành</option>
-                    <option value="Kỹ thuật - An toàn">Kỹ thuật - An toàn</option>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.name}>
+                        {cat.name}
+                      </option>
+                    ))}
+                    {formCategory && !categories.some(c => c.name === formCategory) && (
+                      <option value={formCategory}>{formCategory}</option>
+                    )}
                   </select>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -722,6 +863,243 @@ export default function AdminNews() {
                     Xác nhận xóa
                   </>
                 )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Category Manager Modal */}
+      {isCategoryModalOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-xl border border-outline-variant/30 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 flex flex-col text-xs">
+            <div className="flex justify-between items-center mb-6 border-b border-outline-variant/30 pb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                  <span className="material-symbols-outlined text-lg">category</span>
+                </div>
+                <div>
+                  <h3 className="text-base font-black text-primary">Quản lý Chuyên mục Bài viết</h3>
+                  <p className="text-[11px] text-on-surface-variant">Thêm mới, sửa tên và quản lý các danh mục tin tức của hiệp hội</p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setIsCategoryModalOpen(false);
+                  resetCatForm();
+                }}
+                className="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-outline transition-colors"
+              >
+                <span className="material-symbols-outlined text-lg">close</span>
+              </button>
+            </div>
+
+            {/* Form Section */}
+            <form onSubmit={handleCategorySubmit} className="bg-surface-container-lowest/50 border border-outline-variant/30 p-4 rounded-xl space-y-4 mb-6">
+              <h4 className="font-bold text-primary flex items-center gap-1.5 text-xs">
+                <span className="material-symbols-outlined text-sm">
+                  {editingCatId ? 'edit' : 'add_circle'}
+                </span>
+                {editingCatId ? 'Chỉnh sửa chuyên mục' : 'Thêm chuyên mục mới'}
+              </h4>
+
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+                <div className="md:col-span-5 flex flex-col gap-1.5">
+                  <label className="font-bold text-on-surface-variant text-[11px]">Tên chuyên mục *</label>
+                  <input
+                    value={catFormName}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setCatFormName(val);
+                      if (isCatSlugAuto) {
+                        setCatFormSlug(toSlug(val));
+                      }
+                    }}
+                    placeholder="VD: Đào tạo an toàn"
+                    required
+                    type="text"
+                    className="h-9 border border-outline-variant rounded-lg px-3 bg-white text-on-surface text-xs focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                  />
+                </div>
+
+                <div className="md:col-span-4 flex flex-col gap-1.5">
+                  <label className="font-bold text-on-surface-variant text-[11px] flex justify-between">
+                    <span>Slug</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCatFormSlug(toSlug(catFormName));
+                        setIsCatSlugAuto(true);
+                      }}
+                      className="text-[9px] text-primary hover:underline"
+                    >
+                      Tự động
+                    </button>
+                  </label>
+                  <input
+                    value={catFormSlug}
+                    onChange={(e) => {
+                      setCatFormSlug(e.target.value);
+                      setIsCatSlugAuto(false);
+                    }}
+                    placeholder="VD: dao-tao-an-toan"
+                    required
+                    type="text"
+                    className="h-9 border border-outline-variant rounded-lg px-3 bg-white text-on-surface text-xs focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                  />
+                </div>
+
+                <div className="md:col-span-3 flex flex-col gap-1.5">
+                  <label className="font-bold text-on-surface-variant text-[11px]">Thứ tự</label>
+                  <input
+                    value={catFormOrder}
+                    onChange={(e) => setCatFormOrder(parseInt(e.target.value) || 0)}
+                    min={1}
+                    type="number"
+                    className="h-9 border border-outline-variant rounded-lg px-3 bg-white text-on-surface text-xs focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-1">
+                {editingCatId && (
+                  <button
+                    type="button"
+                    onClick={resetCatForm}
+                    className="px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface font-semibold text-xs hover:bg-surface-container transition-colors"
+                  >
+                    Hủy chỉnh sửa
+                  </button>
+                )}
+                <button
+                  type="submit"
+                  disabled={catSubmitting}
+                  className="bg-primary text-white font-bold text-xs px-4 py-1.5 rounded-lg hover:bg-primary-container transition-all shadow-xs flex items-center gap-1 active:scale-95 disabled:opacity-50"
+                >
+                  {catSubmitting ? (
+                    'Đang lưu...'
+                  ) : editingCatId ? (
+                    <>
+                      <span className="material-symbols-outlined text-sm">save</span> Cập nhật
+                    </>
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined text-sm">add</span> Thêm mới
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+
+            {/* Categories List Section */}
+            <div className="space-y-3">
+              <h4 className="font-bold text-primary flex items-center gap-1.5 text-xs">
+                <span className="material-symbols-outlined text-sm">format_list_bulleted</span> Danh sách chuyên mục ({categories.length})
+              </h4>
+
+              <div className="border border-outline-variant/30 rounded-xl overflow-hidden shadow-xs">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="bg-surface-container-low text-on-surface-variant font-bold border-b border-outline-variant/30 text-[11px]">
+                      <th className="p-3 w-16 text-center">Thứ tự</th>
+                      <th className="p-3">Tên chuyên mục</th>
+                      <th className="p-3">Slug (Đường dẫn)</th>
+                      <th className="p-3 w-28 text-center">Bài viết</th>
+                      <th className="p-3 w-24 text-center">Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-outline-variant/20">
+                    {loadingCategories ? (
+                      <tr>
+                        <td colSpan={5} className="p-6 text-center text-on-surface-variant">
+                          Đang tải danh mục...
+                        </td>
+                      </tr>
+                    ) : categories.length > 0 ? (
+                      categories.map((c) => {
+                        const count = news.filter((n) => n.category === c.name).length;
+                        const isEditingThis = editingCatId === c.id;
+
+                        return (
+                          <tr
+                            key={c.id}
+                            className={`transition-colors ${
+                              isEditingThis ? 'bg-primary/5' : 'hover:bg-surface-container-lowest/50'
+                            }`}
+                          >
+                            <td className="p-3 text-center font-bold text-outline">
+                              {c.display_order}
+                            </td>
+                            <td className="p-3 font-bold text-primary">
+                              {c.name}
+                            </td>
+                            <td className="p-3 font-mono text-[11px] text-on-surface-variant">
+                              {c.slug}
+                            </td>
+                            <td className="p-3 text-center">
+                              <span
+                                className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
+                                  count > 0
+                                    ? 'bg-blue-100 text-blue-700'
+                                    : 'bg-gray-100 text-gray-600'
+                                }`}
+                              >
+                                {count} bài
+                              </span>
+                            </td>
+                            <td className="p-3 text-center">
+                              <div className="flex items-center justify-center gap-1">
+                                <button
+                                  type="button"
+                                  onClick={() => handleEditCategory(c)}
+                                  className="text-on-surface-variant hover:text-primary p-1 rounded transition-colors"
+                                  title="Chỉnh sửa"
+                                >
+                                  <span className="material-symbols-outlined text-base">edit</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteCategory(c)}
+                                  disabled={count > 0}
+                                  className={`p-1 rounded transition-colors ${
+                                    count > 0
+                                      ? 'text-outline/40 cursor-not-allowed'
+                                      : 'text-on-surface-variant hover:text-red-500'
+                                  }`}
+                                  title={
+                                    count > 0
+                                      ? `Không thể xóa vì đang có ${count} bài viết`
+                                      : 'Xóa chuyên mục'
+                                  }
+                                >
+                                  <span className="material-symbols-outlined text-base">delete</span>
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <tr>
+                        <td colSpan={5} className="p-6 text-center text-on-surface-variant">
+                          Chưa có chuyên mục nào.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-5 border-t border-outline-variant/30 mt-6">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsCategoryModalOpen(false);
+                  resetCatForm();
+                }}
+                className="px-4 py-2 bg-surface-container hover:bg-surface-container-high text-on-surface font-bold rounded-lg transition-colors text-xs"
+              >
+                Đóng
               </button>
             </div>
           </div>
