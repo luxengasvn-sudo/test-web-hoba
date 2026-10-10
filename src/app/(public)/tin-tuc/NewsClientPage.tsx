@@ -769,18 +769,29 @@ export function NewsListPage({ initialData }: { initialData?: any }) {
             <div className="grid lg:grid-cols-12 gap-8 lg:gap-12">
               <div className="lg:col-span-8 space-y-8">
                 {selectedCategory === 'Tất cả' && featuredArticle && (
-                  <article className="group grid md:grid-cols-2 gap-6 items-center bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-500 border border-outline-variant/20">
-                    <div className="relative h-full min-h-[240px] md:min-h-[280px] overflow-hidden">
+                  <article className="group grid md:grid-cols-12 gap-4 md:gap-6 items-center bg-white p-3.5 sm:p-4 md:p-5 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-500 border border-outline-variant/20">
+                    <a
+                      href={featuredArticle.slug ? `/tin-tuc/${featuredArticle.slug}` : `/tin-tuc?id=${featuredArticle.id}`}
+                      className="md:col-span-6 lg:col-span-7 relative w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden bg-slate-900/5 block cursor-pointer shadow-sm"
+                    >
+                      {/* Ambient blurred backdrop for seamless edge-to-edge aesthetic */}
                       <img
-                        alt={featuredArticle.title}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-35 select-none pointer-events-none"
                         src={featuredArticle.img}
                       />
-                      <div className="absolute top-4 left-4 bg-secondary text-white px-3 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest">
+                      {/* Main sharp image */}
+                      <img
+                        alt={featuredArticle.title}
+                        className="relative z-10 w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+                        src={featuredArticle.img}
+                      />
+                      <div className="absolute top-3.5 left-3.5 z-20 bg-secondary text-white px-3 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest shadow-sm">
                         Tiêu điểm
                       </div>
-                    </div>
-                    <div className="p-6 md:p-8 space-y-3">
+                    </a>
+                    <div className="md:col-span-6 lg:col-span-5 py-2 px-1 md:px-2 space-y-3">
                       <div className="flex items-center gap-2 text-on-surface-variant font-bold text-[10px] uppercase tracking-widest">
                         <span className="material-symbols-outlined text-sm">calendar_month</span> {featuredArticle.date}
                       </div>
@@ -788,7 +799,7 @@ export function NewsListPage({ initialData }: { initialData?: any }) {
                         {featuredArticle.category}
                       </span>
                       <a href={featuredArticle.slug ? `/tin-tuc/${featuredArticle.slug}` : `/tin-tuc?id=${featuredArticle.id}`}>
-                        <h3 className="text-lg font-bold text-primary group-hover:text-secondary transition-colors line-clamp-3 cursor-pointer">
+                        <h3 className="text-lg font-bold text-primary group-hover:text-secondary transition-colors line-clamp-3 cursor-pointer leading-snug">
                           {featuredArticle.title}
                         </h3>
                       </a>
@@ -807,10 +818,16 @@ export function NewsListPage({ initialData }: { initialData?: any }) {
                     regularArticles.map((article, idx) => (
                       <article key={idx} className="group space-y-3 bg-white p-4 rounded-2xl border border-outline-variant/30 hover:shadow-md transition-shadow">
                         <a href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
-                          <div className="rounded-xl overflow-hidden aspect-video shadow-sm cursor-pointer">
+                          <div className="relative rounded-xl overflow-hidden aspect-video shadow-sm cursor-pointer bg-slate-900/5">
+                            <img
+                              alt=""
+                              aria-hidden="true"
+                              className="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 select-none pointer-events-none"
+                              src={article.img}
+                            />
                             <img
                               alt={article.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              className="relative z-10 w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                               src={article.img}
                             />
                           </div>

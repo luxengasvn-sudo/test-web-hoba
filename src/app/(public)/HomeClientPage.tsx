@@ -816,23 +816,34 @@ export default function HomeClientPage({
             {/* News Feed */}
             <div className="lg:col-span-8 space-y-8">
               {liveArticles[0] && (
-                <article className="group grid md:grid-cols-2 gap-6 items-center bg-white rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-500">
-                  <a href={liveArticles[0].slug ? `/tin-tuc/${liveArticles[0].slug}` : `/tin-tuc?id=${liveArticles[0].id}`} className="relative h-full min-h-[220px] md:min-h-[260px] overflow-hidden cursor-pointer">
+                <article className="group grid md:grid-cols-12 gap-4 md:gap-6 items-center bg-white p-3.5 sm:p-4 md:p-5 rounded-2xl hover:shadow-lg transition-all duration-500 border border-outline-variant/10 shadow-sm">
+                  <a
+                    href={liveArticles[0].slug ? `/tin-tuc/${liveArticles[0].slug}` : `/tin-tuc?id=${liveArticles[0].id}`}
+                    className="md:col-span-6 lg:col-span-7 relative w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden bg-slate-900/5 block cursor-pointer shadow-sm"
+                  >
+                    {/* Ambient blurred backdrop for seamless edge-to-edge aesthetic */}
+                    <img
+                      alt=""
+                      aria-hidden="true"
+                      className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-35 select-none pointer-events-none"
+                      src={liveArticles[0].img}
+                    />
+                    {/* Main sharp image */}
                     <img
                       alt={liveArticles[0].title}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="relative z-10 w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
                       src={liveArticles[0].img}
                     />
                     {liveArticles[0].badge && (
-                      <div className="absolute top-4 left-4 bg-secondary text-white px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                      <div className="absolute top-3.5 left-3.5 z-20 bg-secondary text-white px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-sm">
                         {liveArticles[0].badge}
                       </div>
                     )}
                   </a>
-                  <div className="p-4 space-y-4">
-                    <span className="text-[10px] font-bold uppercase text-secondary tracking-widest">{liveArticles[0].date}</span>
+                  <div className="md:col-span-6 lg:col-span-5 py-2 px-1 md:px-2 space-y-3">
+                    <span className="text-[10px] font-bold uppercase text-secondary tracking-widest block">{liveArticles[0].date}</span>
                     <a href={liveArticles[0].slug ? `/tin-tuc/${liveArticles[0].slug}` : `/tin-tuc?id=${liveArticles[0].id}`}>
-                      <h3 className="text-lg font-black text-primary hover:text-secondary transition-colors leading-tight line-clamp-2 cursor-pointer mt-1">
+                      <h3 className="text-lg font-black text-primary hover:text-secondary transition-colors leading-snug line-clamp-2 cursor-pointer">
                         {liveArticles[0].title}
                       </h3>
                     </a>
@@ -841,7 +852,7 @@ export default function HomeClientPage({
                     </p>
                     <a
                       href={liveArticles[0].slug ? `/tin-tuc/${liveArticles[0].slug}` : `/tin-tuc?id=${liveArticles[0].id}`}
-                      className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:text-secondary transition-colors"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:text-secondary transition-colors group-hover:gap-2.5"
                     >
                       Đọc tiếp <span className="material-symbols-outlined text-sm">arrow_forward</span>
                     </a>
@@ -852,10 +863,16 @@ export default function HomeClientPage({
                 {liveArticles.slice(1).map((article: any, idx: number) => (
                   <article key={idx} className="group space-y-2 md:space-y-3 bg-white p-3 md:p-4 rounded-2xl border border-outline-variant/10 hover:shadow-md transition-shadow">
                     <a href={article.slug ? `/tin-tuc/${article.slug}` : `/tin-tuc?id=${article.id}`}>
-                      <div className="rounded-xl overflow-hidden aspect-video shadow-sm cursor-pointer">
+                      <div className="relative rounded-xl overflow-hidden aspect-video shadow-sm cursor-pointer bg-slate-900/5">
+                        <img
+                          alt=""
+                          aria-hidden="true"
+                          className="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 select-none pointer-events-none"
+                          src={article.img}
+                        />
                         <img
                           alt={article.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="relative z-10 w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                           src={article.img}
                         />
                       </div>
