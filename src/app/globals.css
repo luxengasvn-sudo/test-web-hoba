@@ -82,12 +82,16 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5.5rem;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
   background-color: var(--color-background);
   color: var(--color-on-background);
   font-family: var(--font-sans);
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 .material-symbols-outlined {
@@ -303,11 +307,44 @@ body {
 .rich-editor-canvas img,
 .news-detail-content img,
 .rich-content-display img {
-  max-width: 100%;
-  height: auto;
+  max-width: 100% !important;
+  height: auto !important;
   border-radius: var(--radius-lg);
   margin: 1.5rem auto;
   display: block;
+}
+
+/* Responsive Table styling inside rich articles (Prevents horizontal page blowout on mobile) */
+.rich-editor-canvas table,
+.news-detail-content table,
+.rich-content-display table {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.rich-editor-canvas table colgroup,
+.rich-editor-canvas table col,
+.news-detail-content table colgroup,
+.news-detail-content table col,
+.rich-content-display table colgroup,
+.rich-content-display table col {
+  width: auto !important;
+}
+
+.rich-editor-canvas td,
+.rich-editor-canvas th,
+.news-detail-content td,
+.news-detail-content th,
+.rich-content-display td,
+.rich-content-display th {
+  padding: 0.5rem 0.75rem;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 /* Contenteditable placeholder styling */

@@ -26,7 +26,7 @@ export interface SidebarDoc {
 
 function renderContent(content: string) {
   if (/<[a-z][\s\S]*>/i.test(content)) {
-    return <div className="news-detail-content" dangerouslySetInnerHTML={{ __html: content }} />;
+    return <div className="news-detail-content max-w-full overflow-x-auto" dangerouslySetInnerHTML={{ __html: content }} />;
   }
 
   return (
@@ -377,7 +377,7 @@ export function NewsDetailPage({ id, slug, initialData }: { id?: string; slug?: 
           </div>
 
           <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <article className="lg:col-span-8 space-y-6 bg-white p-6 md:p-8 rounded-2xl border border-outline-variant/30 shadow-sm">
+            <article className="lg:col-span-8 space-y-6 bg-white p-4 sm:p-6 md:p-8 rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden">
               <div className="space-y-4">
                 <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded uppercase">
                   {article.category}
