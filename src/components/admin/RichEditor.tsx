@@ -127,8 +127,26 @@ export default function RichEditor({ value, onChange, onImageUpload }: RichEdito
     }
   };
 
-  // Paste handler: Clean external inline styles (Google Docs, Word, etc.) to keep website typography
-  const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+  // Helper to convert base64 data URL to File object
+  const dataURLtoFile = (dataurl: string, filename: string): File | null => {
+    try {
+      const arr = dataurl.split(',');
+      const mimeMatch = arr[0].match(/:(.*?);/);
+      const mime = mimeMatch ? mimeMatch[1] : 'image/png';
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, { type: mime });
+    } catch (_) {
+      return null;
+    }
+  };
+
+  // Paste handler: Clean external inline styles & auto-upload embedded base64 images
+  const handlePaste = async (e: React.ClipboardEvent<HTMLDivElement>) => {
     e.preventDefault();
     const html = e.clipboardData.getData('text/html');
     const text = e.clipboardData.getData('text/plain');
@@ -183,6 +201,35 @@ export default function RichEditor({ value, onChange, onImageUpload }: RichEdito
             span.replaceWith(...Array.from(span.childNodes));
           }
         });
+
+        // 3. Intercept & automatically upload embedded base64 images
+        const base64Images = Array.from(doc.body.querySelectorAll('img')).filter(
+          (img) => img.src && img.src.startsWith('data:image/')
+        );
+
+        if (base64Images.length > 0 && onImageUpload) {
+          setUploading(true);
+          for (let i = 0; i < base64Images.length; i++) {
+            const imgEl = base64Images[i];
+            const file = dataURLtoFile(imgEl.src, `pasted-image-${Date.now()}-${i}.png`);
+            if (file) {
+              try {
+                const uploadedUrl = await onImageUpload(file);
+                imgEl.src = uploadedUrl;
+                imgEl.style.maxHeight = '420px';
+                imgEl.style.display = 'inline-block';
+                imgEl.style.borderRadius = '8px';
+                imgEl.style.maxWidth = '100%';
+              } catch (err) {
+                console.error('Failed to auto-upload pasted base64 image:', err);
+                imgEl.remove();
+              }
+            } else {
+              imgEl.remove();
+            }
+          }
+          setUploading(false);
+        }
 
         const cleanedHtml = doc.body.innerHTML;
         document.execCommand('insertHTML', false, cleanedHtml);
@@ -580,6 +627,14 @@ export default function RichEditor({ value, onChange, onImageUpload }: RichEdito
         className="rich-editor-canvas min-h-[300px] p-4 outline-none text-xs font-medium leading-relaxed overflow-y-auto max-h-[500px]"
         data-placeholder="Bắt đầu viết bài viết mới của bạn tại đây..."
       />
+
+      {/* Uploading Spinner Overlay */}
+      {uploading && (
+        <div className="absolute inset-0 bg-white/85 z-20 flex flex-col items-center justify-center gap-2 backdrop-blur-xs">
+          <div className="w-7 h-7 border-3 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <span className="text-xs font-bold text-primary">Đang tự động tải và tối ưu hóa hình ảnh...</span>
+        </div>
+      )}
 
       {/* Link Inserter Modal */}
       {isLinkModalOpen && (

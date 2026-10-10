@@ -116,7 +116,7 @@ export function NewsDetailPage({ id, slug, initialData }: { id?: string; slug?: 
     let cancelled = false;
 
     // Check if initialData already matches the current slug/id
-    if (initialData?.article && (id ? initialData.article.id === id : initialData.article.slug === slug)) {
+    if (initialData?.article && (id ? initialData.article.id === id : (initialData.article.slug === slug || toSlug(initialData.article.title) === slug))) {
       setArticle(initialData.article);
       setRecentNews(initialData.recentNews || []);
       setLoading(false);
@@ -167,7 +167,7 @@ export function NewsDetailPage({ id, slug, initialData }: { id?: string; slug?: 
             const { data: allNews, error: allErr } = await fetchWithTimeout(
               supabase
                 .from('news')
-                .select('*')
+                .select('id, title, slug, description, category, publish_date, thumbnail_url, is_featured')
                 .eq('status', 'Published')
             );
 
@@ -366,9 +366,13 @@ export function NewsDetailPage({ id, slug, initialData }: { id?: string; slug?: 
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
           <div className="flex items-center gap-2 text-xs mb-6 text-on-surface-variant font-medium">
             <Link href="/" className="hover:text-primary transition-colors">Trang chủ</Link>
-            <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+            <svg className="w-3.5 h-3.5 opacity-60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+            </svg>
             <a href="/tin-tuc" className="hover:text-primary transition-colors">Tin tức</a>
-            <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+            <svg className="w-3.5 h-3.5 opacity-60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+            </svg>
             <span className="text-outline line-clamp-1 max-w-[200px] md:max-w-xs">{article.title}</span>
           </div>
 
@@ -712,7 +716,9 @@ export function NewsListPage({ initialData }: { initialData?: any }) {
         <div className="relative z-20 max-w-container-max mx-auto px-margin-mobile md:px-gutter w-full text-white">
           <div className="flex items-center gap-2 text-xs mb-4 opacity-80">
             <Link href="/" className="hover:underline">Trang chủ</Link>
-            <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+            <svg className="w-3.5 h-3.5 opacity-60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+            </svg>
             <span>Tin tức & Sự kiện</span>
           </div>
           <h1 className="text-4xl font-black mb-2">Tin tức & Sự kiện</h1>

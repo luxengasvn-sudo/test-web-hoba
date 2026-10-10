@@ -17,10 +17,11 @@ export default async function Page({ searchParams }: PageProps) {
   const initialData: any = {};
 
   try {
-    // 1. Fetch published news
+    // 1. Fetch published news (summary only for listing - no heavy content column)
     const newsDb = await executeDirectQuery({
       method: 'SELECT',
       table: 'news',
+      selects: 'id, title, slug, description, category, publish_date, thumbnail_url, is_featured',
       filters: [{ col: 'status', val: 'Published' }],
       orderCol: 'publish_date',
       orderAscending: false
@@ -49,7 +50,6 @@ export default async function Page({ searchParams }: PageProps) {
           title: d.title,
           slug: d.slug,
           desc: d.description || '',
-          content: d.content || '',
           category: d.category,
           date: formattedDate,
           img: d.thumbnail_url || 'https://images.unsplash.com/photo-1542282088-fe8426682b8f',
@@ -87,13 +87,33 @@ export default async function Page({ searchParams }: PageProps) {
 
     // 3. Resolve single article & recent news if id or slug is present
     if (id || slug) {
-      const article = formattedNews.find((n: any) => 
-        id ? n.id === id : (n.slug === slug || toSlug(n.title) === slug)
-      );
+      const singleDb = await executeDirectQuery({
+        method: 'SELECT',
+        table: 'news',
+        selects: 'id, title, slug, description, content, category, publish_date, thumbnail_url, is_featured',
+        filters: id ? [{ col: 'id', val: id }] : [{ col: 'slug', val: slug }],
+        isSingle: true
+      });
 
-      if (article) {
-        initialData.article = article;
-        initialData.recentNews = formattedNews.filter((n: any) => n.id !== article.id).slice(0, 3);
+      if (singleDb) {
+        let formattedDate = singleDb.publish_date;
+        try {
+          const dt = new Date(singleDb.publish_date);
+          formattedDate = `${dt.getDate()} Tháng ${dt.getMonth() + 1}, ${dt.getFullYear()}`;
+        } catch (_) {}
+
+        initialData.article = {
+          id: singleDb.id,
+          title: singleDb.title,
+          slug: singleDb.slug,
+          desc: singleDb.description || '',
+          content: singleDb.content || '',
+          category: singleDb.category,
+          date: formattedDate,
+          img: singleDb.thumbnail_url || 'https://images.unsplash.com/photo-1542282088-fe8426682b8f',
+          isFeatured: singleDb.is_featured
+        };
+        initialData.recentNews = formattedNews.filter((n: any) => n.id !== singleDb.id).slice(0, 3);
       }
     }
 

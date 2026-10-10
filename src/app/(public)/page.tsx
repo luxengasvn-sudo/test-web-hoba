@@ -100,10 +100,11 @@ export default async function Page() {
     });
     initialData.liveEvents = (eventsConfig?.value && Array.isArray(eventsConfig.value)) ? eventsConfig.value : [];
 
-    // 5. Fetch news (Published) ordered by date desc limit 3
+    // 5. Fetch news (Published) ordered by date desc limit 3 (summary only)
     const newsData = await executeDirectQuery({
       method: 'SELECT',
       table: 'news',
+      selects: 'id, title, slug, description, publish_date, thumbnail_url',
       filters: [{ col: 'status', val: 'Published' }],
       orderCol: 'publish_date',
       orderAscending: false,

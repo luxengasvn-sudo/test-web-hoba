@@ -303,9 +303,9 @@ export default function Header({
       >
         <div className="max-w-container-max mx-auto w-full px-margin-mobile md:px-gutter flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center shrink-0">
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center overflow-hidden p-0 shadow-lg transform group-hover:scale-105 transition-all">
+              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center overflow-hidden p-0 shadow-lg transform group-hover:scale-105 transition-all shrink-0">
                 <img
                   alt="HOBA LPG Logo"
                   className="w-full h-full object-contain"
@@ -313,9 +313,9 @@ export default function Header({
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-lg font-bold tracking-tight">{logoTitle}</span>
+                <span className="text-lg font-bold tracking-tight whitespace-nowrap">{logoTitle}</span>
                 {logoSubtitle && (
-                  <span className="text-[8px] opacity-70 uppercase tracking-widest hidden md:block">
+                  <span className="text-[8px] opacity-70 uppercase tracking-widest hidden md:block whitespace-nowrap">
                     {logoSubtitle}
                   </span>
                 )}
@@ -324,7 +324,7 @@ export default function Header({
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden xl:flex items-center gap-6 h-full">
+          <nav className="hidden xl:flex items-center gap-4 2xl:gap-6 h-full shrink-0">
             {displayNavItems.map((item) => {
               const hasChildren = item.children && item.children.length > 0;
               if (hasChildren) {
@@ -333,14 +333,21 @@ export default function Header({
                     <Link
                       href={item.path}
                       onClick={(e) => handleNavClick(item.path, e)}
-                      className={`flex items-center gap-0.5 transition-colors font-semibold text-xs uppercase tracking-wide py-1 border-b-2 hover:text-secondary-fixed-dim ${
+                      className={`flex items-center gap-1 transition-colors font-semibold text-xs uppercase tracking-wide py-1 border-b-2 whitespace-nowrap hover:text-secondary-fixed-dim ${
                         isActive(item.path)
                           ? 'border-secondary-container text-white'
                           : 'border-transparent text-white/80'
                       }`}
                     >
                       {item.label}
-                      <span className="material-symbols-outlined text-[14px] transition-transform group-hover:rotate-180">expand_more</span>
+                      <svg
+                        className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180 opacity-80 shrink-0"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                      </svg>
                     </Link>
                     {/* Dropdown panel */}
                     <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-52 bg-[#00244f] border border-white/10 rounded-lg shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -349,7 +356,7 @@ export default function Header({
                           key={subItem.path}
                           href={subItem.path}
                           onClick={(e) => handleNavClick(subItem.path, e)}
-                          className="block px-4 py-2.5 text-xs font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                          className="block px-4 py-2.5 text-xs font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-colors whitespace-nowrap"
                         >
                           {subItem.label}
                         </Link>
@@ -363,7 +370,7 @@ export default function Header({
                   key={item.path}
                   href={item.path}
                   onClick={(e) => handleNavClick(item.path, e)}
-                  className={`transition-colors font-semibold text-xs uppercase tracking-wide py-1 border-b-2 hover:text-secondary-fixed-dim ${
+                  className={`transition-colors font-semibold text-xs uppercase tracking-wide py-1 border-b-2 whitespace-nowrap hover:text-secondary-fixed-dim ${
                     isActive(item.path)
                       ? 'border-secondary-container text-white'
                       : 'border-transparent text-white/80'
@@ -376,30 +383,39 @@ export default function Header({
           </nav>
 
           {/* Quick Contact & Action */}
-          <div className="flex items-center gap-3">
-            <div className="hidden lg:flex flex-col text-right mr-3 border-r border-white/20 pr-3">
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="hidden lg:flex flex-col text-right mr-3 border-r border-white/20 pr-3 shrink-0">
               <a
-                className="text-white hover:text-secondary-fixed-dim text-[11px] font-bold transition-all flex items-center justify-end gap-1"
+                className="text-white hover:text-secondary-fixed-dim text-[11px] font-bold transition-all flex items-center justify-end gap-1.5 whitespace-nowrap"
                 href={`tel:${contactPhone.replace(/\s+/g, '')}`}
               >
-                <span className="material-symbols-outlined text-xs">call</span> {contactPhone}
+                <svg className="w-3.5 h-3.5 shrink-0 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                {contactPhone}
               </a>
-              <span className="text-white/60 text-[9px]">{contactEmail}</span>
+              <span className="text-white/60 text-[9px] whitespace-nowrap">{contactEmail}</span>
             </div>
             <Link
               href="/dang-ky"
-              className="bg-secondary hover:bg-white hover:text-primary text-white px-5 py-2.5 rounded-full font-bold text-xs shadow-xl transition-all active:scale-95 duration-200 uppercase tracking-wider"
+              className="bg-secondary hover:bg-white hover:text-primary text-white px-5 py-2.5 rounded-full font-bold text-xs shadow-xl transition-all active:scale-95 duration-200 uppercase tracking-wider whitespace-nowrap shrink-0"
             >
               Gia nhập ngay
             </Link>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="xl:hidden text-white p-2 flex items-center justify-center"
+              className="xl:hidden text-white p-2 flex items-center justify-center shrink-0 cursor-pointer"
               aria-label="Toggle Mobile Menu"
             >
-              <span className="material-symbols-outlined text-2xl">
-                {isMobileMenuOpen ? 'close' : 'menu'}
-              </span>
+              {isMobileMenuOpen ? (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
             </button>
           </div>
         </div>
