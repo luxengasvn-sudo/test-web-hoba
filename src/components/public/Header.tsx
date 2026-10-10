@@ -242,23 +242,53 @@ export default function Header({
   }, [navItems, lpgCpEnabled]);
 
   const isActive = (path: string) => {
+    if (typeof window === 'undefined') {
+      if (path === '/') return pathname === '/';
+      return pathname.startsWith(path.split('?')[0]);
+    }
+    if (path.includes('?')) {
+      const [targetBasePath, targetQuery] = path.split('?');
+      if (pathname !== targetBasePath) return false;
+      const targetParams = new URLSearchParams(targetQuery);
+      const currentParams = new URLSearchParams(window.location.search);
+      for (const [k, v] of targetParams.entries()) {
+        if (currentParams.get(k) !== v) return false;
+      }
+      return true;
+    }
     if (path === '/') {
       return pathname === '/';
     }
-    return pathname.startsWith(path);
+    return pathname === path || pathname.startsWith(path + '/');
   };
 
-  const handleNavClick = (targetPath: string, e: React.MouseEvent) => {
+  const handleNavClick = (targetPath: string, e?: React.MouseEvent) => {
     if (pathname === '/tin-tuc' && targetPath.startsWith('/tin-tuc')) {
       const currentSearch = typeof window !== 'undefined' ? window.location.search : '';
       if (currentSearch.includes('id=') || currentSearch.includes('slug=')) {
         return;
       }
-      e.preventDefault();
+      e?.preventDefault();
       window.history.replaceState(null, '', targetPath);
       window.dispatchEvent(new PopStateEvent('popstate'));
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   };
+
+  useEffect(() => {
+    if (pathname && isMobileMenuOpen) {
+      displayNavItems.forEach((item) => {
+        if (item.children && item.children.length > 0) {
+          const isCurrentActive = item.path === '/' ? pathname === '/' : pathname.startsWith(item.path);
+          if (isCurrentActive) {
+            setExpandedItems((prev) => (prev.includes(item.label) ? prev : [...prev, item.label]));
+          }
+        }
+      });
+    }
+  }, [pathname, isMobileMenuOpen, displayNavItems]);
 
   return (
     <>
@@ -377,7 +407,7 @@ export default function Header({
 
       {/* Mobile Navigation Sidebar */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-40 xl:hidden flex">
+        <div className="fixed inset-0 z-[60] xl:hidden flex">
           {/* Overlay */}
           <div
             className="fixed inset-0 bg-black/60 transition-opacity"
@@ -398,7 +428,8 @@ export default function Header({
               </div>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-white/80 hover:text-white"
+                className="text-white/80 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer touch-manipulation"
+                aria-label="Đóng menu"
               >
                 <span className="material-symbols-outlined text-2xl">close</span>
               </button>
@@ -418,31 +449,39 @@ export default function Header({
                 };
 
                 if (hasChildren) {
+                  const hasDirectMainChild = item.children?.some(c => c.path === item.path);
                   return (
                     <div key={item.label} className="flex flex-col">
-                      <div className="flex items-center justify-between py-1">
-                        <Link
-                          href={item.path}
-                          onClick={(e) => {
-                            setIsMobileMenuOpen(false);
-                            handleNavClick(item.path, e);
-                          }}
-                          className={`text-base font-medium py-1.5 px-3 rounded-lg flex-1 ${
-                            isActive(item.path) ? 'text-white font-bold' : 'text-white/80'
-                          }`}
-                        >
-                          {item.label}
-                        </Link>
-                        <button
-                          type="button"
-                          onClick={toggleExpand}
-                          className="p-2 text-white/80 hover:text-white"
-                        >
-                          <span className={`material-symbols-outlined transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>expand_more</span>
-                        </button>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={toggleExpand}
+                        className={`flex items-center justify-between text-base font-medium py-2.5 px-3 rounded-lg w-full text-left transition-colors cursor-pointer touch-manipulation ${
+                          isActive(item.path) ? 'text-white font-bold bg-white/10' : 'text-white/80 hover:bg-white/5'
+                        }`}
+                      >
+                        <span>{item.label}</span>
+                        <span className={`material-symbols-outlined transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>
+                          expand_more
+                        </span>
+                      </button>
                       {isExpanded && (
-                        <div className="pl-4 flex flex-col gap-2.5 mt-1.5 border-l border-white/10 ml-3.5">
+                        <div className="pl-4 flex flex-col gap-2 mt-1.5 border-l border-white/10 ml-3.5">
+                          {!hasDirectMainChild && (
+                            <Link
+                              href={item.path}
+                              onClick={(e) => {
+                                setIsMobileMenuOpen(false);
+                                handleNavClick(item.path, e);
+                              }}
+                              className={`text-sm font-medium py-2 px-3 rounded-md transition-colors touch-manipulation ${
+                                pathname === item.path && typeof window !== 'undefined' && !window.location.search
+                                  ? 'bg-secondary text-white font-bold'
+                                  : 'hover:bg-white/5 text-white/70'
+                              }`}
+                            >
+                              Tất cả {item.label.toLowerCase()}
+                            </Link>
+                          )}
                           {item.children?.map((subItem) => (
                             <Link
                               key={subItem.path}
@@ -451,7 +490,7 @@ export default function Header({
                                 setIsMobileMenuOpen(false);
                                 handleNavClick(subItem.path, e);
                               }}
-                              className={`text-sm font-medium py-2 px-3 rounded-md transition-colors ${
+                              className={`text-sm font-medium py-2 px-3 rounded-md transition-colors touch-manipulation ${
                                 isActive(subItem.path)
                                   ? 'bg-secondary text-white font-bold'
                                   : 'hover:bg-white/5 text-white/70'
@@ -474,7 +513,7 @@ export default function Header({
                       setIsMobileMenuOpen(false);
                       handleNavClick(item.path, e);
                     }}
-                    className={`text-base font-medium py-2.5 px-3 rounded-lg transition-colors ${
+                    className={`text-base font-medium py-2.5 px-3 rounded-lg transition-colors cursor-pointer touch-manipulation ${
                       isActive(item.path)
                         ? 'bg-secondary text-white font-bold'
                         : 'hover:bg-white/10 text-white/80'
