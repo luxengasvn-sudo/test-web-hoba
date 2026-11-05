@@ -16,6 +16,31 @@ interface DocumentAdmin {
   fileUrl?: string;
 }
 
+const formatDisplayDate = (d?: string) => {
+  if (!d) return '';
+  const clean = String(d).split('T')[0];
+  const parts = clean.split('-');
+  if (parts.length === 3) {
+    const [y, m, day] = parts;
+    return `${day}/${m}/${y}`;
+  }
+  return clean;
+};
+
+const toInputDate = (d?: string) => {
+  if (!d) return '';
+  const clean = String(d).trim().split('T')[0];
+  if (clean.includes('/')) {
+    const parts = clean.split('/');
+    if (parts.length === 3) {
+      if (parts[2].length === 4) {
+        return `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+      }
+    }
+  }
+  return clean;
+};
+
 export default function AdminDocuments() {
   const [search, setSearch] = useState('');
   const [docs, setDocs] = useState<DocumentAdmin[]>([]);
@@ -57,7 +82,7 @@ export default function AdminDocuments() {
     if (c === '87/2018/NĐ-CP') return '/uploads/documents/ND-87-ve-Kinh-doanh-khi.pdf';
     if (c === '96/2016/NĐ-CP') return '/uploads/documents/ND-96-quy-dinh-ve-ANTT.pdf';
     if (c === '14/QĐ-UBND' || c === '14/QD-UBND') return '/uploads/documents/14-Quyet-dinh-phe-duyet-dieu-le-HOBA-2025.pdf';
-    if (c === '12/QC-HOBA') return '/uploads/documents/12-Quy-che-hoat-dong-noi-bo-2025.pdf';
+    if (c === '12/QC-HOBA' || c === '02.2025/QCHD-HHKLH') return '/uploads/documents/12-Quy-che-hoat-dong-noi-bo-2025.pdf';
 
     const match = defaultDocs.find(def => def.code === c);
     if (match && match.fileUrl) return match.fileUrl;
@@ -104,43 +129,13 @@ export default function AdminDocuments() {
           title: d.title,
           category: d.category,
           issuer: d.issuer,
-          date: d.publish_date ? (d.publish_date instanceof Date ? d.publish_date.toISOString().split('T')[0] : String(d.publish_date).split('T')[0]) : '',
+          date: d.publish_date ? (d.publish_date instanceof Date ? `${d.publish_date.getFullYear()}-${String(d.publish_date.getMonth() + 1).padStart(2, '0')}-${String(d.publish_date.getDate()).padStart(2, '0')}` : String(d.publish_date).split('T')[0]) : '',
           fileSize: d.file_size || '1.0 MB',
           description: d.description || '',
           fileUrl: getCleanDocUrl(d.code, d.file_url)
         }));
 
-        const normalizeCode = (code: string) => {
-          return (code || '')
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .replace(/đ/g, 'd')
-            .replace(/Đ/g, 'D')
-            .replace(/[^a-zA-Z0-9]/g, '')
-            .toUpperCase();
-        };
-
-        const docMap = new Map<string, DocumentAdmin>();
-        for (const def of defaultDocs) {
-          docMap.set(normalizeCode(def.code), { ...def });
-        }
-        for (const m of formatted) {
-          const norm = normalizeCode(m.code);
-          if (norm) {
-            const existing = docMap.get(norm);
-            if (existing) {
-              if (!m.description && existing.description) {
-                m.description = existing.description;
-              }
-              if ((!m.fileUrl || m.fileUrl === '#') && existing.fileUrl && existing.fileUrl !== '#') {
-                m.fileUrl = existing.fileUrl;
-              }
-            }
-            docMap.set(norm, m);
-          }
-        }
-
-        setDocs(Array.from(docMap.values()));
+        setDocs(formatted);
       } else {
         setDocs(defaultDocs);
       }
@@ -239,6 +234,7 @@ export default function AdminDocuments() {
     }
 
     setSubmitting(true);
+    const cleanDate = toInputDate(formDate);
 
     if (!supabase) {
       const updatedDocs = [...docs];
@@ -251,7 +247,7 @@ export default function AdminDocuments() {
             title: formTitle,
             category: formCategory,
             issuer: formIssuer,
-            date: formDate,
+            date: cleanDate,
             fileSize: formFileSize,
             description: formDesc,
             fileUrl: formFileUrl
@@ -264,7 +260,7 @@ export default function AdminDocuments() {
           title: formTitle,
           category: formCategory,
           issuer: formIssuer,
-          date: formDate,
+          date: cleanDate,
           fileSize: formFileSize,
           description: formDesc,
           fileUrl: formFileUrl
@@ -276,36 +272,80 @@ export default function AdminDocuments() {
       resetForm();
       setIsModalOpen(false);
       setSubmitting(false);
+      alert('Đã lưu văn bản pháp lý thành công!');
       return;
     }
 
     try {
       if (editingDocId) {
-        const { error } = await supabase
-          .from('documents')
-          .update({
-            code: formCode,
-            title: formTitle,
-            category: formCategory,
-            issuer: formIssuer,
-            publish_date: formDate,
-            file_size: formFileSize,
-            description: formDesc,
-            file_url: formFileUrl
-          })
-          .eq('id', editingDocId);
+        const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(editingDocId);
+        if (isUUID) {
+          const { error } = await supabase
+            .from('documents')
+            .update({
+              code: formCode.trim(),
+              title: formTitle.trim(),
+              category: formCategory,
+              issuer: formIssuer.trim(),
+              publish_date: cleanDate,
+              file_size: formFileSize,
+              description: formDesc.trim(),
+              file_url: formFileUrl
+            })
+            .eq('id', editingDocId);
 
-        if (error) throw error;
+          if (error) throw error;
+        } else {
+          // If editingDocId is not a UUID, check if it exists in DB by code, else insert
+          const { data: existingDocs } = await supabase
+            .from('documents')
+            .select('id, code');
+
+          const found = (existingDocs || []).find((d: any) => d.code?.trim().toLowerCase() === formCode.trim().toLowerCase() || d.id === editingDocId);
+
+          if (found && found.id) {
+            const { error } = await supabase
+              .from('documents')
+              .update({
+                code: formCode.trim(),
+                title: formTitle.trim(),
+                category: formCategory,
+                issuer: formIssuer.trim(),
+                publish_date: cleanDate,
+                file_size: formFileSize,
+                description: formDesc.trim(),
+                file_url: formFileUrl
+              })
+              .eq('id', found.id);
+
+            if (error) throw error;
+          } else {
+            const { error } = await supabase.from('documents').insert([
+              {
+                code: formCode.trim(),
+                title: formTitle.trim(),
+                category: formCategory,
+                issuer: formIssuer.trim(),
+                publish_date: cleanDate,
+                file_size: formFileSize,
+                description: formDesc.trim(),
+                file_url: formFileUrl
+              }
+            ]);
+
+            if (error) throw error;
+          }
+        }
       } else {
         const { error } = await supabase.from('documents').insert([
           {
-            code: formCode,
-            title: formTitle,
+            code: formCode.trim(),
+            title: formTitle.trim(),
             category: formCategory,
-            issuer: formIssuer,
-            publish_date: formDate,
+            issuer: formIssuer.trim(),
+            publish_date: cleanDate,
             file_size: formFileSize,
-            description: formDesc,
+            description: formDesc.trim(),
             file_url: formFileUrl
           }
         ]);
@@ -315,8 +355,10 @@ export default function AdminDocuments() {
       await fetchDocs();
       resetForm();
       setIsModalOpen(false);
-    } catch (err) {
-      alert('Lỗi khi lưu văn bản lên Supabase: ' + (err as Error).message);
+      alert('Đã lưu văn bản pháp lý thành công!');
+    } catch (err: any) {
+      console.error('Lỗi khi lưu văn bản:', err);
+      alert('Lỗi khi lưu văn bản: ' + (err?.message || err));
     } finally {
       setSubmitting(false);
     }
@@ -340,7 +382,7 @@ export default function AdminDocuments() {
     setFormTitle(doc.title);
     setFormCategory(doc.category);
     setFormIssuer(doc.issuer);
-    setFormDate(doc.date);
+    setFormDate(toInputDate(doc.date));
     setFormFileSize(doc.fileSize);
     setFormDesc(doc.description || '');
     setFormFileUrl(doc.fileUrl || '#');
@@ -511,7 +553,7 @@ export default function AdminDocuments() {
                         </span>
                       </td>
                       <td className="p-4 text-on-surface-variant font-medium">{doc.issuer}</td>
-                      <td className="p-4 text-on-surface-variant font-medium">{doc.date}</td>
+                      <td className="p-4 text-on-surface-variant font-medium whitespace-nowrap">{formatDisplayDate(doc.date)}</td>
                       <td className="p-4 text-center">
                         <a
                           href={doc.fileUrl || '#'}

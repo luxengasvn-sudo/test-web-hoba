@@ -16,6 +16,17 @@ export interface DocumentItem {
   fileUrl?: string;
 }
 
+const formatDisplayDate = (d?: string) => {
+  if (!d) return '';
+  const clean = String(d).split('T')[0];
+  const parts = clean.split('-');
+  if (parts.length === 3) {
+    const [y, m, day] = parts;
+    return `${day}/${m}/${y}`;
+  }
+  return clean;
+};
+
 export default function DocumentsClientPage({ initialData }: { initialData?: any }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -72,7 +83,7 @@ export default function DocumentsClientPage({ initialData }: { initialData?: any
             if (c === '87/2018/NĐ-CP') return '/uploads/documents/ND-87-ve-Kinh-doanh-khi.pdf';
             if (c === '96/2016/NĐ-CP') return '/uploads/documents/ND-96-quy-dinh-ve-ANTT.pdf';
             if (c === '14/QĐ-UBND' || c === '14/QD-UBND') return '/uploads/documents/14-Quyet-dinh-phe-duyet-dieu-le-HOBA-2025.pdf';
-            if (c === '12/QC-HOBA') return '/uploads/documents/12-Quy-che-hoat-dong-noi-bo-2025.pdf';
+            if (c === '12/QC-HOBA' || c === '02.2025/QCHD-HHKLH') return '/uploads/documents/12-Quy-che-hoat-dong-noi-bo-2025.pdf';
             if (!fileUrl || fileUrl === '#' || fileUrl.includes('hobalpg.vn/uploads/documents/')) {
               const match = (defaultDocs as DocumentItem[]).find(def => def.code === c);
               if (match) return match.fileUrl || '#';
@@ -87,7 +98,7 @@ export default function DocumentsClientPage({ initialData }: { initialData?: any
             title: d.title,
             category: d.category,
             issuer: d.issuer,
-            date: d.publish_date,
+            date: d.publish_date ? String(d.publish_date).split('T')[0] : '',
             fileSize: d.file_size || '1.5 MB',
             description: d.description || '',
             fileUrl: getCleanDocUrl(d.code, d.file_url)
@@ -111,8 +122,13 @@ export default function DocumentsClientPage({ initialData }: { initialData?: any
             const norm = normalizeCode(m.code);
             if (norm) {
               const existing = docMap.get(norm);
-              if (existing && existing.description && (!m.description || m.description.length < existing.description.length)) {
-                continue;
+              if (existing) {
+                if (!m.description && existing.description) {
+                  m.description = existing.description;
+                }
+                if ((!m.fileUrl || m.fileUrl === '#') && existing.fileUrl && existing.fileUrl !== '#') {
+                  m.fileUrl = existing.fileUrl;
+                }
               }
               docMap.set(norm, m);
             }
@@ -240,7 +256,7 @@ export default function DocumentsClientPage({ initialData }: { initialData?: any
                           </span>
                         </td>
                         <td className="p-4 md:p-5 text-on-surface-variant font-medium">{doc.issuer}</td>
-                        <td className="p-4 md:p-5 text-on-surface-variant font-medium">{doc.date}</td>
+                        <td className="p-4 md:p-5 text-on-surface-variant font-medium whitespace-nowrap">{formatDisplayDate(doc.date)}</td>
                         <td className="p-4 md:p-5 text-center">
                           <a
                             href={doc.fileUrl || '#'}

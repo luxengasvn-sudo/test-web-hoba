@@ -16,7 +16,7 @@ const getCleanDocUrl = (code: string, fileUrl?: string) => {
   if (c === '87/2018/NĐ-CP') return '/uploads/documents/ND-87-ve-Kinh-doanh-khi.pdf';
   if (c === '96/2016/NĐ-CP') return '/uploads/documents/ND-96-quy-dinh-ve-ANTT.pdf';
   if (c === '14/QĐ-UBND' || c === '14/QD-UBND') return '/uploads/documents/14-Quyet-dinh-phe-duyet-dieu-le-HOBA-2025.pdf';
-  if (c === '12/QC-HOBA') return '/uploads/documents/12-Quy-che-hoat-dong-noi-bo-2025.pdf';
+  if (c === '12/QC-HOBA' || c === '02.2025/QCHD-HHKLH') return '/uploads/documents/12-Quy-che-hoat-dong-noi-bo-2025.pdf';
   
   const match = defaultDocuments.find(def => def.code === c);
   if (match && match.fileUrl) return match.fileUrl;
@@ -48,12 +48,23 @@ export default async function Page() {
     });
 
     if (data && data.length > 0) {
+      const formatCleanDate = (val: any) => {
+        if (!val) return '';
+        if (val instanceof Date) {
+          const y = val.getFullYear();
+          const m = String(val.getMonth() + 1).padStart(2, '0');
+          const d = String(val.getDate()).padStart(2, '0');
+          return `${y}-${m}-${d}`;
+        }
+        return String(val).split('T')[0];
+      };
+
       const mapped: DocumentItem[] = data.map((d: any) => ({
         code: d.code,
         title: d.title,
         category: d.category,
         issuer: d.issuer,
-        date: d.publish_date ? (d.publish_date instanceof Date ? d.publish_date.toISOString().split('T')[0] : String(d.publish_date).split('T')[0]) : '',
+        date: formatCleanDate(d.publish_date),
         fileSize: d.file_size || '1.5 MB',
         description: d.description || '',
         fileUrl: getCleanDocUrl(d.code, d.file_url)

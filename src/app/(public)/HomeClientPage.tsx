@@ -397,11 +397,13 @@ export default function HomeClientPage({
             if (error) throw error;
             if (docsData && docsData.length > 0) {
               const mappedDocs = docsData.map((d: any) => {
-                let formattedDate = d.publish_date;
-                try {
-                  const dt = new Date(d.publish_date);
-                  formattedDate = `${dt.getDate()}/${dt.getMonth() + 1}/${dt.getFullYear()}`;
-                } catch (_) {}
+                let formattedDate = d.publish_date || '';
+                const clean = String(formattedDate).split('T')[0];
+                const parts = clean.split('-');
+                if (parts.length === 3) {
+                  const [y, m, day] = parts;
+                  formattedDate = `${parseInt(day, 10)}/${parseInt(m, 10)}/${y}`;
+                }
 
                 let type = 'pdf';
                 let color = 'text-secondary';
