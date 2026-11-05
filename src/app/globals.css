@@ -191,12 +191,39 @@ body {
 .rich-content-display {
   font-family: var(--font-sans) !important;
   color: var(--color-on-background);
+  overflow-x: hidden;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
 }
 
 .rich-editor-canvas *,
 .news-detail-content *,
 .rich-content-display * {
   font-family: inherit !important;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.rich-editor-canvas p,
+.rich-editor-canvas li,
+.rich-editor-canvas span,
+.news-detail-content p,
+.news-detail-content li,
+.news-detail-content span,
+.rich-content-display p,
+.rich-content-display li,
+.rich-content-display span {
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+}
+
+.rich-editor-canvas pre,
+.news-detail-content pre,
+.rich-content-display pre {
+  white-space: pre-wrap !important;
+  overflow-x: auto !important;
+  word-break: break-word !important;
 }
 
 .rich-editor-canvas h1,

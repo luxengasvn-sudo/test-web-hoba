@@ -181,8 +181,18 @@ export default function RichEditor({ value, onChange, onImageUpload }: RichEdito
             if (el.style.lineHeight === '1.38') {
               el.style.lineHeight = '';
             }
-            if (el.style.whiteSpace === 'pre-wrap') {
-              el.style.whiteSpace = '';
+            // Strip restrictive white-space (pre, nowrap, pre-wrap...) that causes horizontal blowout
+            const tag = el.tagName.toLowerCase();
+            if (tag !== 'pre' && tag !== 'code') {
+              if (el.style.whiteSpace) {
+                el.style.whiteSpace = '';
+              }
+              // Remove fixed inline widths / min-widths on non-table text elements
+              if (tag !== 'table' && tag !== 'td' && tag !== 'th' && tag !== 'img') {
+                if (el.style.width) el.style.width = '';
+                if (el.style.minWidth) el.style.minWidth = '';
+                if (el.style.maxWidth && el.style.maxWidth !== '100%') el.style.maxWidth = '100%';
+              }
             }
             // If style attribute is empty, remove it
             if (!el.getAttribute('style')?.trim()) {
@@ -624,7 +634,7 @@ export default function RichEditor({ value, onChange, onImageUpload }: RichEdito
         onInput={handleInput}
         onKeyDown={handleKeyDown}
         onPaste={handlePaste}
-        className="rich-editor-canvas min-h-[300px] p-4 outline-none text-xs font-medium leading-relaxed overflow-y-auto max-h-[500px]"
+        className="rich-editor-canvas min-h-[300px] p-4 outline-none text-xs font-medium leading-relaxed overflow-y-auto overflow-x-hidden max-h-[500px] break-words max-w-full"
         data-placeholder="Bắt đầu viết bài viết mới của bạn tại đây..."
       />
 

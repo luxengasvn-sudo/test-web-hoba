@@ -26,7 +26,7 @@ export interface SidebarDoc {
 
 function renderContent(content: string) {
   if (/<[a-z][\s\S]*>/i.test(content)) {
-    return <div className="news-detail-content max-w-full overflow-x-auto" dangerouslySetInnerHTML={{ __html: content }} />;
+    return <div className="news-detail-content max-w-full overflow-hidden break-words" dangerouslySetInnerHTML={{ __html: content }} />;
   }
 
   return (
