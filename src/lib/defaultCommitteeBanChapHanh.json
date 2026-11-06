@@ -7,7 +7,7 @@
     "role": "Chủ tịch Hiệp hội",
     "company": "Công ty TNHH Long Thuận",
     "avatarUrl": "/uploads/committees/ban-chap-hanh/5jvacq8esdh.jpg",
-    "memberId": "b3bc4768-3bbd-4762-a623-a8ba404d9e25",
+    "memberId": "a042369b-dd92-41fe-9fcc-cefddc5aacbc",
     "isVerified": true
   },
   "viceChairmen": [
@@ -16,28 +16,28 @@
       "role": "Phó Chủ tịch Hiệp hội",
       "company": "Công ty TNHH Phước Thiên",
       "avatarUrl": "/uploads/committees/ban-chap-hanh/ce32dwz0txo.png",
-      "memberId": "04ebd929-e935-4893-9b33-7fac9b58cccb"
+      "memberId": "63271189-2cfb-4a5e-9fa0-7dc3437826af"
     },
     {
       "name": "Lê Khắc Huy",
       "role": "Phó Chủ tịch Hiệp hội",
       "company": "Công ty TNHH MTV Ga Việt",
       "avatarUrl": "/uploads/committees/ban-chap-hanh/oks5eaec2w.png",
-      "memberId": "5e07a290-76ae-49f9-b19f-72e17e71b697"
+      "memberId": "44a17284-0a62-4914-a8e1-e1b6b03e899f"
     },
     {
       "name": "Phan Thị Huệ",
       "role": "Phó Chủ tịch Hiệp hội",
       "company": "Công ty CP Hoàng Gia Việt Luxen’s Care",
       "avatarUrl": "/uploads/committees/ban-chap-hanh/mo1d734pum8.png",
-      "memberId": "fa908d71-d94c-4658-9c34-75dc19704659"
+      "memberId": "460e5a82-a6da-4577-b5fd-1549352a8cb8"
     },
     {
       "name": "Nguyễn Vĩnh Lộc",
       "role": "Phó Chủ tịch Hiệp hội",
       "company": "Công ty TNHH Thành Vĩnh Phú",
       "avatarUrl": "/uploads/committees/ban-chap-hanh/oks5eaec2w.png",
-      "memberId": "99665b46-903f-4eb2-b25d-eb30b885333c"
+      "memberId": "3b1e4b1c-bb40-4e41-97e6-b5ca87348116"
     }
   ],
   "members": [
@@ -46,105 +46,98 @@
       "role": "Ủy viên Ban Thường vụ",
       "company": "Công ty TNHH Phúc Võ",
       "avatarUrl": "",
-      "memberId": "840fb51d-9c07-4146-8938-aef77c2a8258"
+      "memberId": "0ada61a6-b34d-4619-8e8e-1b58f4427008"
     },
     {
       "name": "Đinh Huy Long",
       "role": "Ủy viên Ban Thường vụ",
       "company": "Công ty CP Ubergas",
       "avatarUrl": "",
-      "memberId": "2e5d0f6c-1561-4e47-807d-8656be0711fd"
+      "memberId": "9d51768b-c2bd-4f03-b35f-49286556fa03"
     },
     {
       "name": "Phạm Trung Kiên",
       "role": "Ủy viên Ban Thường vụ",
       "company": "Công ty CP khí hóa lỏng Hoàng Anh",
       "avatarUrl": "",
-      "memberId": "f40fcaa8-8001-48f2-b778-e1d7655279ed"
+      "memberId": "48094930-8e9b-4c99-9a3d-9ce1e48788e3"
     },
     {
       "name": "Lê Văn Hoàng",
       "role": "Ủy viên Ban Chấp hành",
       "company": "CH Điện-Gas Lê Hoàng",
       "avatarUrl": "",
-      "memberId": "f2a13341-c831-4bef-ad1c-1a6548864943"
+      "memberId": "fc219f01-1f3c-4a0c-8373-63d1181e4d15"
     },
     {
       "name": "Trần Thanh Bằng",
       "role": "Ủy viên Ban Chấp hành",
       "company": "CH Gas Thanh Phong",
       "avatarUrl": "",
-      "memberId": "4a1d275a-d200-414b-9783-a7c2e1c55e5c"
+      "memberId": "9e86c646-96a9-44b3-96c5-86508c323ba2"
     },
     {
       "name": "Nguyễn Thanh Tùng",
       "role": "Ủy viên Ban Chấp hành",
       "company": "Công ty TNHH MTV Gas Nước Khoáng Thanh Tùng",
       "avatarUrl": "",
-      "memberId": "9f7c7a70-a169-466f-a094-131b3e399381"
+      "memberId": "4eda5fae-3eee-4e6e-9edf-60d7aaaebb5e"
     },
     {
       "name": "Tô Văn Dương",
       "role": "Ủy viên Ban Chấp hành",
       "company": "Chủ đại lý gas và bếp gas Phong Thái",
       "avatarUrl": "",
-      "memberId": "902eb754-fedc-48e4-8d0e-f3959a93c109"
+      "memberId": "8db7a3ea-a05f-4d7c-9bb9-acdf396f6c55"
     },
     {
       "name": "Đinh Quang Dương",
       "role": "Ủy viên Ban Chấp hành",
       "company": "HKD Phạm Thị Thu Hiền",
       "avatarUrl": "",
-      "memberId": "541f6f4e-0e86-42e2-ae81-3e760c17e678"
+      "memberId": "78ed07bc-f801-4d3a-ac0f-7f9b9d01cdbe"
     },
     {
       "name": "Đoàn Xuân Hiền",
       "role": "Ủy viên Ban Chấp hành",
       "company": "Công ty CP vận tải Biển Đông",
       "avatarUrl": "",
-      "memberId": "f4f7e434-2ac4-4a0d-99eb-2ef9dfcd9554"
+      "memberId": "d8886f78-2fa5-4e28-8d3f-ab128497e143"
     },
     {
       "name": "Trương Hữu Phước",
       "role": "Ủy viên Ban Chấp hành",
       "company": "Công ty CP MT Gas",
       "avatarUrl": "/uploads/member-assets/arrxbs6eyn.png",
-      "memberId": "ce00d805-ac63-43e7-87f9-a2e257d8cd70"
+      "memberId": "c5a37979-2451-4755-9d46-49e22e2504b5"
     },
     {
       "name": "Nguyễn Văn Chính",
       "role": "Ủy viên Ban Chấp hành",
       "company": "HKD Phạm Thị Ngát",
       "avatarUrl": "",
-      "memberId": "9a94ba7b-978b-4f27-8ca6-e55f51cc2e65"
+      "memberId": "c568781f-0ead-4eea-bdb4-d7df35576422"
     },
     {
       "name": "Đoàn Văn Tuyên",
       "role": "Ủy viên Ban Chấp hành",
       "company": "HKD Đoàn Văn Tuyên",
       "avatarUrl": "",
-      "memberId": "72103b78-47f3-4ce7-a82e-d42472d1e927"
+      "memberId": "1e7fd2e6-4e48-40f8-b3ff-ae861dda2595"
     },
     {
       "name": "Nguyễn Thiện Nhân",
       "role": "Ủy viên Ban Chấp hành",
       "company": "HKD gas Thiện Nhân",
       "avatarUrl": "",
-      "memberId": "e1e56b6b-d9ee-4725-bab9-07e36c683a52"
+      "memberId": "3ecb2fe2-00e5-4cd8-bcb2-e1cb156da548"
     },
     {
       "name": "Bùi An Bình",
       "role": "Trưởng Ban Kiểm tra",
       "company": "CH Gas Thanh Dương",
       "avatarUrl": "",
-      "memberId": "cebb26a5-8fb9-494e-ae08-24d11c7ab6c0"
-    },
-    {
-      "name": "Nguyễn Tấn Đạt",
-      "role": "Ủy viên Ban Chấp hành",
-      "company": "HKD Gas Tấn Đạt",
-      "avatarUrl": "",
-      "memberId": "b16f91b0-d79a-4c60-9633-f1007cb43188"
+      "memberId": "f8fe133e-dd69-4821-9aa3-f8ad2c4de5b2"
     }
   ],
   "chairmanSectionTitle": "Chủ tịch Hiệp hội",

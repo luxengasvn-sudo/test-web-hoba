@@ -881,14 +881,14 @@ const rawMembersData = [
   {
     stt: 59,
     category: 'ĐL/CH',
-    role: 'Ủy viên Ban Chấp hành',
+    role: 'Hội viên chính thức',
     name: 'Nguyễn Tấn Đạt',
     company: 'HKD Gas Tấn Đạt',
     email: '',
     birthYear: '1990',
     address: '311 ấp Bến Liễu, xã Phú An, thành phố Bến Cát, tỉnh Bình Dương',
     phone: '0366 120 130',
-    bch: true,
+    bch: false,
     btv: false,
     feeStatus: 'Chưa nộp',
     avatarUrl: ''
@@ -1033,11 +1033,11 @@ async function syncAll() {
       showMembers: true
     };
 
-    // 6. Construct Ban Chấp hành config (20 members)
-    // 1 Chairman, 4 ViceChairmen, 15 Members (3 UVBTV + 1 Trưởng BKT + 11 UVBCH)
+    // 6. Construct Ban Chấp hành config (19 members)
+    // 1 Chairman, 4 ViceChairmen, 14 Members (3 UVBTV + 1 Trưởng BKT + 10 UVBCH)
     const bchChairmanRaw = membersWithIds.find(m => m.stt === 1);
     const bchViceChairmenRaw = membersWithIds.filter(m => [2, 3, 4, 5].includes(m.stt));
-    const bchMembersRaw = membersWithIds.filter(m => [6, 7, 8, 19, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 59].includes(m.stt));
+    const bchMembersRaw = membersWithIds.filter(m => [6, 7, 8, 19, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18].includes(m.stt));
 
     const configBch = {
       term: 'NHIỆM KỲ 2025 - 2029',

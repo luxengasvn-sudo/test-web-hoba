@@ -7,7 +7,7 @@
     "role": "Chủ tịch Hiệp hội",
     "company": "Công ty TNHH Long Thuận",
     "avatarUrl": "/uploads/committees/ban-chap-hanh/5jvacq8esdh.jpg",
-    "memberId": "b3bc4768-3bbd-4762-a623-a8ba404d9e25",
+    "memberId": "a042369b-dd92-41fe-9fcc-cefddc5aacbc",
     "isVerified": true
   },
   "viceChairmen": [
@@ -16,28 +16,28 @@
       "role": "Phó Chủ tịch Hiệp hội",
       "company": "Công ty TNHH Phước Thiên",
       "avatarUrl": "/uploads/committees/ban-chap-hanh/ce32dwz0txo.png",
-      "memberId": "04ebd929-e935-4893-9b33-7fac9b58cccb"
+      "memberId": "63271189-2cfb-4a5e-9fa0-7dc3437826af"
     },
     {
       "name": "Lê Khắc Huy",
       "role": "Phó Chủ tịch Hiệp hội",
       "company": "Công ty TNHH MTV Ga Việt",
       "avatarUrl": "/uploads/committees/ban-chap-hanh/oks5eaec2w.png",
-      "memberId": "5e07a290-76ae-49f9-b19f-72e17e71b697"
+      "memberId": "44a17284-0a62-4914-a8e1-e1b6b03e899f"
     },
     {
       "name": "Phan Thị Huệ",
       "role": "Phó Chủ tịch Hiệp hội",
       "company": "Công ty CP Hoàng Gia Việt Luxen’s Care",
       "avatarUrl": "/uploads/committees/ban-chap-hanh/mo1d734pum8.png",
-      "memberId": "fa908d71-d94c-4658-9c34-75dc19704659"
+      "memberId": "460e5a82-a6da-4577-b5fd-1549352a8cb8"
     },
     {
       "name": "Nguyễn Vĩnh Lộc",
       "role": "Phó Chủ tịch Hiệp hội",
       "company": "Công ty TNHH Thành Vĩnh Phú",
       "avatarUrl": "/uploads/committees/ban-chap-hanh/oks5eaec2w.png",
-      "memberId": "99665b46-903f-4eb2-b25d-eb30b885333c"
+      "memberId": "3b1e4b1c-bb40-4e41-97e6-b5ca87348116"
     }
   ],
   "members": [
@@ -46,21 +46,21 @@
       "role": "Ủy viên Ban Thường vụ",
       "company": "Công ty TNHH Phúc Võ",
       "avatarUrl": "",
-      "memberId": "840fb51d-9c07-4146-8938-aef77c2a8258"
+      "memberId": "0ada61a6-b34d-4619-8e8e-1b58f4427008"
     },
     {
       "name": "Đinh Huy Long",
       "role": "Ủy viên Ban Thường vụ",
       "company": "Công ty CP Ubergas",
       "avatarUrl": "",
-      "memberId": "2e5d0f6c-1561-4e47-807d-8656be0711fd"
+      "memberId": "9d51768b-c2bd-4f03-b35f-49286556fa03"
     },
     {
       "name": "Phạm Trung Kiên",
       "role": "Ủy viên Ban Thường vụ",
       "company": "Công ty CP khí hóa lỏng Hoàng Anh",
       "avatarUrl": "",
-      "memberId": "f40fcaa8-8001-48f2-b778-e1d7655279ed"
+      "memberId": "48094930-8e9b-4c99-9a3d-9ce1e48788e3"
     }
   ],
   "chairmanSectionTitle": "Chủ tịch Ban Thường vụ",
