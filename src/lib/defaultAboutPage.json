@@ -17,6 +17,44 @@
     }
   ],
   "heroDesc": "Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM là tổ chức xã hội",
+  "openLetter": {
+    "badge": "Thông điệp từ Ban Chấp hành",
+    "title": "Thư ngỏ",
+    "recipient": "Kính gửi: Ban Lãnh đạo Quý Doanh nghiệp / Quý Đối tác,",
+    "greeting": "Lời đầu tiên, Ban Chấp hành Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM (HOBA LPG) xin gửi đến Quý Doanh nghiệp/ quý đối tác lời chào trân trọng, lời chúc sức khỏe và thành công!",
+    "context": "Ngành kinh doanh khí hóa lỏng (LPG) tại TP.HCM đang đứng trước những bước chuyển mình mạnh mẽ, nhưng cũng đầy thách thức. Đối với các doanh nghiệp vừa và nhỏ, áp lực cạnh tranh ngày càng gay gắt: từ bài toán tối ưu chi phí vận hành, biến động giá gas, rào cản quy chuẩn an toàn PCCC ngày càng nghiêm ngặt, cho đến cuộc chiến không hồi kết với nạn gas lậu, gas giả và chiếm dụng vỏ bình trái phép.",
+    "mission": "Xuất phát từ thực tiễn đó, HOBA LPG được hình thành, với sứ mệnh kết nối cộng đồng doanh nghiệp ngành LPG, bảo vệ quyền lợi và lợi ích hợp pháp của hội viên, đồng thời góp phần xây dựng thị trường kinh doanh khí hóa lỏng an toàn, minh bạch và phát triển bền vững.",
+    "benefitsTitle": "Tham gia Hiệp hội, Quý Doanh nghiệp sẽ có cơ hội tiếp cận những giá trị thiết thực:",
+    "benefits": [
+      {
+        "title": "Được bảo vệ quyền lợi hợp pháp",
+        "desc": "Hiệp hội đóng vai trò là \"Lá chắn pháp lý\", đại diện tiếng nói chung để trực tiếp kiến nghị, đối thoại với các cơ quan quản lý Nhà nước nhằm tháo gỡ rào cản về cơ chế, thủ tục và giấy phép kinh doanh.",
+        "icon": "gavel"
+      },
+      {
+        "title": "Hợp tác chống gian lận thương mại",
+        "desc": "Tham mưu cùng với đơn vị chức năng đẩy lùi nạn sang chiết lậu, bảo vệ thương hiệu và thị phần kinh doanh chân chính của Quý vị.",
+        "icon": "security"
+      },
+      {
+        "title": "Tối ưu hóa nguồn lực và chi phí",
+        "desc": "Cơ hội kết nối sâu, chia sẻ hạ tầng logistics, tiếp cận nguồn hàng ổn định từ các tổng kho lớn và các nhà cung cấp thiết bị ngành gas với chính sách giá ưu đãi tốt nhất.",
+        "icon": "hub"
+      },
+      {
+        "title": "Nâng cao năng lực cạnh tranh",
+        "desc": "Được tham gia chương trình đào tạo an toàn chuẩn ngành, cập nhật quy chuẩn pháp luật mới nhất và tiếp cận các giải pháp chuyển đổi số (phần mềm quản lý vỏ bình, thương hiệu chung...) dành riêng cho NPP/Tổng đại lý.",
+        "icon": "trending_up"
+      }
+    ],
+    "closing1": "HOBA LPG không chỉ là một tổ chức nghề nghiệp, chúng tôi là mái nhà chung – nơi mỗi doanh nghiệp đều có tiếng nói và được tiếp thêm sức mạnh để phát triển sòng phẳng trên thị trường.",
+    "closing2": "Sự góp mặt của Quý Doanh nghiệp/ quý đối tác không chỉ mở ra cơ hội phát triển cho chính Quý vị, mà còn góp phần xây dựng một thị trường LPG TP.HCM minh bạch, an toàn và thịnh vượng.",
+    "salutation": "Trân trọng kính chào",
+    "signerRole": "Chủ tịch",
+    "signerName": "Đinh Văn Hiểu",
+    "signerTitle": "Chủ tịch Hiệp hội HOBA LPG",
+    "signerSignatureUrl": "/images/chu-ky-dinh-van-hieu.png"
+  },
   "overview": "Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM là tổ chức xã hội - nghề nghiệp tự nguyện của các doanh nghiệp, tổ chức và chuyên gia hoạt động trong lĩnh vực sản xuất, chiết nạp, lưu trữ, vận chuyển, kinh doanh và dịch vụ thương mại khí hóa lỏng (LPG) trên địa bàn Thành phố Hồ Chí Minh và các khu vực lân cận.",
   "sections": [
     {
@@ -30,28 +68,33 @@
       "visible": true
     },
     {
+      "id": "open-letter",
+      "name": "3. Thư ngỏ của Chủ tịch",
+      "visible": true
+    },
+    {
       "id": "values",
-      "name": "3. Sứ mệnh - Tầm nhìn - Giá trị",
+      "name": "4. Sứ mệnh - Tầm nhìn - Giá trị",
       "visible": true
     },
     {
       "id": "timeline",
-      "name": "4. Lịch sử phát triển / Timeline",
+      "name": "5. Lịch sử phát triển / Timeline",
       "visible": true
     },
     {
       "id": "org",
-      "name": "5. Cơ cấu tổ chức",
+      "name": "6. Cơ cấu tổ chức",
       "visible": true
     },
     {
       "id": "whyjoin",
-      "name": "6. Vì sao tham gia HOBA?",
+      "name": "7. Vì sao tham gia HOBA?",
       "visible": true
     },
     {
       "id": "members",
-      "name": "7. Hội viên tiêu biểu",
+      "name": "8. Hội viên tiêu biểu",
       "visible": true
     }
   ],

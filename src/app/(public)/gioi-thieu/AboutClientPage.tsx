@@ -12,6 +12,7 @@ interface AboutPageProps {
 export default function AboutPage({ initialData = {} }: AboutPageProps) {
   const val = initialData.aboutConfig || defaultAboutPage;
 
+  const [openLetter, setOpenLetter] = useState(val.openLetter || defaultAboutPage.openLetter);
   const [values, setValues] = useState(val.values || defaultAboutPage.values);
   const [overview, setOverview] = useState(val.overview || defaultAboutPage.overview);
   const [timeline, setTimeline] = useState<any[]>(val.milestones || defaultAboutPage.milestones);
@@ -24,7 +25,20 @@ export default function AboutPage({ initialData = {} }: AboutPageProps) {
   const [featuredMembers, setFeaturedMembers] = useState<any[]>(
     initialData.featuredMembers || val.featuredMembers || defaultAboutPage.featuredMembers
   );
-  const [sections, setSections] = useState(val.sections || defaultAboutPage.sections);
+  const ensureOpenLetterSection = (secs: any[]) => {
+    if (!Array.isArray(secs) || secs.length === 0) return defaultAboutPage.sections;
+    if (secs.some((s: any) => s.id === 'open-letter')) return secs;
+    const valuesIdx = secs.findIndex((s: any) => s.id === 'values');
+    const newSec = { id: 'open-letter', name: '3. Thư ngỏ của Chủ tịch', visible: true };
+    if (valuesIdx !== -1) {
+      const copy = [...secs];
+      copy.splice(valuesIdx, 0, newSec);
+      return copy;
+    }
+    return [...secs, newSec];
+  };
+
+  const [sections, setSections] = useState(ensureOpenLetterSection(val.sections || defaultAboutPage.sections));
 
   const mockActiveMembers = [
     { id: 'sp1', company_name: 'SAIGON PETRO', logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBtDGTvdJ19cl1DQ6D7LXKmSKBBDM3QA1PXK1G6sPwNWYnjcsOFxgcr_csrc7eO9T2-HDyx4CoYu_8jilw90lGs-Gkv8Z4UxkyUkXMSH4P9cTSblMxAT998NsFL3fPHEYtpPUCvt3LS76HaPjX0tBgShkXRlfxtZ44vp8lXHZeCta-iXZKVlqSQxn6PH1BDE8eVJJwgce8Z4IgJmyJA7P5XBbwQBwuZpeOAuDcWVkUpV5zfI_BA7ckRd_YCZtprpFrW9S5RTsLiY8Y' },
@@ -74,7 +88,8 @@ export default function AboutPage({ initialData = {} }: AboutPageProps) {
         if (valData.heroDesc) setHeroDesc(valData.heroDesc);
         if (valData.overviewImage) setOverviewImage(valData.overviewImage);
         if (valData.whyJoinReasons) setWhyJoinReasons(valData.whyJoinReasons);
-        if (valData.sections) setSections(valData.sections);
+        if (valData.openLetter) setOpenLetter(valData.openLetter);
+        if (valData.sections) setSections(ensureOpenLetterSection(valData.sections));
 
         // Fetch active members to resolve featured members
         let resolvedMembers: any[] = [];
@@ -206,6 +221,135 @@ export default function AboutPage({ initialData = {} }: AboutPageProps) {
             </div>
           </section>
         );
+      case 'open-letter': {
+        const letter = openLetter || defaultAboutPage.openLetter || {};
+        const benefitsList = Array.isArray(letter.benefits) && letter.benefits.length > 0 
+          ? letter.benefits 
+          : defaultAboutPage.openLetter.benefits;
+
+        return (
+          <section key="open-letter" className="py-14 md:py-20 bg-gradient-to-b from-white via-surface-container-low/40 to-white relative overflow-hidden">
+            {/* Subtle decorative background glow */}
+            <div className="absolute top-1/4 left-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl pointer-events-none -translate-x-1/2"></div>
+            <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl pointer-events-none translate-x-1/3"></div>
+
+            <div className="max-w-4xl mx-auto px-margin-mobile md:px-gutter relative z-10">
+              {/* Letter Paper Container */}
+              <div className="bg-white rounded-2xl md:rounded-3xl shadow-lg border border-outline-variant/50 p-6 sm:p-10 md:p-14 relative">
+                {/* Header Ornament */}
+                <div className="flex flex-col items-center text-center mb-8 md:mb-12">
+                  {letter.badge && (
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-[11px] font-bold uppercase tracking-wider mb-3">
+                      <span className="material-symbols-outlined text-sm">mark_email_read</span>
+                      {letter.badge}
+                    </div>
+                  )}
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-primary tracking-tight">
+                    {letter.title || 'Thư ngỏ'}
+                  </h2>
+                  <div className="w-16 h-1 bg-secondary rounded-full mt-4"></div>
+                </div>
+
+                {/* Letter Content */}
+                <div className="space-y-5 text-on-surface-variant text-sm md:text-[15px] leading-relaxed font-medium">
+                  {letter.recipient && (
+                    <p className="font-bold text-primary text-base md:text-lg">
+                      {letter.recipient}
+                    </p>
+                  )}
+
+                  {letter.greeting && (
+                    <p className="whitespace-pre-line">
+                      {letter.greeting}
+                    </p>
+                  )}
+
+                  {letter.context && (
+                    <p className="whitespace-pre-line">
+                      {letter.context}
+                    </p>
+                  )}
+
+                  {/* Highlighted Mission Callout */}
+                  {letter.mission && (
+                    <div className="my-6 p-5 md:p-6 rounded-xl bg-gradient-to-r from-primary/5 via-primary/[0.02] to-secondary/5 border-l-4 border-secondary shadow-xs">
+                      <p className="text-primary font-semibold text-sm md:text-base leading-relaxed whitespace-pre-line">
+                        {letter.mission}
+                      </p>
+                    </div>
+                  )}
+
+                  {benefitsList && benefitsList.length > 0 && (
+                    <div className="pt-2">
+                      {letter.benefitsTitle && (
+                        <p className="font-bold text-primary mb-4 text-sm md:text-base">
+                          {letter.benefitsTitle}
+                        </p>
+                      )}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {benefitsList.map((item: any, idx: number) => {
+                          const iconBg = [
+                            'bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white',
+                            'bg-secondary/10 text-secondary group-hover:bg-secondary group-hover:text-white',
+                            'bg-[#0284c7]/10 text-[#0284c7] group-hover:bg-[#0284c7] group-hover:text-white',
+                            'bg-[#16a34a]/10 text-[#16a34a] group-hover:bg-[#16a34a] group-hover:text-white'
+                          ][idx % 4];
+
+                          return (
+                            <div key={idx} className="p-4 md:p-5 rounded-xl border border-outline-variant/40 bg-surface-container-low/40 hover:bg-white hover:shadow-md transition-all flex items-start gap-3.5 group">
+                              <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors ${iconBg}`}>
+                                <span className="material-symbols-outlined text-lg">{item.icon || 'star'}</span>
+                              </div>
+                              <div className="text-xs md:text-[13px] leading-relaxed">
+                                <strong className="text-primary block mb-1 font-bold">{item.title}</strong>
+                                <span className="text-on-surface-variant">{item.desc}</span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {letter.closing1 && (
+                    <p className="pt-2 whitespace-pre-line">
+                      {letter.closing1}
+                    </p>
+                  )}
+
+                  {letter.closing2 && (
+                    <p className="whitespace-pre-line">
+                      {letter.closing2}
+                    </p>
+                  )}
+
+                  {/* Sign-off section */}
+                  <div className="pt-8 mt-6 border-t border-outline-variant/30 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+                    <div>
+                      <p className="font-bold text-primary text-base">{letter.salutation || 'Trân trọng kính chào'}</p>
+                    </div>
+
+                    <div className="flex flex-col items-start sm:items-center sm:text-center min-w-[220px]">
+                      <span className="font-bold text-primary text-sm uppercase tracking-wide">{letter.signerRole || 'Chủ tịch'}</span>
+                      {letter.signerSignatureUrl && (
+                        <div className="h-16 my-1.5 flex items-center justify-center">
+                          <img 
+                            src={letter.signerSignatureUrl} 
+                            alt={`Chữ ký ${letter.signerName || 'Chủ tịch'}`} 
+                            className="max-h-16 w-auto object-contain filter contrast-125"
+                          />
+                        </div>
+                      )}
+                      <span className="font-black text-primary text-base">{letter.signerName || 'Đinh Văn Hiểu'}</span>
+                      <span className="text-[11px] text-on-surface-variant font-medium">{letter.signerTitle || 'Chủ tịch Hiệp hội HOBA LPG'}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
       case 'values':
         return (
           <section key="values" className="py-16 md:py-24 bg-surface-container-low">

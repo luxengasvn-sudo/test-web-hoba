@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import defaultAboutPage from '@/lib/defaultAboutPage.json';
 
 export default function AdminTrangGioiThieu() {
   const [overview, setOverview] = useState(
@@ -96,20 +97,63 @@ export default function AdminTrangGioiThieu() {
   const [editCustomName, setEditCustomName] = useState('');
   const [editCustomLogo, setEditCustomLogo] = useState('');
   const [editCustomUploading, setEditCustomUploading] = useState(false);
+
+  const [openLetter, setOpenLetter] = useState(defaultAboutPage.openLetter || {
+    badge: 'Thông điệp từ Ban Chấp hành',
+    title: 'Thư ngỏ',
+    recipient: 'Kính gửi: Ban Lãnh đạo Quý Doanh nghiệp / Quý Đối tác,',
+    greeting: 'Lời đầu tiên, Ban Chấp hành Hiệp hội Kinh doanh Khí hóa lỏng TP.HCM (HOBA LPG) xin gửi đến Quý Doanh nghiệp/ quý đối tác lời chào trân trọng, lời chúc sức khỏe và thành công!',
+    context: 'Ngành kinh doanh khí hóa lỏng (LPG) tại TP.HCM đang đứng trước những bước chuyển mình mạnh mẽ, nhưng cũng đầy thách thức. Đối với các doanh nghiệp vừa và nhỏ, áp lực cạnh tranh ngày càng gay gắt: từ bài toán tối ưu chi phí vận hành, biến động giá gas, rào cản quy chuẩn an toàn PCCC ngày càng nghiêm ngặt, cho đến cuộc chiến không hồi kết với nạn gas lậu, gas giả và chiếm dụng vỏ bình trái phép.',
+    mission: 'Xuất phát từ thực tiễn đó, HOBA LPG được hình thành, với sứ mệnh kết nối cộng đồng doanh nghiệp ngành LPG, bảo vệ quyền lợi và lợi ích hợp pháp của hội viên, đồng thời góp phần xây dựng thị trường kinh doanh khí hóa lỏng an toàn, minh bạch và phát triển bền vững.',
+    benefitsTitle: 'Tham gia Hiệp hội, Quý Doanh nghiệp sẽ có cơ hội tiếp cận những giá trị thiết thực:',
+    benefits: [
+      {
+        title: 'Được bảo vệ quyền lợi hợp pháp',
+        desc: 'Hiệp hội đóng vai trò là "Lá chắn pháp lý", đại diện tiếng nói chung để trực tiếp kiến nghị, đối thoại với các cơ quan quản lý Nhà nước nhằm tháo gỡ rào cản về cơ chế, thủ tục và giấy phép kinh doanh.',
+        icon: 'gavel'
+      },
+      {
+        title: 'Hợp tác chống gian lận thương mại',
+        desc: 'Tham mưu cùng với đơn vị chức năng đẩy lùi nạn sang chiết lậu, bảo vệ thương hiệu và thị phần kinh doanh chân chính của Quý vị.',
+        icon: 'security'
+      },
+      {
+        title: 'Tối ưu hóa nguồn lực và chi phí',
+        desc: 'Cơ hội kết nối sâu, chia sẻ hạ tầng logistics, tiếp cận nguồn hàng ổn định từ các tổng kho lớn và các nhà cung cấp thiết bị ngành gas với chính sách giá ưu đãi tốt nhất.',
+        icon: 'hub'
+      },
+      {
+        title: 'Nâng cao năng lực cạnh tranh',
+        desc: 'Được tham gia chương trình đào tạo an toàn chuẩn ngành, cập nhật quy chuẩn pháp luật mới nhất và tiếp cận các giải pháp chuyển đổi số (phần mềm quản lý vỏ bình, thương hiệu chung...) dành riêng cho NPP/Tổng đại lý.',
+        icon: 'trending_up'
+      }
+    ],
+    closing1: 'HOBA LPG không chỉ là một tổ chức nghề nghiệp, chúng tôi là mái nhà chung – nơi mỗi doanh nghiệp đều có tiếng nói và được tiếp thêm sức mạnh để phát triển sòng phẳng trên thị trường.',
+    closing2: 'Sự góp mặt của Quý Doanh nghiệp/ quý đối tác không chỉ mở ra cơ hội phát triển cho chính Quý vị, mà còn góp phần xây dựng một thị trường LPG TP.HCM minh bạch, an toàn và thịnh vượng.',
+    salutation: 'Trân trọng kính chào',
+    signerRole: 'Chủ tịch',
+    signerName: 'Đinh Văn Hiểu',
+    signerTitle: 'Chủ tịch Hiệp hội HOBA LPG',
+    signerSignatureUrl: '/images/chu-ky-dinh-van-hieu.png'
+  });
+  const [signatureUploading, setSignatureUploading] = useState(false);
+
   const [sections, setSections] = useState([
     { id: 'hero', name: '1. Banner trang Giới thiệu', visible: true },
     { id: 'overview', name: '2. Tổng quan về HOBA', visible: true },
-    { id: 'values', name: '3. Sứ mệnh - Tầm nhìn - Giá trị', visible: true },
-    { id: 'timeline', name: '4. Lịch sử phát triển / Timeline', visible: true },
-    { id: 'org', name: '5. Cơ cấu tổ chức', visible: true },
-    { id: 'whyjoin', name: '6. Vì sao tham gia HOBA?', visible: true },
-    { id: 'members', name: '7. Hội viên tiêu biểu', visible: true },
+    { id: 'open-letter', name: '3. Thư ngỏ của Chủ tịch', visible: true },
+    { id: 'values', name: '4. Sứ mệnh - Tầm nhìn - Giá trị', visible: true },
+    { id: 'timeline', name: '5. Lịch sử phát triển / Timeline', visible: true },
+    { id: 'org', name: '6. Cơ cấu tổ chức', visible: true },
+    { id: 'whyjoin', name: '7. Vì sao tham gia HOBA?', visible: true },
+    { id: 'members', name: '8. Hội viên tiêu biểu', visible: true },
   ]);
 
   // Collapsible configuration blocks state (default collapsed)
   const [expandedSections, setExpandedSections] = useState({
     hero: false,
     overview: false,
+    openLetter: false,
     timeline: false,
     values: false,
     org: false,
@@ -117,7 +161,7 @@ export default function AdminTrangGioiThieu() {
     members: false,
   });
 
-  const toggleSectionExpand = (sectionKey: 'hero' | 'overview' | 'timeline' | 'values' | 'org' | 'whyjoin' | 'members') => {
+  const toggleSectionExpand = (sectionKey: 'hero' | 'overview' | 'openLetter' | 'timeline' | 'values' | 'org' | 'whyjoin' | 'members') => {
     setExpandedSections(prev => ({
       ...prev,
       [sectionKey]: !prev[sectionKey]
@@ -180,6 +224,33 @@ export default function AdminTrangGioiThieu() {
     }
   };
 
+  const handleSignatureUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSignatureUploading(true);
+      try {
+        const url = await uploadImage(e.target.files[0]);
+        setOpenLetter((prev: any) => ({ ...prev, signerSignatureUrl: url }));
+      } catch (err) {
+        alert('Lỗi tải ảnh chữ ký: ' + (err as Error).message);
+      } finally {
+        setSignatureUploading(false);
+      }
+    }
+  };
+
+  const ensureOpenLetterSection = (secs: any[]) => {
+    if (!Array.isArray(secs) || secs.length === 0) return defaultAboutPage.sections;
+    if (secs.some((s: any) => s.id === 'open-letter')) return secs;
+    const valuesIdx = secs.findIndex((s: any) => s.id === 'values');
+    const newSec = { id: 'open-letter', name: '3. Thư ngỏ của Chủ tịch', visible: true };
+    if (valuesIdx !== -1) {
+      const copy = [...secs];
+      copy.splice(valuesIdx, 0, newSec);
+      return copy;
+    }
+    return [...secs, newSec];
+  };
+
   const toggleSection = (id: string) => {
     setSections(prev =>
       prev.map(sec => (sec.id === id ? { ...sec, visible: !sec.visible } : sec))
@@ -237,6 +308,7 @@ export default function AdminTrangGioiThieu() {
             if (val.heroDesc) setHeroDesc(val.heroDesc);
             if (val.overviewImage) setOverviewImage(val.overviewImage);
             if (val.whyJoinReasons) setWhyJoinReasons(val.whyJoinReasons);
+            if (val.openLetter) setOpenLetter(val.openLetter);
             if (val.featuredMembers && Array.isArray(val.featuredMembers)) {
               setFeaturedMembers(val.featuredMembers);
             } else if (val.featuredMemberIds && Array.isArray(val.featuredMemberIds)) {
@@ -258,7 +330,7 @@ export default function AdminTrangGioiThieu() {
               });
               setFeaturedMembers(initial);
             }
-            if (val.sections) setSections(val.sections);
+            if (val.sections) setSections(ensureOpenLetterSection(val.sections));
           } catch (e) {}
         }
         return;
@@ -281,6 +353,7 @@ export default function AdminTrangGioiThieu() {
           if (val.heroDesc) setHeroDesc(val.heroDesc);
           if (val.overviewImage) setOverviewImage(val.overviewImage);
           if (val.whyJoinReasons) setWhyJoinReasons(val.whyJoinReasons);
+          if (val.openLetter) setOpenLetter(val.openLetter);
           if (val.featuredMembers && Array.isArray(val.featuredMembers)) {
             setFeaturedMembers(val.featuredMembers);
           } else if (val.featuredMemberIds && Array.isArray(val.featuredMemberIds)) {
@@ -302,7 +375,7 @@ export default function AdminTrangGioiThieu() {
             });
             setFeaturedMembers(initial);
           }
-          if (val.sections) setSections(val.sections);
+          if (val.sections) setSections(ensureOpenLetterSection(val.sections));
         }
       } catch (err) {
         console.error('Lỗi tải cấu hình trang giới thiệu:', err);
@@ -318,7 +391,7 @@ export default function AdminTrangGioiThieu() {
           .from('website_config')
           .upsert({
             key: 'aboutpage',
-            value: { overview, milestones, values, orgStructure, heroImage, heroTitle, heroDesc, overviewImage, whyJoinReasons, featuredMembers, sections }
+            value: { overview, milestones, values, orgStructure, heroImage, heroTitle, heroDesc, overviewImage, whyJoinReasons, featuredMembers, sections, openLetter }
           });
         if (error) throw error;
       } catch (err) {
@@ -327,7 +400,7 @@ export default function AdminTrangGioiThieu() {
       }
     } else {
       localStorage.setItem('hoba_website_config_aboutpage', JSON.stringify({
-        overview, milestones, values, orgStructure, heroImage, heroTitle, heroDesc, overviewImage, whyJoinReasons, featuredMembers, sections
+        overview, milestones, values, orgStructure, heroImage, heroTitle, heroDesc, overviewImage, whyJoinReasons, featuredMembers, sections, openLetter
       }));
     }
 
@@ -516,6 +589,336 @@ export default function AdminTrangGioiThieu() {
                       alt="Overview illustration preview"
                       src={overviewImage}
                     />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Open Letter Editor */}
+          <div className="bg-white border border-outline-variant/30 rounded-xl p-6 shadow-sm">
+            <div className="flex justify-between items-center mb-4 border-b border-outline-variant/20 pb-2">
+              <h3 className="text-sm font-bold text-primary flex items-center gap-2">
+                <span className="material-symbols-outlined text-lg text-secondary">mark_email_read</span> Thư ngỏ của Chủ tịch
+              </h3>
+              <button
+                type="button"
+                onClick={() => toggleSectionExpand('openLetter')}
+                className="text-on-surface-variant hover:text-primary transition-all flex items-center gap-1"
+              >
+                <span className="material-symbols-outlined text-sm">
+                  {expandedSections.openLetter ? 'expand_less' : 'expand_more'}
+                </span>
+                <span className="text-[10px] font-bold">
+                  {expandedSections.openLetter ? 'Thu gọn' : 'Mở rộng'}
+                </span>
+              </button>
+            </div>
+
+            {expandedSections.openLetter && (
+              <div className="space-y-6 text-xs">
+                {/* 1. Tiêu đề & Lời mở đầu */}
+                <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/40 space-y-3">
+                  <span className="font-bold text-primary text-[11px] uppercase tracking-wider block">
+                    1. Tiêu đề & Lời chào đầu thư
+                  </span>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="font-semibold block text-[10px] text-on-surface-variant">Huy hiệu nhỏ (Badge)</label>
+                      <input
+                        className="w-full h-8 px-2.5 border border-outline-variant rounded outline-none focus:border-primary bg-white text-[11px]"
+                        type="text"
+                        value={openLetter.badge || ''}
+                        onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, badge: e.target.value }))}
+                        placeholder="VD: Thông điệp từ Ban Chấp hành"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-semibold block text-[10px] text-on-surface-variant">Tiêu đề lớn</label>
+                      <input
+                        className="w-full h-8 px-2.5 border border-outline-variant rounded outline-none focus:border-primary bg-white text-[11px]"
+                        type="text"
+                        value={openLetter.title || ''}
+                        onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, title: e.target.value }))}
+                        placeholder="VD: Thư ngỏ"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="font-semibold block text-[10px] text-on-surface-variant">Người nhận (Kính gửi)</label>
+                    <input
+                      className="w-full h-8 px-2.5 border border-outline-variant rounded outline-none focus:border-primary bg-white text-[11px]"
+                      type="text"
+                      value={openLetter.recipient || ''}
+                      onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, recipient: e.target.value }))}
+                      placeholder="VD: Kính gửi: Ban Lãnh đạo Quý Doanh nghiệp / Quý Đối tác,"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="font-semibold block text-[10px] text-on-surface-variant">Đoạn chào đầu & Lời chúc</label>
+                    <textarea
+                      className="w-full h-16 p-2.5 border border-outline-variant rounded outline-none focus:border-primary bg-white text-[11px] resize-y"
+                      value={openLetter.greeting || ''}
+                      onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, greeting: e.target.value }))}
+                      placeholder="VD: Lời đầu tiên, Ban Chấp hành Hiệp hội..."
+                    />
+                  </div>
+                </div>
+
+                {/* 2. Bối cảnh & Sứ mệnh */}
+                <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/40 space-y-3">
+                  <span className="font-bold text-primary text-[11px] uppercase tracking-wider block">
+                    2. Bối cảnh & Sứ mệnh trọng tâm
+                  </span>
+                  <div className="space-y-1">
+                    <label className="font-semibold block text-[10px] text-on-surface-variant">Bối cảnh & Thách thức ngành LPG</label>
+                    <textarea
+                      className="w-full h-24 p-2.5 border border-outline-variant rounded outline-none focus:border-primary bg-white text-[11px] resize-y"
+                      value={openLetter.context || ''}
+                      onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, context: e.target.value }))}
+                      placeholder="VD: Ngành kinh doanh khí hóa lỏng (LPG) tại TP.HCM..."
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="font-semibold block text-[10px] text-secondary flex items-center gap-1">
+                      <span className="material-symbols-outlined text-xs">format_quote</span>
+                      Sứ mệnh cốt lõi HOBA LPG (Hiển thị nổi bật viền đỏ)
+                    </label>
+                    <textarea
+                      className="w-full h-24 p-2.5 border border-secondary/40 rounded outline-none focus:border-secondary bg-white text-[11px] resize-y font-medium text-primary"
+                      value={openLetter.mission || ''}
+                      onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, mission: e.target.value }))}
+                      placeholder="VD: Xuất phát từ thực tiễn đó, HOBA LPG được hình thành..."
+                    />
+                  </div>
+                </div>
+
+                {/* 3. Giá trị thiết thực & Quyền lợi hội viên (4 thẻ) */}
+                <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/40 space-y-3">
+                  <span className="font-bold text-primary text-[11px] uppercase tracking-wider block">
+                    3. Giá trị thiết thực khi tham gia (4 thẻ lợi ích)
+                  </span>
+                  <div className="space-y-1">
+                    <label className="font-semibold block text-[10px] text-on-surface-variant">Tiêu đề danh sách quyền lợi</label>
+                    <input
+                      className="w-full h-8 px-2.5 border border-outline-variant rounded outline-none focus:border-primary bg-white text-[11px]"
+                      type="text"
+                      value={openLetter.benefitsTitle || ''}
+                      onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, benefitsTitle: e.target.value }))}
+                      placeholder="VD: Tham gia Hiệp hội, Quý Doanh nghiệp sẽ có cơ hội tiếp cận những giá trị thiết thực:"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-3 pt-1">
+                    {(openLetter.benefits || defaultAboutPage.openLetter.benefits).map((b: any, bIdx: number) => (
+                      <div key={bIdx} className="p-3 border border-outline-variant/60 rounded-lg bg-white space-y-2 shadow-xs">
+                        <div className="flex items-center justify-between border-b border-outline-variant/30 pb-1.5">
+                          <span className="font-bold text-primary text-[10px] uppercase">
+                            Thẻ {bIdx + 1}
+                          </span>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[10px] text-on-surface-variant">Icon:</span>
+                            <select
+                              className="h-7 px-1 border border-outline-variant rounded text-[11px] outline-none focus:border-primary bg-white"
+                              value={['gavel', 'security', 'hub', 'trending_up', 'handshake', 'school', 'verified_user', 'policy'].includes(b.icon) ? b.icon : 'custom'}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                if (val !== 'custom') {
+                                  setOpenLetter((prev: any) => {
+                                    const list = [...(prev.benefits || defaultAboutPage.openLetter.benefits)];
+                                    list[bIdx] = { ...list[bIdx], icon: val };
+                                    return { ...prev, benefits: list };
+                                  });
+                                }
+                              }}
+                            >
+                              <option value="gavel">Lá chắn pháp lý (gavel)</option>
+                              <option value="security">Chống gian lận (security)</option>
+                              <option value="hub">Kết nối & Logistics (hub)</option>
+                              <option value="trending_up">Năng lực cạnh tranh (trending_up)</option>
+                              <option value="handshake">Hợp tác (handshake)</option>
+                              <option value="school">Đào tạo (school)</option>
+                              <option value="verified_user">Uy tín (verified_user)</option>
+                              <option value="policy">Chính sách (policy)</option>
+                              <option value="custom">Tùy biến...</option>
+                            </select>
+                            <input
+                              className="w-16 h-7 px-1.5 border border-outline-variant rounded text-[11px] text-center outline-none focus:border-primary"
+                              type="text"
+                              value={b.icon || ''}
+                              placeholder="Icon..."
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setOpenLetter((prev: any) => {
+                                  const list = [...(prev.benefits || defaultAboutPage.openLetter.benefits)];
+                                  list[bIdx] = { ...list[bIdx], icon: val };
+                                  return { ...prev, benefits: list };
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="font-semibold block text-[10px] text-on-surface-variant">Tiêu đề quyền lợi</label>
+                          <input
+                            className="w-full h-8 px-2.5 border border-outline-variant rounded outline-none focus:border-primary text-[11px] font-semibold text-primary"
+                            type="text"
+                            value={b.title || ''}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setOpenLetter((prev: any) => {
+                                const list = [...(prev.benefits || defaultAboutPage.openLetter.benefits)];
+                                list[bIdx] = { ...list[bIdx], title: val };
+                                return { ...prev, benefits: list };
+                              });
+                            }}
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="font-semibold block text-[10px] text-on-surface-variant">Mô tả chi tiết</label>
+                          <textarea
+                            className="w-full h-16 p-2 border border-outline-variant rounded outline-none focus:border-primary text-[11px] resize-y"
+                            value={b.desc || ''}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setOpenLetter((prev: any) => {
+                                const list = [...(prev.benefits || defaultAboutPage.openLetter.benefits)];
+                                list[bIdx] = { ...list[bIdx], desc: val };
+                                return { ...prev, benefits: list };
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 4. Đoạn kết & Kêu gọi */}
+                <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/40 space-y-3">
+                  <span className="font-bold text-primary text-[11px] uppercase tracking-wider block">
+                    4. Lời kết & Kêu gọi đồng hành
+                  </span>
+                  <div className="space-y-1">
+                    <label className="font-semibold block text-[10px] text-on-surface-variant">Đoạn kết 1 (Mái nhà chung)</label>
+                    <textarea
+                      className="w-full h-16 p-2.5 border border-outline-variant rounded outline-none focus:border-primary bg-white text-[11px] resize-y"
+                      value={openLetter.closing1 || ''}
+                      onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, closing1: e.target.value }))}
+                      placeholder="VD: HOBA LPG không chỉ là một tổ chức nghề nghiệp..."
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="font-semibold block text-[10px] text-on-surface-variant">Đoạn kết 2 (Lời kêu gọi phát triển minh bạch, an toàn)</label>
+                    <textarea
+                      className="w-full h-16 p-2.5 border border-outline-variant rounded outline-none focus:border-primary bg-white text-[11px] resize-y"
+                      value={openLetter.closing2 || ''}
+                      onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, closing2: e.target.value }))}
+                      placeholder="VD: Sự góp mặt của Quý Doanh nghiệp/ quý đối tác..."
+                    />
+                  </div>
+                </div>
+
+                {/* 5. Chữ ký & Người ký */}
+                <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/40 space-y-4">
+                  <span className="font-bold text-primary text-[11px] uppercase tracking-wider block">
+                    5. Người ký & Chữ ký điện tử
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                    <div className="space-y-1">
+                      <label className="font-semibold block text-[10px] text-on-surface-variant">Lời chào kết</label>
+                      <input
+                        className="w-full h-8 px-2.5 border border-outline-variant rounded outline-none focus:border-primary bg-white text-[11px]"
+                        type="text"
+                        value={openLetter.salutation || ''}
+                        onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, salutation: e.target.value }))}
+                        placeholder="Trân trọng kính chào"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-semibold block text-[10px] text-on-surface-variant">Chức vụ người ký</label>
+                      <input
+                        className="w-full h-8 px-2.5 border border-outline-variant rounded outline-none focus:border-primary bg-white text-[11px]"
+                        type="text"
+                        value={openLetter.signerRole || ''}
+                        onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, signerRole: e.target.value }))}
+                        placeholder="Chủ tịch"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-semibold block text-[10px] text-on-surface-variant">Họ tên người ký</label>
+                      <input
+                        className="w-full h-8 px-2.5 border border-outline-variant rounded outline-none focus:border-primary bg-white text-[11px] font-bold text-primary"
+                        type="text"
+                        value={openLetter.signerName || ''}
+                        onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, signerName: e.target.value }))}
+                        placeholder="Đinh Văn Hiểu"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="font-semibold block text-[10px] text-on-surface-variant">Danh xưng / Tổ chức</label>
+                      <input
+                        className="w-full h-8 px-2.5 border border-outline-variant rounded outline-none focus:border-primary bg-white text-[11px]"
+                        type="text"
+                        value={openLetter.signerTitle || ''}
+                        onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, signerTitle: e.target.value }))}
+                        placeholder="Chủ tịch Hiệp hội HOBA LPG"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 pt-1 border-t border-outline-variant/30">
+                    <label className="font-semibold block text-[10px] text-on-surface-variant">Hình ảnh chữ ký (Chữ ký điện tử / File ảnh trong suốt)</label>
+                    <div className="flex gap-2">
+                      <input
+                        className="flex-1 h-9 px-3 rounded border border-outline-variant/50 focus:border-primary outline-none text-[11px] bg-white"
+                        type="text"
+                        value={openLetter.signerSignatureUrl || ''}
+                        onChange={(e) => setOpenLetter((prev: any) => ({ ...prev, signerSignatureUrl: e.target.value }))}
+                        placeholder="Nhập URL ảnh chữ ký hoặc tải file từ máy..."
+                      />
+                      <label className="flex items-center justify-center gap-1 bg-primary text-white px-3 rounded cursor-pointer hover:bg-[#93000d] transition-all font-bold text-[10px] h-9">
+                        <span className="material-symbols-outlined text-sm">
+                          {signatureUploading ? 'sync' : 'upload'}
+                        </span>
+                        {signatureUploading ? 'Đang tải...' : 'Tải lên chữ ký'}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={handleSignatureUpload}
+                          disabled={signatureUploading}
+                        />
+                      </label>
+                    </div>
+
+                    {openLetter.signerSignatureUrl && (
+                      <div className="p-3 bg-white border border-outline-variant/50 rounded-lg flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                          <div className="h-16 w-36 bg-[#fcf9f5] border border-outline-variant/30 rounded flex items-center justify-center p-1">
+                            <img
+                              src={openLetter.signerSignatureUrl}
+                              alt="Preview chữ ký"
+                              className="max-h-full max-w-full object-contain filter contrast-125"
+                            />
+                          </div>
+                          <div>
+                            <span className="text-[11px] font-bold text-primary block">{openLetter.signerName || 'Đinh Văn Hiểu'}</span>
+                            <span className="text-[10px] text-on-surface-variant block">{openLetter.signerRole || 'Chủ tịch'}</span>
+                            <span className="text-[9px] text-green-700 bg-green-50 px-1.5 py-0.5 rounded border border-green-200 mt-1 inline-block">Đang áp dụng</span>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setOpenLetter((prev: any) => ({ ...prev, signerSignatureUrl: '' }))}
+                          className="text-secondary hover:text-[#93000d] text-[10px] font-bold flex items-center gap-0.5"
+                        >
+                          <span className="material-symbols-outlined text-sm">close</span> Gỡ chữ ký
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
