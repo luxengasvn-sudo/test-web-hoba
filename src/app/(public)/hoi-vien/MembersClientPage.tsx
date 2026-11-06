@@ -450,7 +450,8 @@ export default function MembersPage({ initialData = {} }: MembersClientPageProps
       if (normalized.includes('chủ tịch') && !normalized.includes('phó')) return 1;
       if (normalized.includes('phó chủ tịch')) return 2;
       if (normalized.includes('thường vụ')) return 3;
-      if (normalized.includes('chấp hành') || normalized.includes('bch')) return 4;
+      if (normalized.includes('chấp hành') && !normalized.includes('kiểm tra')) return 4;
+      if (normalized.includes('trưởng ban kiểm tra') || (normalized.includes('kiểm tra') && (normalized.includes('bch') || normalized.includes('chấp hành')))) return 4.5;
       if (normalized.includes('kiểm tra')) return 5;
       if (normalized.includes('chính thức')) return 6;
       if (normalized.includes('liên kết')) return 7;
